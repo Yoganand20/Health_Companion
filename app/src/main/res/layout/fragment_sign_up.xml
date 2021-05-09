@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUp_Fragment">
+    <!-- <androidx.core.widget.NestedScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:fillViewport="true">
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">-->
+             <EditText
+                 android:id="@+id/editTextTextNewEmailAddress"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:background="@drawable/edittext_bg"
+                 android:ems="10"
+                 android:hint="Email"
+                 android:inputType="textEmailAddress"
+                 android:paddingStart="20dp"
+                 android:paddingTop="10dp"
+                 android:paddingEnd="20dp"
+                 android:paddingBottom="10dp"
+                 app:layout_constraintBottom_toBottomOf="parent"
+
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintVertical_bias="0.2"
+                 app:layout_constraintWidth_percent=".8" />
+
+             <EditText
+                 android:id="@+id/editTextTextNewPassword"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="20dp"
+                 android:background="@drawable/edittext_bg"
+
+                 android:ems="10"
+
+                 android:hint="Password"
+                 android:inputType="textPassword"
+
+                 android:paddingStart="20dp"
+                 android:paddingTop="10dp"
+                 android:paddingEnd="20dp"
+                 android:paddingBottom="10dp"
+
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/editTextTextNewEmailAddress"
+                 app:layout_constraintVertical_bias="0"
+                 app:layout_constraintWidth_percent=".8" />
+
+             <EditText
+                 android:id="@+id/editTextTextConfirmPassword"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="20dp"
+                 android:background="@drawable/edittext_bg"
+
+                 android:ems="10"
+
+                 android:hint="Confirm Password"
+                 android:inputType="textPassword"
+                 android:paddingStart="20dp"
+                 android:paddingTop="10dp"
+                 android:paddingEnd="20dp"
+                 android:paddingBottom="10dp"
+
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/editTextTextNewPassword"
+                 app:layout_constraintVertical_bias="0.0"
+                 app:layout_constraintWidth_percent=".8" />
+
+    <Button
+        android:id="@+id/button_signUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/curved_button"
+        android:text="Sign Up"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextNewPassword"
+        app:layout_constraintWidth_percent=".8" />
+ <!--
+
+         </androidx.constraintlayout.widget.ConstraintLayout>
+     </androidx.core.widget.NestedScrollView>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "733167122160",
+    "project_id": "health-companion-project2021",
+    "storage_bucket": "health-companion-project2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733167122160:android:546ffc68e3994a1df47435",
+        "android_client_info": {
+          "package_name": "com.project.healthcompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733167122160-jnc15hsh7otfmfe0ir3aau6u2qsbmtr5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG_0wpbut68TGOyE_28WLR49H-vucd0oM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733167122160-jnc15hsh7otfmfe0ir3aau6u2qsbmtr5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
