@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Health Companion</string>
+    <string name="main_header">Health Companion</string>
+    <string name="home_text">Home</string>
+    <string name="reminder_button">REMINDERS</string>
+    <string name="reminder_header">REMINDERS</string>
+    <string name="home_header">HOME</string>
+
+    <string name="healthcompanion_drawertitle">Health Companion</string>
+
+    <!-- Food reminder strings -->
+    <string name="medication_button">MEDICATION</string>
+    <string name="food_button">FOOD</string>
+    <string name="water_button">WATER</string>
+
+    <string name="medication_msg">MEDICATION</string>
+    <string name="food_msg">FOOD</string>
+    <string name="water_msg">WATER</string>
+
+    <string name="no_food_reminder">You don\'t have any food reminders at the moment</string>
+    <string name="no_medi_reminder">You don\'t have any medication reminders at the moment</string>
+    <string name="no_watr_reminder">You don\'t have any water reminders at the moment</string>
+    <string name="profile_navdrawer">Profile</string>
+    <string name="home_navdrawer">Home</string>
+    <string name="dashboard_navdrawer">Dashboard</string>
+    <string name="graphs_navdrawer">Overview/Graphs</string>
+    <string name="dietplans_navdrawer">Diet Plans</string>
+    <string name="recipes_navdrawer">Recipes</string>
+    <string name="reminders_navdrawer">Reminders</string>
+    <string name="social_navdrawer">Social</string>
+    <string name="logout_navdrawer">Logout</string>
+
+
 </resources>
