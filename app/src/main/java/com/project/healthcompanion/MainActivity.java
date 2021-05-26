@@ -31,4 +31,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(LoginNSignUp);
         }
     }
+
+    public void Start(View view) {
+        Intent intent = new Intent(this, HomePage.class);
+        startActivity(intent);
+    }
 }

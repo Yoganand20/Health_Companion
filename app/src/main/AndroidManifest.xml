@@ -16,6 +16,20 @@
             android:windowSoftInputMode="stateAlwaysVisible"
         ></activity>
         <!--//android:windowSoftInputMode="adjustNothing"-->
+        <activity android:name=".HomePage">
+            android:label = "HomePage"
+            android:parentActivityName = "MainActivity"
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.healthcompanion.MainActivity" />
+        </activity>
+        <activity android:name=".Reminders">
+            android:label = "Reminders"
+            android:parentActivityName = "MainActivity"
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.healthcompanion.MainActivity" />
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

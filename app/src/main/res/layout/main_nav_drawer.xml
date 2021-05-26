@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099FF"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120sp"
+        android:layout_margin="16sp"
+        android:onClick="ClickLogo"
+        android:src="@drawable/hcsymbol" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/healthcompanion_drawertitle"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12sp"
+        android:layout_marginTop="16sp"
+        android:layout_marginBottom="16sp"
+        android:background="#636363" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickProfile"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/profile_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_profile" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickHome"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/home_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_home" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickDashboard"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/dashboard_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_dashboard" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickGraphs"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/graphs_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_graphs" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickDietPlans"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/dietplans_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_dietplan" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickRecipes"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/recipes_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_recipes" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickReminders"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/reminders_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_reminders" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickSocial"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/social_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_social" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="ClickLogout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:padding="12sp"
+            android:text="@string/logout_navdrawer"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48sp"
+            android:layout_marginRight="48sp"
+            android:src="@drawable/ic_logout" />
+
+    </LinearLayout>
+
+</LinearLayout>
