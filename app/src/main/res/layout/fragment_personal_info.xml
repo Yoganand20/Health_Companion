@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Personal_Info">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.77"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/imageView_profilePic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/baseline_account_circle_black_48"
+                app:civ_border="true"
+                app:civ_border_color="@android:color/holo_blue_dark"
+                app:civ_border_width="3dp"
+
+                app:civ_shadow="true"
+                app:civ_shadow_radius="3dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView_editPic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/img_plus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_plus"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="3dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePic"
+                app:layout_constraintEnd_toEndOf="@+id/imageView_profilePic"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="@+id/imageView_profilePic"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.95" />
+
+            <TextView
+                android:id="@+id/textView_editPic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Edit Profile Picture"
+                android:clickable="true"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/editText_FirstName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_profilePic" />
+
+            <EditText
+                android:id="@+id/editText_FirstName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="First name"
+                android:inputType="textPersonName"
+
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/editText_LastName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_editPic"
+                app:layout_constraintWidth_percent=".8" />
+
+            <EditText
+                android:id="@+id/editText_LastName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+
+                android:layout_marginBottom="10dp"
+
+                android:background="@drawable/edittext_bg"
+                android:hint="Last name"
+                android:inputType="textPersonName"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                app:layout_constraintBottom_toTopOf="@+id/editText_DOB"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText_FirstName"
+                app:layout_constraintWidth_percent=".8" />
+
+            <EditText
+                android:id="@+id/editText_DOB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edittext_bg"
+                android:clickable="false"
+                android:cursorVisible="false"
+
+                android:focusable="false"
+
+                android:focusableInTouchMode="false"
+                android:hint="Date of Birth"
+                android:inputType="date"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/radioGroup_Gender"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText_LastName"
+                app:layout_constraintWidth_percent=".8" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/radioGroup_Gender"
+                app:layout_constraintEnd_toStartOf="@+id/radioGroup_Gender"
+                app:layout_constraintHorizontal_bias="0.58"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/radioGroup_Gender" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup_Gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.65"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText_DOB"
+                app:layout_constraintVertical_bias="0.100000024">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioBtn_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15px"
+                    android:text="Male" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioBtn_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15px"
+                    android:text="Female" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

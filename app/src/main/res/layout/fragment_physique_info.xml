@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhysiqueInfoFragment">
+
+    <EditText
+        android:id="@+id/editText_Weight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="10dp"
+
+        android:background="@drawable/edittext_bg"
+
+        android:hint="Weight"
+        android:inputType="number"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+
+        android:paddingEnd="20dp"
+
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/editText_Height"
+        app:layout_constraintEnd_toStartOf="@+id/textView_w"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent=".7" />
+
+    <TextView
+        android:id="@+id/textView_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="in Kg"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_Weight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editText_Weight"
+        app:layout_constraintTop_toTopOf="@+id/editText_Weight" />
+
+
+    <EditText
+        android:id="@+id/editText_Height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="10dp"
+
+        android:background="@drawable/edittext_bg"
+
+        android:hint="Height"
+        android:inputType="number"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView_h"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_Weight"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintWidth_percent=".7" />
+
+    <TextView
+        android:id="@+id/textView_h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="in cm"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_Height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editText_Height"
+        app:layout_constraintTop_toTopOf="@+id/editText_Height" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

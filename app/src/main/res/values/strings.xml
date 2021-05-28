@@ -2,6 +2,13 @@
     <string name="app_name">Health Companion</string>
     <string name="welcomeText">Welcome to Health Companion</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gender">Gender:</string>
+
+    <string-array name="activityLevels">
+        <item name="-1">Light Activity Lifestyle</item>
+        <item name="0">Moderate Activity Lifestyle</item>
+        <item name="1">Vigorous Activity Lifestyle</item>
+    </string-array>
     <string name="main_header">Health Companion</string>
     <string name="home_text">Home</string>
     <string name="reminder_button">REMINDERS</string>

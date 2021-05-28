@@ -1,24 +1,37 @@
 package com.project.healthcompanion;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomePage extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
+    private static FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        // get instance of firebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+
+        //get current user if logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         drawerLayout = findViewById(R.id.drawer_Layout);
     }
@@ -88,8 +101,9 @@ public class HomePage extends AppCompatActivity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                activity.finishAffinity();
-                System.exit(0);
+                mAuth.signOut();
+                //activity.finishAffinity();
+                //System.exit(0);
             }
         });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -112,5 +126,27 @@ public class HomePage extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         closeDrawer(drawerLayout);
+    }
+
+    //press back twice to exit
+    private boolean backPressedOnce = false;
+    private Toast t;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedOnce) {
+            t.cancel();
+            finish();
+        }
+        backPressedOnce = true;
+        t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, 2000);
     }
 }

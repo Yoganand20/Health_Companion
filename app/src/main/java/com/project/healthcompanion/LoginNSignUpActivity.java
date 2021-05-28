@@ -1,26 +1,20 @@
 package com.project.healthcompanion;
 
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.graphics.Rect;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginNSignUpActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
@@ -28,10 +22,6 @@ public class LoginNSignUpActivity extends AppCompatActivity {
     private String[] Titles=new String[]{
             "Login","Sign Up"
     };
-
-
-
-
 
     ConstraintLayout constraintLayout;
 
@@ -54,8 +44,10 @@ public class LoginNSignUpActivity extends AppCompatActivity {
 
 
         /*Hide and show google sign in option when keyboard is opened or closed*/
+
         //get outer constraint layout
         constraintLayout=findViewById(R.id.constraintlayout_ls);
+
         //set global layout listener on constraint layout
         constraintLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
             @Override
@@ -71,18 +63,45 @@ public class LoginNSignUpActivity extends AppCompatActivity {
                     loginOptions.setVisibility(View.VISIBLE);
                 }
         }});
-
-
-
     }
 
     @Override
     public void onBackPressed() {
-        if(viewPager.getCurrentItem()==0){
+        if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        } else{
-            viewPager.setCurrentItem(viewPager.getCurrentItem()-1);
+        } else {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
 
+}
+
+
+class LS_ViewPagerAdapter extends FragmentStateAdapter {
+    private final static int tabCount = 2;
+
+    //default constructor
+    public LS_ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
+    }
+
+    //set fragments to load here
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        switch (position) {
+            case 0:
+                return new Login_Fragment();
+            case 1:
+                return new SignUp_Fragment();
+            default:
+                return null;
+        }
+    }
+
+    //returns number of tabs
+    @Override
+    public int getItemCount() {
+        return tabCount;
+    }
 }
