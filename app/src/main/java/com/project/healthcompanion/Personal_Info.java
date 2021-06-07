@@ -18,16 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.RadioGroup;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.karumi.dexter.Dexter;
@@ -35,32 +36,28 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.project.healthcompanion.databinding.FragmentPersonalInfoBinding;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class Personal_Info extends Fragment {
+    private FragmentPersonalInfoBinding binding;
+    private UserInfoViewModel userInfoViewModel;
+    private Date dateOfBirth;
     final Calendar DOB_Calendar = Calendar.getInstance();
-
-    EditText editText_DOB;
-    TextView textView_editPic;
+    private String gender;
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    //public static final int REQUEST_IMAGE = 100;
-
-    ImageView imgProfile;
-    ImageView imgProfileEditPlus;
 
     public Personal_Info() {
         // Required empty public constructor
-    }
-
-
-    public static Personal_Info newInstance() {
-        return new Personal_Info();
     }
 
     @Override
@@ -72,15 +69,16 @@ public class Personal_Info extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_personal_info, container, false);
-        editText_DOB = view.findViewById(R.id.editText_DOB);
-        imgProfile = view.findViewById(R.id.imageView_profilePic);
-        imgProfileEditPlus = view.findViewById(R.id.img_plus);
-        textView_editPic = view.findViewById(R.id.textView_editPic);
+        binding = FragmentPersonalInfoBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+
         loadProfileDefault();
-        imgProfile.setOnClickListener(onClick_setProfilePic);
-        imgProfileEditPlus.setOnClickListener(onClick_setProfilePic);
+
+        binding.imageViewProfilePic.setOnClickListener(onClick_setProfilePic);
+        binding.imgPlus.setOnClickListener(onClick_setProfilePic);
+
         ImgPickerActivity.clearCache(this);
+
         DatePickerDialog.OnDateSetListener DOB = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -89,43 +87,62 @@ public class Personal_Info extends Fragment {
             }
         };
 
-        editText_DOB.setOnClickListener(new View.OnClickListener() {
+        binding.editTextDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getContext(), DOB, DOB_Calendar.get(Calendar.YEAR), DOB_Calendar.get(Calendar.MONTH), DOB_Calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
-
+        binding.radioGroupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (binding.radioBtnMale.getId() == checkedId) {
+                    gender = "Male";
+                } else if (binding.radioBtnFemale.getId() == checkedId) {
+                    gender = "Female";
+                } else {
+                    gender = "";
+                }
+            }
+        });
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        userInfoViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
     }
 
     //updates editText view after selecting data (DOB)
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        editText_DOB.setText(sdf.format(DOB_Calendar.getTime()));
+        dateOfBirth = DOB_Calendar.getTime();
+        binding.editTextDOB.setText(sdf.format(dateOfBirth));
     }
 
     private void loadProfile(String url) {
         Log.d(TAG, "Image cache path: " + url);
 
-        Glide.with(this).load(url)
-                .into(imgProfile);
-        imgProfile.setColorFilter(ContextCompat.getColor(requireContext(), android.R.color.transparent));
+        Glide.with(this).load(url).into(binding.imageViewProfilePic);
+        binding.imageViewProfilePic
+                .setColorFilter(ContextCompat.getColor(requireContext(), android.R.color.transparent));
     }
 
     private void loadProfileDefault() {
         Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
-                .into(imgProfile);
-        imgProfile.setColorFilter(ContextCompat.getColor(requireContext(), R.color.grey_300));
+                .into(binding.imageViewProfilePic);
+        binding.imageViewProfilePic
+                .setColorFilter(ContextCompat.getColor(requireContext(), R.color.grey_300));
     }
 
 
     View.OnClickListener onClick_setProfilePic = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 Dexter.withContext(getContext())
                         .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .withListener(new MultiplePermissionsListener() {
@@ -145,7 +162,8 @@ public class Personal_Info extends Fragment {
                                 token.continuePermissionRequest();
                             }
                         }).check();
-            } else {
+            /*}
+           else {
                 Dexter.withContext(getContext())
                         .withPermissions(Manifest.permission.CAMERA, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
                         .withListener(new MultiplePermissionsListener() {
@@ -165,7 +183,7 @@ public class Personal_Info extends Fragment {
                                 token.continuePermissionRequest();
                             }
                         }).check();
-            }
+            }*/
 
         }
     };
@@ -216,32 +234,6 @@ public class Personal_Info extends Fragment {
 //        startActivityForResult(intent, REQUEST_IMAGE);
     }
 
-    /*
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            if (requestCode == REQUEST_IMAGE) {
-                if (resultCode == Activity.RESULT_OK) {
-
-                    Uri uri = data.getParcelableExtra("path");
-                    Bitmap bitmap;
-
-                    try {
-                        //use ImageDecoder to get bitmap on android devices with api 29+
-                        if (Build.VERSION.SDK_INT >= 29) {
-                            ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), uri);
-                            bitmap = ImageDecoder.decodeBitmap(source);
-                        } else {//on devices with api version 28 and lower use getBitmap (deprecated method)
-                            bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                        }
-                        // loading profile image from local cache
-                        loadProfile(uri.toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    */
     //Showing Alert Dialog with Settings option
     private void showSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -284,6 +276,7 @@ public class Personal_Info extends Fragment {
                             } else {//on devices with api version 28 and lower use getBitmap (deprecated method)
                                 bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
                             }
+                            userInfoViewModel.setProfilePic(bitmap);
                             // loading profile image from local cache
                             loadProfile(uri.toString());
                         } catch (IOException e) {
@@ -292,4 +285,6 @@ public class Personal_Info extends Fragment {
                     }
                 }
             });
+
+
 }

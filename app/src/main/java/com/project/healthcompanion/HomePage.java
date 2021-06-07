@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomePage extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-    private static FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -101,8 +101,10 @@ public class HomePage extends AppCompatActivity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mAuth.signOut();
-                //activity.finishAffinity();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(activity, LoginNSignUpActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                activity.startActivity(intent);
                 //System.exit(0);
             }
         });

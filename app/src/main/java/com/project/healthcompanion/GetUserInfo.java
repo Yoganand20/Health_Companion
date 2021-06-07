@@ -3,10 +3,6 @@ package com.project.healthcompanion;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,49 +11,55 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
+import com.project.healthcompanion.databinding.ActivityGetUserInfoBinding;
 
 public class GetUserInfo extends AppCompatActivity {
-
-    private Button buttonNext, buttonPrev, buttonDone;
-    private EditText editText_fName, editText_lName, editText_DOB, editText_weight, editText_height;
-    private RadioGroup rg_Gender;
-    private Spinner spinner_activityLevels;
-    private ViewPager2 viewPager;
-    private DotsIndicator dotsIndicator;
+    private ActivityGetUserInfoBinding binding;
+    private UserInfoViewModel userInfoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_user_info);
+        binding = ActivityGetUserInfoBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        setViews();
+        /*
+        //set view model
+        userInfoViewModel=new ViewModelProvider(this).get(UserInfoViewModel.class);
+        userInfoViewModel.getFirstName().observe(this,value->{
+            //TOO: save first name
+            //value variable has the data
+        });
+        userInfoViewModel.getLastName().observe(this,value->{
+            //TOO: save first name
+        });
+        //TOO:call other functions and store their data*/
 
         //disable swiping in viewPager
-        viewPager.setUserInputEnabled(false);
-
+        binding.viewPager2UserInfo.setUserInputEnabled(false);
         //initialize and set adapter to viewPager
         GetUserInfoFragmentAdapter adapter = new GetUserInfoFragmentAdapter(this);
-        viewPager.setAdapter(adapter);
+        binding.viewPager2UserInfo.setAdapter(adapter);
 
         //set dotsIndicator on viewPager
-        dotsIndicator.setViewPager2(viewPager);
+        binding.dotsIndicatorUInfoP.setViewPager2(binding.viewPager2UserInfo);
 
-        buttonNext.setOnClickListener(new View.OnClickListener() {
+        binding.buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                binding.viewPager2UserInfo.setCurrentItem(binding.viewPager2UserInfo.getCurrentItem() + 1);
             }
         });
 
-        buttonPrev.setOnClickListener(new View.OnClickListener() {
+        binding.buttonPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                binding.viewPager2UserInfo.setCurrentItem(binding.viewPager2UserInfo.getCurrentItem() - 1);
             }
         });
 
-        buttonDone.setOnClickListener(new View.OnClickListener() {
+        binding.buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GetUserInfo.this, HomePage.class);
@@ -65,61 +67,43 @@ public class GetUserInfo extends AppCompatActivity {
             }
         });
 
-        viewPager.registerOnPageChangeCallback(pageChangeCallback);
-    }
-
-    private void setViews() {
-        //set buttons
-        buttonNext = findViewById(R.id.button_next);
-        buttonDone = findViewById(R.id.button_done);
-        buttonPrev = findViewById(R.id.button_prev);
-
-        //set ViewPager2 and related
-        viewPager = findViewById(R.id.viewPager2_UserInfo);
-        dotsIndicator = findViewById(R.id.dotsIndicator_uInfoP);
-
-        //set input views from fragments
-        editText_fName = findViewById(R.id.editText_FirstName);
-        editText_lName = findViewById(R.id.editText_LastName);
-        editText_DOB = findViewById(R.id.editText_DOB);
-        editText_weight = findViewById(R.id.editText_Weight);
-        editText_height = findViewById(R.id.editText_Height);
-        rg_Gender = findViewById(R.id.radioGroup_Gender);
-        spinner_activityLevels = findViewById(R.id.activityLevelSpinner);
-
+        binding.viewPager2UserInfo.registerOnPageChangeCallback(pageChangeCallback);
     }
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0) {
+        if (binding.viewPager2UserInfo.getCurrentItem() == 0) {
             super.onBackPressed();
             return;
         }
-        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        binding.viewPager2UserInfo.setCurrentItem(binding.viewPager2UserInfo.getCurrentItem() - 1);
     }
 
-    private ViewPager2.OnPageChangeCallback pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+    private final ViewPager2.OnPageChangeCallback pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
             switch (position) {
                 case 0:
-                    buttonPrev.setVisibility(View.INVISIBLE);
-                    buttonDone.setVisibility(View.GONE);
-                    buttonNext.setVisibility(View.VISIBLE);
+                    binding.buttonPrev.setVisibility(View.INVISIBLE);
+                    binding.buttonDone.setVisibility(View.GONE);
+                    binding.buttonNext.setVisibility(View.VISIBLE);
                     break;
 
                 case 1:
-                    buttonPrev.setVisibility(View.VISIBLE);
-                    buttonDone.setVisibility(View.GONE);
-                    buttonNext.setVisibility(View.VISIBLE);
+                case 2:
+                    binding.buttonPrev.setVisibility(View.VISIBLE);
+                    binding.buttonDone.setVisibility(View.GONE);
+                    binding.buttonNext.setVisibility(View.VISIBLE);
+
                     break;
 
-                case 2:
-                    buttonPrev.setVisibility(View.VISIBLE);
-                    buttonDone.setVisibility(View.VISIBLE);
-                    buttonNext.setVisibility(View.INVISIBLE);
+                case 3:
+                    binding.buttonPrev.setVisibility(View.VISIBLE);
+                    binding.buttonDone.setVisibility(View.VISIBLE);
+                    binding.buttonNext.setVisibility(View.INVISIBLE);
                     break;
             }
+
             super.onPageSelected(position);
         }
     };
@@ -127,14 +111,14 @@ public class GetUserInfo extends AppCompatActivity {
 
 }
 
-
 class GetUserInfoFragmentAdapter extends FragmentStateAdapter {
 
-    private static int numberOfFragments = 3;
+    private final static int numberOfFragments = 4;
 
     public GetUserInfoFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
+
 
     @NonNull
     @Override
@@ -147,6 +131,8 @@ class GetUserInfoFragmentAdapter extends FragmentStateAdapter {
                 return new PhysiqueInfoFragment();
             case 2:
                 return new ActivityLevelFragment();
+            case 3:
+                return new InfoResultFragment();
             default:
                 return null;
         }

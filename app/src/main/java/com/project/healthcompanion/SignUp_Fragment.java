@@ -2,12 +2,10 @@ package com.project.healthcompanion;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,19 +15,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.project.healthcompanion.databinding.FragmentSignUpBinding;
 
 
 public class SignUp_Fragment extends Fragment {
 
+    private FragmentSignUpBinding binding;
 
-    EditText editText_email, editText_newPassword, editText_confirmPassword;
-    Button button_signUp;
     FirebaseAuth mAuth;
 
     public SignUp_Fragment() {
         // Required empty public constructor
     }
-
 
     public static SignUp_Fragment newInstance() {
         return new SignUp_Fragment();
@@ -45,24 +42,29 @@ public class SignUp_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        binding = FragmentSignUpBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
 
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-        editText_email = view.findViewById(R.id.editTextTextNewEmailAddress);
-        editText_newPassword = view.findViewById(R.id.editTextTextNewPassword);
-        editText_confirmPassword = view.findViewById(R.id.editTextTextConfirmPassword);
-
-        button_signUp = view.findViewById(R.id.button_signUp);
-        button_signUp.setOnClickListener(new View.OnClickListener() {
+        binding.buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password, c_password;
-                email = editText_email.getText().toString();
-                password = editText_newPassword.getText().toString();
-                c_password = editText_confirmPassword.getText().toString();
+                String email, password;
+                email = binding.editTextTextNewEmailAddress.getText().toString();
+                password = binding.editTextTextNewPassword.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
+
+                if (!Validate.ValidateEmail(binding.editTextTextNewEmailAddress)
+                        || !Validate.ValidatePassword(binding.editTextTextNewPassword, binding.editTextTextConfirmPassword)) {
+                    return;
+                }
+
+                ProgressBar progressBar = requireActivity().findViewById(R.id.progressBar_ls);
+                progressBar.setVisibility(View.VISIBLE);
+
+
+               /* if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getContext(), "Please enter valid email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -78,7 +80,7 @@ public class SignUp_Fragment extends Fragment {
                     Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+*/
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -88,7 +90,7 @@ public class SignUp_Fragment extends Fragment {
                                     Intent intent = new Intent(getActivity(), GetUserInfo.class);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(getContext(), "Registration Unsuccessful.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Registration Unsuccessful. Email address already registered.", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -96,6 +98,4 @@ public class SignUp_Fragment extends Fragment {
         });
     return view;
     }
-
-
 }
