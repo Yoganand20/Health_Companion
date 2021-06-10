@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_map_user_info"
+    app:startDestination="@id/personal_Info">
+
+    <fragment
+        android:id="@+id/personal_Info"
+        android:name="com.project.healthcompanion.Personal_Info"
+        android:label="fragment_personal_info"
+        tools:layout="@layout/fragment_personal_info">
+        <action
+            android:id="@+id/action_personal_Info_to_physiqueInfoFragment"
+            app:destination="@id/physiqueInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/physiqueInfoFragment"
+        android:name="com.project.healthcompanion.PhysiqueInfoFragment"
+        android:label="fragment_physique_info"
+        tools:layout="@layout/fragment_physique_info" />
+</navigation>

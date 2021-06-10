@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -138,12 +139,12 @@ public class HomePage extends AppCompatActivity {
     public void onBackPressed() {
         if (backPressedOnce) {
             t.cancel();
+            ActivityCompat.finishAffinity(HomePage.this);
             finish();
         }
         backPressedOnce = true;
         t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
-
-
+        t.show();
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {

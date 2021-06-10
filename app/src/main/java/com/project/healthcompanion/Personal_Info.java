@@ -24,21 +24,19 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.project.healthcompanion.databinding.FragmentPersonalInfoBinding;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -49,7 +47,6 @@ import java.util.Locale;
 
 public class Personal_Info extends Fragment {
     private FragmentPersonalInfoBinding binding;
-    private UserInfoViewModel userInfoViewModel;
     private Date dateOfBirth;
     final Calendar DOB_Calendar = Calendar.getInstance();
     private String gender;
@@ -64,6 +61,60 @@ public class Personal_Info extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    ActivityResultLauncher<Intent> someActivityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        assert data != null;
+                        Uri uri = data.getParcelableExtra("path");
+                        Bitmap bitmap;
+
+                        try {
+                            //use ImageDecoder to get bitmap on android devices with api 29+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                ImageDecoder.Source source = ImageDecoder.createSource(requireContext().getContentResolver(), uri);
+                                bitmap = ImageDecoder.decodeBitmap(source);
+                            } else {//on devices with api version 28 and lower use getBitmap (deprecated method)
+                                bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
+                            }
+                            //TODO: store profile pic to DB from here
+
+                            // loading profile image from local cache
+                            loadProfile(uri.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+    View.OnClickListener onClick_setProfilePic = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Dexter.withContext(getContext())
+                    .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .withListener(new MultiplePermissionsListener() {
+                        @Override
+                        public void onPermissionsChecked(MultiplePermissionsReport report) {
+                            if (report.areAllPermissionsGranted()) {
+                                showImagePickerOptions();
+                            }
+
+                            if (report.isAnyPermissionPermanentlyDenied()) {
+                                showSettingsDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                            token.continuePermissionRequest();
+                        }
+                    }).check();
+
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,17 +153,24 @@ public class Personal_Info extends Fragment {
                 } else if (binding.radioBtnFemale.getId() == checkedId) {
                     gender = "Female";
                 } else {
-                    gender = "";
+                    gender = null;
                 }
             }
         });
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        userInfoViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
+
+        binding.buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!checkAllfields()) {
+                    return;
+                }
+                //saveToDB();
+                NavDirections action = Personal_InfoDirections.actionPersonalInfoToPhysiqueInfoFragment();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
+        return view;
     }
 
     //updates editText view after selecting data (DOB)
@@ -138,55 +196,21 @@ public class Personal_Info extends Fragment {
                 .setColorFilter(ContextCompat.getColor(requireContext(), R.color.grey_300));
     }
 
-
-    View.OnClickListener onClick_setProfilePic = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                Dexter.withContext(getContext())
-                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .withListener(new MultiplePermissionsListener() {
-                            @Override
-                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-                                if (report.areAllPermissionsGranted()) {
-                                    showImagePickerOptions();
-                                }
-
-                                if (report.isAnyPermissionPermanentlyDenied()) {
-                                    showSettingsDialog();
-                                }
-                            }
-
-                            @Override
-                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                                token.continuePermissionRequest();
-                            }
-                        }).check();
-            /*}
-           else {
-                Dexter.withContext(getContext())
-                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-                        .withListener(new MultiplePermissionsListener() {
-                            @Override
-                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-                                if (report.areAllPermissionsGranted()) {
-                                    showImagePickerOptions();
-                                }
-
-                                if (report.isAnyPermissionPermanentlyDenied()) {
-                                    showSettingsDialog();
-                                }
-                            }
-
-                            @Override
-                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                                token.continuePermissionRequest();
-                            }
-                        }).check();
-            }*/
-
+    private boolean checkAllfields() {
+        if (!Validate.ValidateField(binding.editTextFirstName)
+                || !Validate.ValidateField(binding.editTextLastName)) {
+            return false;
         }
-    };
+        if (dateOfBirth == null) {
+            binding.editTextDOB.setError("This field is required");
+            return false;
+        }
+        if (gender == null) {
+            Snackbar.make(requireView(), "Select Gender", Snackbar.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
 
     private void showImagePickerOptions() {
@@ -258,33 +282,12 @@ public class Personal_Info extends Fragment {
         startActivity(intent);
     }
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        assert data != null;
-                        Uri uri = data.getParcelableExtra("path");
-                        Bitmap bitmap;
-
-                        try {
-                            //use ImageDecoder to get bitmap on android devices with api 29+
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                ImageDecoder.Source source = ImageDecoder.createSource(requireContext().getContentResolver(), uri);
-                                bitmap = ImageDecoder.decodeBitmap(source);
-                            } else {//on devices with api version 28 and lower use getBitmap (deprecated method)
-                                bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
-                            }
-                            userInfoViewModel.setProfilePic(bitmap);
-                            // loading profile image from local cache
-                            loadProfile(uri.toString());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
+    private void saveToDB() {
+        //TODO:store personal info in DB
+        //synatx to get values:   Data_type value = binding.editText___{1}___.getText().toString();
+        // {1}->Name of the edit field
+        //store DoB directly from dateOfBirth variable
+    }
 
 
 }

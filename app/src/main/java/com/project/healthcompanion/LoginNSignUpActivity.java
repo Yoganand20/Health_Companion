@@ -2,11 +2,15 @@ package com.project.healthcompanion;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -51,14 +55,33 @@ public class LoginNSignUpActivity extends AppCompatActivity {
                 } else {
                     binding.constraintLayoutLoginOptions.setVisibility(View.VISIBLE);
                 }
-            }});
+            }
+        });
 
     }
+
+    //press back twice to exit
+    private boolean backPressedOnce = false;
+    private Toast t;
 
     @Override
     public void onBackPressed() {
         if (binding.viewPagerLs.getCurrentItem() == 0) {
-            super.onBackPressed();
+            if (backPressedOnce) {
+                t.cancel();
+                ActivityCompat.finishAffinity(LoginNSignUpActivity.this);
+                finish();
+            }
+            backPressedOnce = true;
+            t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+            t.show();
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    backPressedOnce = false;
+                }
+            }, 2000);
         } else {
             binding.viewPagerLs.setCurrentItem(binding.viewPagerLs.getCurrentItem() - 1);
         }

@@ -138,6 +138,22 @@
     <string name="edit">Edit</string>
     <string name="discard">Discard</string>
     <string name="save">Save</string>
+    <string name="previous">Previous</string>
+    <string name="done">Done</string>
+    <string name="activityLevelQ">What is your daily activity level?</string>
+    <string name="in_cm">in cm</string>
+    <string name="height">Height</string>
+    <string name="in_kg">in Kg</string>
+    <string name="weight">Weight</string>
+    <string name="next">Next</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="edit_profile_picture">Edit Profile Picture</string>
+    <string name="no_connection">No connection</string>
+    <string name="tap_to_retry">Tap to retry</string>
 
 
 </resources>
