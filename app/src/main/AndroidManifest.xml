@@ -47,17 +47,6 @@
 
 
         <activity
-            android:name=".Reminders"
-            tools:ignore="ExtraText">
-            android:label = "Reminders"
-            android:parentActivityName = "HomePage"
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.project.healthcompanion.HomePage" />
-        </activity>
-
-
-        <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
