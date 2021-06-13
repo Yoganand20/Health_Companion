@@ -18,5 +18,25 @@
         android:id="@+id/physiqueInfoFragment"
         android:name="com.project.healthcompanion.PhysiqueInfoFragment"
         android:label="fragment_physique_info"
-        tools:layout="@layout/fragment_physique_info" />
+        tools:layout="@layout/fragment_physique_info">
+        <action
+            android:id="@+id/action_physiqueInfoFragment_to_setGoalFragment"
+            app:destination="@id/setGoalFragment" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/setGoalFragment"
+        android:name="com.project.healthcompanion.SetGoalFragment"
+        android:label="fragment_set_goal"
+        tools:layout="@layout/fragment_set_goal">
+        <argument
+            android:name="weight"
+            app:argType="float" />
+        <argument
+            android:name="height"
+            app:argType="float" />
+    </fragment>
+
+
 </navigation>

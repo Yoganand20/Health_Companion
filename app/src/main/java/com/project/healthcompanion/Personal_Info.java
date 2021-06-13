@@ -162,10 +162,10 @@ public class Personal_Info extends Fragment {
         binding.buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!checkAllfields()) {
+                if (!checkAllFields()) {
                     return;
                 }
-                //saveToDB();
+                saveToDB();
                 NavDirections action = Personal_InfoDirections.actionPersonalInfoToPhysiqueInfoFragment();
                 Navigation.findNavController(view).navigate(action);
             }
@@ -196,20 +196,21 @@ public class Personal_Info extends Fragment {
                 .setColorFilter(ContextCompat.getColor(requireContext(), R.color.grey_300));
     }
 
-    private boolean checkAllfields() {
+    private boolean checkAllFields() {
+        boolean flag = true;
         if (!Validate.ValidateField(binding.editTextFirstName)
                 || !Validate.ValidateField(binding.editTextLastName)) {
-            return false;
+            flag = false;
         }
         if (dateOfBirth == null) {
             binding.editTextDOB.setError("This field is required");
-            return false;
+            flag = false;
         }
         if (gender == null) {
             Snackbar.make(requireView(), "Select Gender", Snackbar.LENGTH_SHORT).show();
-            return false;
+            flag = false;
         }
-        return true;
+        return flag;
     }
 
 
@@ -288,6 +289,4 @@ public class Personal_Info extends Fragment {
         // {1}->Name of the edit field
         //store DoB directly from dateOfBirth variable
     }
-
-
 }

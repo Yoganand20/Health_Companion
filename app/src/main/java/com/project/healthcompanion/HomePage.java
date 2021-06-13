@@ -17,10 +17,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.project.healthcompanion.ReminderClasses.Reminders;
 
 public class HomePage extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
+
     private FirebaseAuth mAuth;
 
 

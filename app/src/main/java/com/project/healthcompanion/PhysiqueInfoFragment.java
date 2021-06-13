@@ -1,6 +1,5 @@
 package com.project.healthcompanion;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,10 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.project.healthcompanion.databinding.FragmentPhysiqueInfoBinding;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
@@ -74,12 +78,14 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                weight = Float.parseFloat(binding.editTextWeight.getText().toString());
-                updateValues();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (binding.editTextHeight.getText().toString().isEmpty()) return;
+
+                height = Float.parseFloat(binding.editTextHeight.getText().toString());
+                updateValues();
             }
         });
 
@@ -90,22 +96,23 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                height = Float.parseFloat(binding.editTextHeight.getText().toString());
-                updateValues();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (binding.editTextWeight.getText().toString().isEmpty()) return;
+                weight = Float.parseFloat(binding.editTextWeight.getText().toString());
+                updateValues();
             }
         });
 
 
-        binding.buttonDone.setOnClickListener(new View.OnClickListener() {
+        binding.buttonNext2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 storeToDB();
-                Intent intent = new Intent(requireActivity(), HomePage.class);
-                startActivity(intent);
+                NavDirections action = PhysiqueInfoFragmentDirections.actionPhysiqueInfoFragmentToSetGoalFragment(weight, height / 100);
+                Navigation.findNavController(view).navigate(action);
             }
         });
 
@@ -127,11 +134,18 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
     private void updateValues() {
         float BMR, TEF, EEE, NEAT;
         //BMR Calculation
-        if (weight == null || height == null)
+        if (weight == null || height == null) {
+            calculated_BMI = (float) 0;
+            calculated_PAL = (float) 0;
+            calculated_TDEE = (float) 0;
+            setCalculatedValues();
             return;
+        }
+
+        float height_inMeters = new BigDecimal(Float.toString(height / 100)).setScale(2, RoundingMode.HALF_UP).floatValue();
+        calculated_BMI = weight / (height_inMeters * height_inMeters);
 
         if (activityLevel.equals(getResources().getString(R.string.light_activity_lifestyle))) {
-            calculated_BMI = weight / (height * height);
             //TDEE Calculation
             BMR = weight * 20;
             TEF = BMR * (float) 0.1;
@@ -142,8 +156,6 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
             //PAL Calculation
             calculated_PAL = (float) 1.53;//estimate
         } else if (activityLevel.equals(getResources().getString(R.string.moderate_activity_lifestyle))) {
-            calculated_BMI = weight / (height * height);
-
             //TDEE Calculation
             BMR = weight * 20;
             TEF = BMR * (float) 0.1;
@@ -154,7 +166,6 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
             //PAL Calculation
             calculated_PAL = (float) 1.76;//estimate
         } else if (activityLevel.equals(getResources().getString(R.string.vigorous_activity_lifestyle))) {
-            calculated_BMI = weight / (height * height);
             //TDEE Calculation
             BMR = weight * 20;
             TEF = BMR * (float) 0.1;
@@ -168,8 +179,13 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
             calculated_BMI = (float) 0;
             calculated_TDEE = (float) 0;
             calculated_PAL = (float) 0;
-
         }
+        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
+
+        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
+
+        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
+        setCalculatedValues();
 
     }
 

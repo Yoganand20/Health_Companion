@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PhysiqueInfoFragment">
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,10 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/editText_Weight"
@@ -31,18 +27,17 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="10dp"
-
                 android:layout_marginBottom="10dp"
 
                 android:background="@drawable/edittext_bg"
                 android:hint="@string/weight"
-                android:inputType="number"
+                android:inputType="numberDecimal"
 
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
-
                 android:paddingEnd="20dp"
                 android:paddingBottom="10dp"
+
                 app:layout_constraintBottom_toTopOf="@+id/editText_Height"
                 app:layout_constraintEnd_toStartOf="@+id/textView_w"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -74,7 +69,7 @@
                 android:background="@drawable/edittext_bg"
 
                 android:hint="@string/height"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:paddingStart="20dp"
 
                 android:paddingTop="10dp"
@@ -139,20 +134,27 @@
                 android:id="@+id/editTextNumber_BMI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+
                 android:background="@drawable/edittext_bg"
                 android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:hint="@string/bmi"
                 android:inputType="number"
+
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
                 app:layout_constraintBottom_toTopOf="@+id/editTextNumber_TDEE"
                 app:layout_constraintEnd_toEndOf="@+id/editTextNumber_TDEE"
                 app:layout_constraintStart_toStartOf="@+id/editTextNumber_TDEE"
                 app:layout_constraintTop_toBottomOf="@id/activityLevelSpinner"
-                app:layout_constraintVertical_bias="0.19"
+
+                app:layout_constraintVertical_bias="0.2"
+
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
@@ -182,12 +184,20 @@
                 android:id="@+id/editTextNumber_TDEE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+
                 android:background="@drawable/edittext_bg"
                 android:ems="10"
-
                 android:hint="@string/tdee"
                 android:inputType="number"
+
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
                 app:layout_constraintBottom_toTopOf="@+id/editTextNumber_PAL"
                 app:layout_constraintEnd_toEndOf="@+id/editTextNumber_PAL"
                 app:layout_constraintStart_toStartOf="@+id/editTextNumber_PAL"
@@ -219,16 +229,22 @@
                 android:id="@+id/editTextNumber_PAL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+
                 android:background="@drawable/edittext_bg"
                 android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:hint="@string/pal"
                 android:inputType="number"
+
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textView_PAL"
                 app:layout_constraintTop_toBottomOf="@+id/editTextNumber_TDEE" />
 
@@ -244,13 +260,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextNumber_PAL" />
 
             <Button
-                android:id="@+id/button_done"
+                android:id="@+id/button_next2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="45dp"
                 android:layout_marginBottom="45dp"
-                android:text="@string/done"
+                android:text="@string/next"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
