@@ -3,28 +3,40 @@ package com.project.healthcompanion;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.healthcompanion.databinding.FragmentPhysiqueInfoBinding;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private FragmentPhysiqueInfoBinding binding;
     private String activityLevel;
     private Float weight, height, calculated_PAL, calculated_TDEE, calculated_BMI;
+
+    //jonny's variable
+    FirebaseFirestore db;
 
     public PhysiqueInfoFragment() {
         // Required empty public constructor
@@ -33,6 +45,8 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -123,6 +137,48 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
         //TODO: Store physical info in DB
         //synatx to get values:   Data_type value = binding.editText___{1}___.getText().toString();
         // {1}->Name of the edit field
+
+        //create user's profile doc:
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d("myTag",currentUser);
+
+
+        //Float weight, height, calculated_PAL, calculated_TDEE, calculated_BMI;
+
+        Float userWeight = weight;
+        Float userHeight = height;
+        //String usersHeight = binding.editTextHeight.getText().toString(); is he storing string values or float?
+        Float userCalculated_TDEE = calculated_TDEE;
+        Float userCalculated_BMI = calculated_BMI;
+        Float userCalculated_PAL = calculated_PAL;
+
+            /*String firstName = binding.editTextFirstName.getText().toString();
+            String lastName = binding.editTextLastName.getText().toString();
+            String userGender = gender;
+            Date userDOB = dateOfBirth;*/
+
+        Map<String, Object> profileDataPhysique = new HashMap<>();
+        profileDataPhysique.put("Weight", userWeight);
+        profileDataPhysique.put("Height", userHeight);
+        profileDataPhysique.put("TDEE", userCalculated_TDEE);
+        profileDataPhysique.put("BMI", userCalculated_BMI);
+        profileDataPhysique.put("PAL", userCalculated_PAL);
+
+        db.collection("profiles").document(currentUser).collection("profile categories").document("physical")
+                .set(profileDataPhysique)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Write", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Write", "Error writing document", e);
+                    }
+                });
+
     }
 
     private void setCalculatedValues() {

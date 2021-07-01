@@ -17,6 +17,7 @@
     <string name="reminder_button">REMINDERS</string>
     <string name="reminder_header">REMINDERS</string>
     <string name="home_header">HOME</string>
+    <string name="records_header">RECORDS</string>
 
     <string name="healthcompanion_drawertitle">Health Companion</string>
 

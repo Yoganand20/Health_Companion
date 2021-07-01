@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.R;
+import com.project.healthcompanion.Records;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -81,7 +82,7 @@ public class Reminder_main extends AppCompatActivity {
 
     public void ClickDashboard(View view) { /*HomePage.redirectActivity(this, Dashboard.class);*/ }
 
-    public void ClickGraphs(View view) { /*HomePage.redirectActivity(this, WeightProgress.class);*/ }
+    public void ClickRecords(View view) { HomePage.redirectActivity(this, Records.class); }
 
     public void ClickDietPlans(View view) { /*HomePage.redirectActivity(this, DietPlans.class);*/ }
 

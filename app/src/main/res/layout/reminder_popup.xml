@@ -4,7 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="350dp"
     android:orientation="vertical"
-    android:background="#0099FF"
+    android:background="#E17DF3"
     android:layout_gravity="center"
     android:padding="25dp">
 
@@ -29,7 +29,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:gravity="center"
-            android:text="SELECT"/>
+            android:text="SELECT"
+            android:background="#FF9C27B0"/>
 
     </LinearLayout>
 
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Add"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="#FF9C27B0"/>
 
 </LinearLayout>

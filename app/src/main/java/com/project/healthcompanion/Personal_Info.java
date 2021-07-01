@@ -1,4 +1,3 @@
-
 package com.project.healthcompanion;
 
 import android.Manifest;
@@ -8,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import androidx.activity.result.ActivityResult;
@@ -31,6 +32,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -38,6 +40,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.project.healthcompanion.databinding.FragmentPersonalInfoBinding;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,11 +49,77 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+//jonny's imports
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentChange.Type;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Query.Direction;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ServerTimestamp;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Source;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+//end of jonny's imports
+
+
 public class Personal_Info extends Fragment {
     private FragmentPersonalInfoBinding binding;
     private Date dateOfBirth;
     final Calendar DOB_Calendar = Calendar.getInstance();
     private String gender;
+
+    //jonny's variable
+    FirebaseFirestore db;
+    FirebaseStorage storage;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -60,6 +130,9 @@ public class Personal_Info extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher =
@@ -81,6 +154,62 @@ public class Personal_Info extends Fragment {
                                 bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
                             }
                             //TODO: store profile pic to DB from here
+
+                            /*---------------------------------------------------------------------------------------------------
+                            StorageReference storageRef = storage.getReference();
+
+                            StorageReference PfPRef = storageRef.child("mountains.jpg");
+
+                            // Create a reference to 'images/mountains.jpg'
+                            StorageReference PfPImagesRef = storageRef.child("images/mountains.jpg");
+
+                            // While the file names are the same, the references point to different files
+                            //PfPRef.getName().equals(PfPImagesRef.getName());    // true
+                            //PfPRef.getPath().equals(PfPImagesRef.getPath());    // false
+
+                            ImageView imageView = findViewById(R.id.imageView_profilePic);
+                            // [START upload_memory]
+                            // Get the data from an ImageView as bytes
+                            imageView.setDrawingCacheEnabled(true);
+                            imageView.buildDrawingCache();
+                            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] data = baos.toByteArray();
+
+                            UploadTask uploadTask = PfPRef.putBytes(data);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                    // ...
+                                }
+                            });
+                            // [END upload_memory]
+
+                            Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+                            StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+                            uploadTask = riversRef.putFile(file);
+
+// Register observers to listen for when the download is done or if it fails
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                    // ...
+                                }
+                            });
+                            ---------------------------------------------------------------------------------------------------*/
 
                             // loading profile image from local cache
                             loadProfile(uri.toString());
@@ -165,6 +294,7 @@ public class Personal_Info extends Fragment {
                 if (!checkAllFields()) {
                     return;
                 }
+                Log.d("Test", "saveToDB start");
                 saveToDB();
                 NavDirections action = Personal_InfoDirections.actionPersonalInfoToPhysiqueInfoFragment();
                 Navigation.findNavController(view).navigate(action);
@@ -288,5 +418,66 @@ public class Personal_Info extends Fragment {
         //synatx to get values:   Data_type value = binding.editText___{1}___.getText().toString();
         // {1}->Name of the edit field
         //store DoB directly from dateOfBirth variable
+
+
+
+        //create user's profile doc:
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d("myTag",currentUser);
+
+        String firstName = binding.editTextFirstName.getText().toString();
+        String lastName = binding.editTextLastName.getText().toString();
+        String userGender = gender;
+        Date userDOB = dateOfBirth;
+
+        Log.d("Test", "FN:" + firstName + "|LN:" + lastName + "|gender:" + userGender + "|DOB:" + userDOB);
+
+        Map<String, Object> profileData = new HashMap<>();
+        profileData.put("First name", firstName);
+        profileData.put("Last name", lastName);
+        profileData.put("gender", userGender);
+        profileData.put("DOB", userDOB);
+
+        Log.d("Test", "FN:" + firstName + "|LN:" + lastName + "|gender:" + userGender + "|DOB:" + userDOB);
+
+        db.collection("profiles").document(currentUser)
+                .set(profileData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+
+
+        //get document reference.
+        //DocumentReference userProfileRef = db.collection("profiles").document(currentUser);
+
+        //check if document exists.
+        /*userProfileRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        //doc exists
+                        //Log.i("LOGGER","First "+document.getString("first"));
+                        //Log.i("LOGGER","Last "+document.getString("last"));
+                        //Log.i("LOGGER","Born "+document.getString("born"));
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
+            }
+        });*/
     }
 }
