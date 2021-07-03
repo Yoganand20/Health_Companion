@@ -103,6 +103,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -120,6 +121,9 @@ public class Personal_Info extends Fragment {
     //jonny's variable
     FirebaseFirestore db;
     FirebaseStorage storage;
+    StorageReference storageReference;
+
+    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -133,6 +137,7 @@ public class Personal_Info extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher =
@@ -154,6 +159,9 @@ public class Personal_Info extends Fragment {
                                 bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
                             }
                             //TODO: store profile pic to DB from here
+
+                            StorageReference ref = storageReference.child(currentUser);
+                            ref.putFile(uri);
 
                             /*---------------------------------------------------------------------------------------------------
                             StorageReference storageRef = storage.getReference();
@@ -295,6 +303,8 @@ public class Personal_Info extends Fragment {
                     return;
                 }
                 Log.d("Test", "saveToDB start");
+                //do the thing here
+
                 saveToDB();
                 NavDirections action = Personal_InfoDirections.actionPersonalInfoToPhysiqueInfoFragment();
                 Navigation.findNavController(view).navigate(action);
@@ -422,7 +432,7 @@ public class Personal_Info extends Fragment {
 
 
         //create user's profile doc:
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         Log.d("myTag",currentUser);
 
         String firstName = binding.editTextFirstName.getText().toString();

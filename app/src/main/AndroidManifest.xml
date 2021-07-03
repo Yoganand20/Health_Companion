@@ -15,12 +15,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthCompanion">
+        <activity android:name=".ProfileImage">
 
-        <activity android:name=".DietPlansClasses.DietPlanner"></activity>
+        </activity>
+
+        <activity android:name=".DietPlansClasses.DietPlanner" />
 
         <activity android:name=".DietPlansClasses.DisplayDietPlan" />
 
         <activity android:name=".DietPlansClasses.DietPlans">
+
+        </activity>
+
+        <activity android:name=".SearchFoodActivity"></activity>
+
+        <activity android:name=".Records" />
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,36 +39,22 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SearchFoodActivity">
-
-        </activity>
-
-        <activity android:name=".Records" />
-
-        <activity android:name=".MainActivity">
-
-        </activity>
-
         <activity android:name=".DashboardActivity" />
 
         <activity android:name=".ImgPickerActivity" />
 
         <activity android:name=".GetUserInfo" />
-
         <activity
             android:name=".LoginNSignUpActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible" />
-
         <activity
             android:name=".HomePage"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity android:name=".ReminderClasses.Reminder_main" />
 
         <provider

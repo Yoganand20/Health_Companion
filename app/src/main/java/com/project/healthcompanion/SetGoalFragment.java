@@ -2,18 +2,29 @@ package com.project.healthcompanion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.healthcompanion.databinding.FragmentSetGoalBinding;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetGoalFragment extends Fragment {
+    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    FirebaseFirestore firebaseFirestore;
 
     private static final String ARG_WEIGHT = "weight";
     private static final String ARG_HEIGHT = "height";
@@ -38,6 +49,9 @@ public class SetGoalFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
         weight = SetGoalFragmentArgs.fromBundle(getArguments()).getWeight();
         height = SetGoalFragmentArgs.fromBundle(getArguments()).getHeight();
     }
@@ -70,10 +84,34 @@ public class SetGoalFragment extends Fragment {
         binding.textViewWeightRange.setText(minWeight + " - " + maxWeight);
 
         binding.buttonDone.setOnClickListener(v -> {
+            storeToDB();
             Intent intent = new Intent(requireActivity(), HomePage.class);
             startActivity(intent);
         });
 
         return view;
+    }
+
+    public void storeToDB() {
+
+        Float goal_weight_value = Float.parseFloat(binding.editTextGoalWeight.getText().toString());
+
+        Map<String, Object> setGoal = new HashMap<>();
+        setGoal.put("goal weight", goal_weight_value);
+
+        firebaseFirestore.collection("profiles").document(currentUser).collection("profile categories").document("goal")
+                .set(setGoal)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Write", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Write", "Error writing document", e);
+                    }
+                });
     }
 }
