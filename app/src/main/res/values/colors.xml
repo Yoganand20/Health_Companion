@@ -334,4 +334,10 @@
         <item type="color">#607d8b</item>
         <item type="color">#ff9800</item>
     </array>
+
+    <!-- diet plan colors -->
+    <color name="num_col">#FF9C27B0</color>
+    <color name="Pro">#ff0000</color>
+    <color name="Carb">#87ceeb</color>
+    <color name="Fat">#fff700</color>
 </resources>

@@ -1,0 +1,319 @@
+package com.project.healthcompanion.DietPlansClasses;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.HomePage;
+import com.project.healthcompanion.R;
+import com.project.healthcompanion.Records;
+import com.project.healthcompanion.ReminderClasses.Reminder_main;
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+public class DisplayDietPlan extends AppCompatActivity {
+
+    DrawerLayout drawerLayout;
+
+    FirebaseFirestore firebaseFirestore;
+
+    TextView breakfast_id_disp, lunch_id_disp, dinner_id_disp, snacks_id_disp;
+    TextView breakfast_qty_disp,lunch_qty_disp, dinner_qty_disp, snacks_qty_disp;
+
+    TextView protein, carbs, fats, avg_cal;
+
+    PieChart pieChart;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display_diet_plan);
+
+        drawerLayout = findViewById(R.id.drawer_Layout);
+
+        protein = findViewById(R.id.Protein);
+        carbs = findViewById(R.id.Carbs);
+        fats = findViewById(R.id.Fats);
+        avg_cal = findViewById(R.id.avg_cal);
+        pieChart = findViewById(R.id.piechart);
+
+        avg_cal.setText("2000");
+
+        Intent incomingIntent = getIntent();
+        String incomingName = incomingIntent.getStringExtra("display diet plan name");
+        TextView Header;
+
+        Log.d("Name Test", incomingName);
+
+        Header = (TextView) findViewById(R.id.dp_list_item_header);
+        Header.setText(incomingName);
+
+        breakfast_id_disp = findViewById(R.id.breakfast_id_disp);
+        lunch_id_disp = findViewById(R.id.lunch_id_disp);
+        dinner_id_disp = findViewById(R.id.dinner_id_disp);
+        snacks_id_disp = findViewById(R.id.snacks_id_disp);
+
+        breakfast_qty_disp = findViewById(R.id.breakfast_qty_disp);
+        lunch_qty_disp = findViewById(R.id.lunch_qty_disp);
+        dinner_qty_disp = findViewById(R.id.dinner_qty_disp);
+        snacks_qty_disp = findViewById(R.id.snacks_qty_disp);
+
+        setChart();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        //Retrieve breakfast data
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Breakfast")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot BreakfastSnapshot = task.getResult();
+                            if(BreakfastSnapshot.exists()) {
+                                Map<String, Object> map = BreakfastSnapshot.getData();
+                                Log.d("Breakfast", "Breakfast:" + map);
+
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                {
+                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
+
+                                    String foodID;
+
+                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
+                                        foodID = FoodIDsQuantitiesMapField.getKey();
+                                        Log.d("foodID", foodID);
+
+                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
+                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
+                                        {
+                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
+                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+
+                                                breakfast_id_disp.append(foodID + "\n");
+                                                breakfast_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            else {
+                                Log.d("ReadName", "No Breakfast :/ |", task.getException());
+                            }
+                        }
+                        else {
+                            Log.d("ReadName", "No Breakfast :/ |", task.getException());
+                        }
+                    }
+                });
+
+        //Retrieve lunch data
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Lunch")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot LunchSnapshot = task.getResult();
+                            if(LunchSnapshot.exists()) {
+                                Map<String, Object> map = LunchSnapshot.getData();
+                                Log.d("Lunch", "Lunch:" + map);
+
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                {
+                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
+
+                                    String foodID;
+
+                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
+                                        foodID = FoodIDsQuantitiesMapField.getKey();
+                                        Log.d("foodID", foodID);
+
+                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
+                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
+                                        {
+                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
+                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+
+                                                lunch_id_disp.append(foodID + "\n");
+                                                lunch_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            else {
+                                Log.d("ReadName", "No Lunch :/ |", task.getException());
+                            }
+                        }
+                        else {
+                            Log.d("ReadName", "No Lunch :/ |", task.getException());
+                        }
+                    }
+                });
+
+        //Retrieve dinner data
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Dinner")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot DinnerSnapshot = task.getResult();
+                            if(DinnerSnapshot.exists()) {
+                                Map<String, Object> map = DinnerSnapshot.getData();
+                                Log.d("Dinner", "Dinner:" + map);
+
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                {
+                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
+
+                                    String foodID;
+
+                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
+                                        foodID = FoodIDsQuantitiesMapField.getKey();
+                                        Log.d("foodID", foodID);
+
+                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
+                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
+                                        {
+                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
+                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+
+                                                dinner_id_disp.append(foodID + "\n");
+                                                dinner_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            else {
+                                Log.d("ReadName", "No Dinner :/ |", task.getException());
+                            }
+                        }
+                        else {
+                            Log.d("ReadName", "No Dinner :/ |", task.getException());
+                        }
+                    }
+                });
+
+        //Retrieve snacks data
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Snacks")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot SnacksSnapshot = task.getResult();
+                            if(SnacksSnapshot.exists()) {
+                                Map<String, Object> map = SnacksSnapshot.getData();
+                                Log.d("Snacks", "Snacks:" + map);
+
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                {
+                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
+
+                                    String foodID;
+
+                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
+                                        foodID = FoodIDsQuantitiesMapField.getKey();
+                                        Log.d("foodID", foodID);
+
+                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
+                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
+                                        {
+                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
+                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+
+                                                snacks_id_disp.append(foodID + "\n");
+                                                snacks_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            else {
+                                Log.d("ReadName", "No Snacks :/ |", task.getException());
+                            }
+                        }
+                        else {
+                            Log.d("ReadName", "No Snacks :/ |", task.getException());
+                        }
+                    }
+                });
+    }
+
+    //navigation drawer
+    public void ClickMenu(View view) {
+        HomePage.openDrawer(drawerLayout);
+    }
+
+    public void ClickLogo(View view) {
+        HomePage.closeDrawer(drawerLayout);
+    }
+
+    public void ClickProfile(View view) { /*HomePage.redirectActivity(this, Profile.class);*/ }
+
+    public void ClickDashboard(View view) { HomePage.redirectActivity(this, DashboardActivity.class); }
+
+    public void ClickRecords(View view) {
+        HomePage.redirectActivity(this, Records.class);
+    }
+
+    public void ClickDietPlans(View view) {
+        HomePage.redirectActivity(this, DietPlans.class);
+    }
+
+    public void ClickReminders(View view) {
+        HomePage.redirectActivity(this, Reminder_main.class);
+    }
+
+    public void ClickLogout(View view) {
+        HomePage.logout(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        HomePage.closeDrawer(drawerLayout);
+    }
+    //end of navigation drawer
+
+    private void setChart() {
+        //setting predefined values
+        protein.setText(Integer.toString(23));
+        carbs.setText(Integer.toString(200));
+        fats.setText(Integer.toString(10));
+
+        //creating pie divisions and assigning colours to them
+        pieChart.addPieSlice(new PieModel("Protein", Integer.parseInt(protein.getText().toString()), Color.parseColor("#ff0000")));
+        pieChart.addPieSlice(new PieModel("Carbohydrates", Integer.parseInt(carbs.getText().toString()), Color.parseColor("#87ceeb")));
+        pieChart.addPieSlice(new PieModel("Fats", Integer.parseInt(fats.getText().toString()), Color.parseColor("#fff700")));
+    }
+}

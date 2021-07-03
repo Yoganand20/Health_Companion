@@ -43,6 +43,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
 
 import org.jetbrains.annotations.NotNull;
@@ -128,7 +129,7 @@ public class Records extends AppCompatActivity {
 
     public void ClickRecords(View view) { HomePage.closeDrawer(drawerLayout); }
 
-    public void ClickDietPlans(View view) { /*HomePage.redirectActivity(this, DietPlans.class);*/ }
+    public void ClickDietPlans(View view) { HomePage.redirectActivity(this, DietPlans.class); }
 
     public void ClickReminders(View view) { HomePage.redirectActivity(this, Reminder_main.class);}
 

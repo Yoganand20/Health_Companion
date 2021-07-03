@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
 
 public class HomePage extends AppCompatActivity {
@@ -62,11 +63,11 @@ public class HomePage extends AppCompatActivity {
 
     public void ClickProfile(View view) { /*redirectActivity(this, Profile.class);*/ }
 
-    public void ClickDashboard(View view) { /*redirectActivity(this, Dashboard.class);*/ }
+    public void ClickDashboard(View view) { redirectActivity(this, DashboardActivity.class); }
 
     public void ClickRecords(View view) { redirectActivity(this, Records.class); }
 
-    public void ClickDietPlans(View view) { /*redirectActivity(this, DietPlans.class);*/ }
+    public void ClickDietPlans(View view) { redirectActivity(this, DietPlans.class); }
 
     public void ClickReminders(View view) { redirectActivity(this, Reminder_main.class); }
 

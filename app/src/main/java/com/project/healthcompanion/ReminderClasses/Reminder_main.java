@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Records;
@@ -80,11 +82,11 @@ public class Reminder_main extends AppCompatActivity {
 
     public void ClickHome(View view) { HomePage.redirectActivity(this, HomePage.class); }
 
-    public void ClickDashboard(View view) { /*HomePage.redirectActivity(this, Dashboard.class);*/ }
+    public void ClickDashboard(View view) { HomePage.redirectActivity(this, DashboardActivity.class); }
 
     public void ClickRecords(View view) { HomePage.redirectActivity(this, Records.class); }
 
-    public void ClickDietPlans(View view) { /*HomePage.redirectActivity(this, DietPlans.class);*/ }
+    public void ClickDietPlans(View view) { HomePage.redirectActivity(this, DietPlans.class); }
 
     public void ClickReminders(View view) { HomePage.closeDrawer(drawerLayout);}
 

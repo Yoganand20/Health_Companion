@@ -18,6 +18,13 @@
     <string name="reminder_header">REMINDERS</string>
     <string name="home_header">HOME</string>
     <string name="records_header">RECORDS</string>
+    <string name="dashboard_header">DASHBOARD</string>
+    <string name="diet_plans_header">DIET PLANS</string>
+    <string name="diet_planner_header">DIET PLANNER</string>
+    <string name="breakfast_header"><b><u>BREAKFAST</u></b></string>
+    <string name="lunch_header"><b><u>LUNCH</u></b></string>
+    <string name="dinner_header"><b><u>DINNER</u></b></string>
+    <string name="snacks_header"><b><u>SNACKS</u></b></string>
 
     <string name="healthcompanion_drawertitle">Health Companion</string>
 

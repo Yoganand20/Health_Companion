@@ -1,6 +1,9 @@
 package com.project.healthcompanion;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +16,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.project.healthcompanion.DietPlansClasses.DietPlans;
+import com.project.healthcompanion.ReminderClasses.Reminder_main;
 import com.project.healthcompanion.Service.Food;
 import com.project.healthcompanion.databinding.ActivityDashboardBinding;
 import com.project.healthcompanion.databinding.DialogDashboardBinding;
@@ -21,6 +29,8 @@ import com.project.healthcompanion.databinding.DialogDashboardBinding;
 import java.sql.Date;
 
 public class DashboardActivity extends AppCompatActivity {
+    DrawerLayout drawerLayout;
+
     DietPlan dietPlan;
     ActivityResultLauncher<Intent> searchResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -41,6 +51,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        drawerLayout = findViewById(R.id.drawer_Layout);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         binding.textViewMacroBreakdown.setOnClickListener(new View.OnClickListener() {
@@ -85,4 +96,34 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
+
+    //navigation drawer
+    public void ClickMenu(View view) { HomePage.openDrawer(drawerLayout); }
+
+    public void ClickLogo(View view) {
+        HomePage.closeDrawer(drawerLayout);
+    }
+
+    public void ClickProfile(View view) { /*HomePage.redirectActivity(this, Profile.class);*/ }
+
+    public void ClickHome(View view) {
+        HomePage.redirectActivity(this, HomePage.class);
+    }
+
+    public void ClickDashboard(View view) { HomePage.closeDrawer(drawerLayout); }
+
+    public void ClickRecords(View view) { HomePage.redirectActivity(this, Records.class); }
+
+    public void ClickDietPlans(View view) { HomePage.redirectActivity(this, DietPlans.class); }
+
+    public void ClickReminders(View view) { HomePage.redirectActivity(this, Reminder_main.class); }
+
+    public void ClickLogout(View view) { HomePage.logout(this); }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        HomePage.closeDrawer(drawerLayout);
+    }
+    //end of navigation drawer
 }
