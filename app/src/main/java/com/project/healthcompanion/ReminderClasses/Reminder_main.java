@@ -91,12 +91,12 @@ public class Reminder_main extends AppCompatActivity {
     public void ClickSocial(View view) { /*HomePage.redirectActivity(this, Social.class);*/ }
 
     public void ClickLogout(View view) { HomePage.logout(this); }
-
     @Override
     protected void onPause(){
         super.onPause();
         HomePage.closeDrawer(drawerLayout);
     }
+
 
     public void addReminder() {
         dialog = new Dialog(Reminder_main.this);

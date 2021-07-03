@@ -15,11 +15,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.common.graph.Graphs;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
-import com.project.healthcompanion.ReminderClasses.Reminders;
 
 public class HomePage extends AppCompatActivity {
 
@@ -39,6 +37,7 @@ public class HomePage extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         drawerLayout = findViewById(R.id.drawer_Layout);
+
     }
 
     //navigation drawer
