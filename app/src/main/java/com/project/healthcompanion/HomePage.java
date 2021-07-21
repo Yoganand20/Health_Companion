@@ -61,7 +61,11 @@ public class HomePage extends AppCompatActivity {
         }
     }
 
-    public void ClickProfile(View view) { /*redirectActivity(this, Profile.class);*/ }
+    public void ClickProfile(View view) { redirectActivity(this, Profile.class); }
+
+    public void ClickHome(View view) {
+        HomePage.redirectActivity(this, HomePage.class);
+    }
 
     public void ClickDashboard(View view) { redirectActivity(this, DashboardActivity.class); }
 

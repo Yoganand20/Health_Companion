@@ -120,7 +120,7 @@
             android:layout_marginLeft="16sp"
             android:layout_weight="1"
             android:padding="12sp"
-            android:text="@string/graphs_navdrawer"
+            android:text="@string/records_navdrawer"
             android:textColor="#FFFFFF"/>
 
         <ImageView

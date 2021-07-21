@@ -33,6 +33,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.project.healthcompanion.DashboardActivity;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.R;
@@ -241,6 +242,7 @@ public class DietPlanner extends AppCompatActivity {
                                         });
                             }
                             DispBreakfast();
+                            firebaseFirestore.collection("Diet Plans").document("UID Generated Test").update("Diet Plan Names", FieldValue.arrayUnion(diet_name.getText().toString()));
                         }
                         else {
                             Log.d("ReadName", "No Breakfast :/ |", task.getException());
@@ -322,8 +324,6 @@ public class DietPlanner extends AppCompatActivity {
 
                                         }
                                     }
-
-
                                 }
                             }
                             else {
@@ -370,5 +370,100 @@ public class DietPlanner extends AppCompatActivity {
         Log.d("ConfirmDietPlan", "Diet plan confirmed!");
         Intent intent = new Intent(this, DietPlans.class);
         startActivity(intent);
+    }
+
+    public void onBackPressed() {
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot backdel = task.getResult();
+                            firebaseFirestore.collection("Diet Plans").document("UID Generated Test").update("Diet Plan Names", FieldValue.arrayRemove(diet_name.getText().toString()));
+                        }
+                    }
+                });
+        //delete breakfast
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Breakfast")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot BSnapshot = task.getResult();
+                            if(BSnapshot.exists()) {
+                                firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Breakfast").delete();
+                            }
+                            else {
+                                Log.d("BreakfastDel", "Breakfast Doesn't Exist");
+                            }
+                        }
+                        else {
+                            Log.d("BreakfastDel", "Breakfast Doesn't Exist");
+                        }
+                    }
+                });
+        //delete lunch
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Lunch")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot LSnapshot = task.getResult();
+                            if(LSnapshot.exists()) {
+                                firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Lunch").delete();
+                            }
+                            else {
+                                Log.d("LunchDel", "Lunch Doesn't Exist");
+                            }
+                        }
+                        else {
+                            Log.d("LunchDel", "Lunch Doesn't Exist");
+                        }
+                    }
+                });
+        //delete dinner
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Dinner")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot DSnapshot = task.getResult();
+                            if(DSnapshot.exists()) {
+                                firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Dinner").delete();
+                            }
+                            else {
+                                Log.d("SnacksDel", "Dinner Doesn't Exist");
+                            }
+                        }
+                        else {
+                            Log.d("SnacksDel", "Dinner Doesn't Exist");
+                        }
+                    }
+                });
+        //delete snacks
+        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Snacks")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot SSnapshot = task.getResult();
+                            if(SSnapshot.exists()) {
+                                firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(diet_name.getText().toString()).collection("Meals").document("Snacks").delete();
+                            }
+                            else {
+                                Log.d("SnacksDel", "Snacks Doesn't Exist");
+                            }
+                        }
+                        else {
+                            Log.d("SnacksDel", "Snacks Doesn't Exist");
+                        }
+                    }
+                });
+        HomePage.redirectActivity(this, DietPlans.class);
     }
 }

@@ -49,6 +49,8 @@ import com.project.healthcompanion.ReminderClasses.Reminder_main;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -57,7 +59,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class Records extends AppCompatActivity {
 
@@ -73,9 +77,13 @@ public class Records extends AppCompatActivity {
     Button add_rec;
     Date rec_date;
     TextView current_wt_disp;
+    TextView goal_wt_disp;
 
     FirebaseFirestore firebaseFirestore;
     CollectionReference Ref;
+    DocumentReference personalDocref, physiqueDocref;
+
+    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -107,11 +115,27 @@ public class Records extends AppCompatActivity {
         current_wt = findViewById(R.id.records_current_weight);
         add_rec = findViewById(R.id.add_records);
         current_wt_disp = findViewById(R.id.records_current_weight_disp);
-
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        goal_wt_disp = findViewById(R.id.records_goal_weight_disp);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         Ref = firebaseFirestore.collection("records").document(currentUser).collection("Graph Data");
+        personalDocref = firebaseFirestore.collection("profiles").document(currentUser);
+        physiqueDocref = firebaseFirestore.collection("profiles").document(currentUser).collection("profile categories").document("physical");
+
+        firebaseFirestore.collection("profiles").document(currentUser).collection("profile categories").document("goal")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if(documentSnapshot.exists()) {
+                                String goal = documentSnapshot.get("goal weight").toString();
+                                goal_wt_disp.setText(goal);
+                            }
+                        }
+                    }
+                });
 
         retrieveData();
 
@@ -123,9 +147,9 @@ public class Records extends AppCompatActivity {
 
     public void ClickLogo(View view) { HomePage.closeDrawer(drawerLayout); }
 
-    public void ClickProfile(View view) { /*HomePage.redirectActivity(this, Profile.class);*/ }
+    public void ClickProfile(View view) { HomePage.redirectActivity(this, Profile.class); }
 
-    public void ClickDashboard(View view) { /*HomePage.redirectActivity(this, Dashboard.class);*/ }
+    public void ClickDashboard(View view) { HomePage.redirectActivity(this, DashboardActivity.class); }
 
     public void ClickRecords(View view) { HomePage.closeDrawer(drawerLayout); }
 
@@ -158,9 +182,86 @@ public class Records extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("WriteRec", "Document Snapshot written with ID: " + documentReference.getId() + " || Record date:" + rec_date + /*", Entry number:" + x +*/ ", Weight:" + y);
+
+                        physiqueDocref.update("Weight", y);
+
+                        current_wt.setText("");
+
+                        personalDocref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()){
+                                    DocumentSnapshot documentSnapshot1 = task.getResult();
+                                    if(documentSnapshot1.exists()) {
+                                        String gender = documentSnapshot1.getString("gender");
+                                        Date dob = documentSnapshot1.getDate("DOB");
+                                        physiqueDocref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()) {
+                                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                                    if(documentSnapshot.exists()) {
+                                                        Double BMR, W, H;
+                                                        Double P;
+                                                        Double B, T; //B => BMI | T => TDEE
+
+                                                        Date thisyear = Calendar.getInstance().getTime();
+                                                        W = documentSnapshot.getDouble("Weight");
+                                                        H = documentSnapshot.getDouble("Height");
+                                                        P = roundTo2Decs(documentSnapshot.getDouble("PAL"));
+
+                                                        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+
+                                                        String year = yearFormat.format(thisyear);
+                                                        String dobyear = yearFormat.format(dob);
+
+                                                        Float age = Float.parseFloat(year) - Float.parseFloat(dobyear);
+                                                        Log.d("ProfileAge", String.valueOf(age));
+
+                                                        B = (W / ((H / 100) * (H / 100)));
+                                                        Log.d("ProfileBMI", String.valueOf(B));
+                                                        physiqueDocref.update("BMI", B);
+
+                                                        if(gender.equals("Male")) {
+                                                            BMR = (W * 10.0f) + (H * 6.25f) - (age * 5.0f) + 5.0f;
+                                                            if (P.equals(1.53)) {
+                                                                T = BMR * P;
+                                                                physiqueDocref.update("TDEE", T);
+                                                            }
+                                                            else if(P.equals(1.76)) {
+                                                                T = BMR * P;
+                                                                physiqueDocref.update("TDEE", T);
+                                                            }
+                                                            else if(P.equals(2.25)) {
+                                                                T = BMR * P;
+                                                                physiqueDocref.update("TDEE", T);
+                                                            }
+                                                        }
+                                                        if(gender.equals("Female")) {
+                                                            BMR = (W * 10.0f) + (H * 6.25f) - (age * 5.0f) - 161.0f;
+                                                            if (P.equals(1.53)) {
+                                                                T = BMR * P;
+                                                                physiqueDocref.update("TDEE", T);
+                                                            }
+                                                            else if(P.equals(1.76)) {
+                                                                T = BMR * P;
+                                                                physiqueDocref.update("TDEE", T);
+                                                            }
+                                                            else if(P.equals(2.25)) {
+                                                                T = BMR * P;
+                                                                physiqueDocref.update("TDEE", T);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
                     }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull @NotNull Exception e) {
                                 Log.w("WriteRec", "Error adding docuemnt", e);
@@ -223,5 +324,11 @@ public class Records extends AppCompatActivity {
         public String getFormattedValue(float value, AxisBase axis) {
             return value + "kg";
         }
+    }
+
+    private double roundTo2Decs(double value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
