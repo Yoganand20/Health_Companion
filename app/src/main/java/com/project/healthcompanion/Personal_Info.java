@@ -175,7 +175,7 @@ public class Personal_Info extends Fragment {
                             //PfPRef.getName().equals(PfPImagesRef.getName());    // true
                             //PfPRef.getPath().equals(PfPImagesRef.getPath());    // false
 
-                            ImageView imageView = findViewById(R.id.imageView_profilePic);
+                            ImageView imageVieimw = findViewById(R.id.imageView_profilePic);
                             // [START upload_memory]
                             // Get the data from an ImageView as bytes
                             imageView.setDrawingCacheEnabled(true);

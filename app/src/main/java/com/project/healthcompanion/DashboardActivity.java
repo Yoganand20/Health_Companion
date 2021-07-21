@@ -97,7 +97,7 @@ public class DashboardActivity extends AppCompatActivity {
         HomePage.closeDrawer(drawerLayout);
     }
 
-    public void ClickProfile(View view) { /*HomePage.redirectActivity(this, Profile.class);*/ }
+    public void ClickProfile(View view) { HomePage.redirectActivity(this, Profile.class); }
 
     public void ClickHome(View view) {
         HomePage.redirectActivity(this, HomePage.class);

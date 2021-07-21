@@ -101,8 +101,11 @@ public class DisplayDietPlan extends AppCompatActivity {
                                     if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
                                         foodID = FoodIDsQuantitiesMapField.getKey();
                                         Log.d("foodID", foodID);
+                                        //ArrayList<String> MapField = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
+                                        //Log.d("Test", MapField.toString());
 
                                         ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
+
                                         for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
                                         {
                                             if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
@@ -114,7 +117,6 @@ public class DisplayDietPlan extends AppCompatActivity {
                                             }
                                         }
                                     }
-
                                 }
                             }
                             else {

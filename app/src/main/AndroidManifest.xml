@@ -15,23 +15,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthCompanion">
+        <activity android:name=".Profile"></activity>
         <activity android:name=".FoodDetailsActivity"></activity>
         <activity android:name=".ProfileImage" />
         <activity android:name=".DietPlansClasses.DietPlanner" />
         <activity android:name=".DietPlansClasses.DisplayDietPlan" />
-        <activity android:name=".DietPlansClasses.DietPlans" /> <!-- android:theme="@style/Theme.AppCompat.Dialog" -->
-        <activity android:name=".FoodDialogActivity"></activity>
+        <activity android:name=".DietPlansClasses.DietPlans"/>
         <activity
             android:name=".SearchFoodActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
         <activity android:name=".Records" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".DashboardActivity">
+        <activity android:name=".FoodDialogActivity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".DashboardActivity" />
         <activity android:name=".ImgPickerActivity" />
         <activity android:name=".GetUserInfo" />
         <activity

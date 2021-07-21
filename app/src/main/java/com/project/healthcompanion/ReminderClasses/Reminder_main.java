@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.project.healthcompanion.DashboardActivity;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.HomePage;
+import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Records;
 
@@ -78,7 +79,7 @@ public class Reminder_main extends AppCompatActivity {
 
     public void ClickLogo(View view) { HomePage.closeDrawer(drawerLayout); }
 
-    public void ClickProfile(View view) { /*HomePage.redirectActivity(this, Profile.class);*/ }
+    public void ClickProfile(View view) { HomePage.redirectActivity(this, Profile.class); }
 
     public void ClickHome(View view) { HomePage.redirectActivity(this, HomePage.class); }
 

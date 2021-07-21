@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.healthcompanion.databinding.FragmentSetGoalBinding;
 
@@ -31,6 +32,7 @@ public class SetGoalFragment extends Fragment {
     private static final Float minHealthyBMI = (float) 18.5, maxHealthyBMI = (float) 24.9, maxOverWeightBMI = (float) 29.9;
     private FragmentSetGoalBinding binding;
     private Float weight, height, BMI;
+    DocumentReference suggcalDocref;
 
     public SetGoalFragment() {
         // Required empty public constructor
@@ -51,6 +53,8 @@ public class SetGoalFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        suggcalDocref = firebaseFirestore.collection("profiles").document(currentUser).collection("profile categories").document("suggested calories");
 
         weight = SetGoalFragmentArgs.fromBundle(getArguments()).getWeight();
         height = SetGoalFragmentArgs.fromBundle(getArguments()).getHeight();
@@ -113,5 +117,9 @@ public class SetGoalFragment extends Fragment {
                         Log.w("Write", "Error writing document", e);
                     }
                 });
+
+        Map<String, Object> setPace = new HashMap<>();
+        setPace.put("pace", "slow");
+        suggcalDocref.set(setPace);
     }
 }

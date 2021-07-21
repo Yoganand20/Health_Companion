@@ -7,9 +7,22 @@
     <string name="moderate_activity_lifestyle">Moderate Activity Lifestyle</string>
     <string name="vigorous_activity_lifestyle">Vigorous Activity Lifestyle</string>
     <string-array name="activityLevels">
+        <item></item>
         <item>@string/light_activity_lifestyle</item>
         <item>@string/moderate_activity_lifestyle</item>
         <item>@string/vigorous_activity_lifestyle</item>
+    </string-array>
+    <string-array name="defeceitOptions">
+        <item></item>
+        <item>Lose weight slowly</item>
+        <item>Lose weight moderately</item>
+        <item>Lose weight quickly</item>
+    </string-array>
+    <string-array name="surplusOptions">
+        <item></item>
+        <item>Gain weight slowly</item>
+        <item>Gain weight moderately</item>
+        <item>Gain weight quickly</item>
     </string-array>
 
     <string name="main_header">Health Companion</string>
@@ -25,6 +38,7 @@
     <string name="lunch_header"><b><u>LUNCH</u></b></string>
     <string name="dinner_header"><b><u>DINNER</u></b></string>
     <string name="snacks_header"><b><u>SNACKS</u></b></string>
+    <string name="profile_header">PROFILE</string>
 
     <string name="healthcompanion_drawertitle">Health Companion</string>
 
@@ -43,7 +57,7 @@
     <string name="profile_navdrawer">Profile</string>
     <string name="home_navdrawer">Home</string>
     <string name="dashboard_navdrawer">Dashboard</string>
-    <string name="graphs_navdrawer">Overview/Graphs</string>
+    <string name="records_navdrawer">Records</string>
     <string name="dietplans_navdrawer">Diet Plans</string>
     <string name="recipes_navdrawer">Recipes</string>
     <string name="reminders_navdrawer">Reminders</string>
