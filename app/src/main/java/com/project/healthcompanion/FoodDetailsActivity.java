@@ -21,7 +21,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
-            intent.putExtra(getPackageName() + "selectedFood", FoodDetailsActivity.this.food);
+            intent.putExtra("selectedFood", FoodDetailsActivity.this.food);
             setResult(RESULT_OK, intent);
             finish();
         }

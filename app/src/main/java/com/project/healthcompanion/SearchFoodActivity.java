@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.project.healthcompanion.Service.Food;
 import com.project.healthcompanion.Service.NutritionixOverlay;
 import com.project.healthcompanion.Service.SuggestionItem;
 import com.project.healthcompanion.databinding.ActivitySearchFoodBinding;
@@ -32,9 +31,9 @@ public class SearchFoodActivity extends AppCompatActivity {
         public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent intent = result.getData();
-                assert intent != null;
-                Food food = intent.getParcelableExtra(getPackageName() + "selectedFood");
-                intent.putExtra(getPackageName() + "selectedFood", food);
+                //assert intent != null;
+                //Food food = (Food) intent.getSerializableExtra("selectedFood");
+                //intent.putExtra(getPackageName() + "selectedFood", food);
                 setResult(RESULT_OK, intent);
             }
         }
