@@ -34,5 +34,6 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
         super.onPostExecute(bitmap);
         Log.i(getClass().getName(), "Image downloaded");
     }
+
 }
 

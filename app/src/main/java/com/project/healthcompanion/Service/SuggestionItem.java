@@ -1,24 +1,31 @@
 package com.project.healthcompanion.Service;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+
 public class SuggestionItem {
-    private String image;
+    private String imageURL;
+    private Bitmap image;
     private String foodID;
     private String foodName;
-    private String brandName;
     private String tagName;
-    private Integer totalCal;
+    private Double calories;
     private String servingUnit;
     private Integer servingQty;
 
     public SuggestionItem() {
     }
 
-    public String getImage() {
-        return image;
+    public Bitmap getImage() {
+        return this.image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String imageURL) {
+        if (imageURL != null)
+            this.image = getImageFromURL(imageURL);
     }
 
     public String getFoodID() {
@@ -35,22 +42,6 @@ public class SuggestionItem {
 
     public void setFoodName(String foodName) {
         this.foodName = foodName;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public Integer getTotalCal() {
-        return totalCal;
-    }
-
-    public void setTotalCal(Integer totalCal) {
-        this.totalCal = totalCal;
     }
 
     public String getServingUnit() {
@@ -75,5 +66,36 @@ public class SuggestionItem {
 
     public void setTagName(String tagName) {
         this.tagName = tagName;
+    }
+
+    private Bitmap getImageFromURL(String URL) {
+        Bitmap image = null;
+        DownloadImage downloadImage = new DownloadImage();
+        try {
+            image = downloadImage.execute(URL).get();
+        } catch (CancellationException ce) {
+            Log.e(getClass().getName(), "Image Download Cancelled");
+        } catch (ExecutionException ee) {
+            Log.e(getClass().getName(), "Image Download Failed");
+        } catch (InterruptedException ie) {
+            Log.e(getClass().getName(), "Image Download Interrupted");
+        }
+        return image;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public Double getCalories() {
+        return calories;
+    }
+
+    public void setCalories(Double calories) {
+        this.calories = calories;
     }
 }

@@ -1,5 +1,7 @@
 package com.project.healthcompanion;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.project.healthcompanion.Service.Food;
 import com.project.healthcompanion.Service.SuggestionItem;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,47 +19,72 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private Food[] suggestionList;
+    private final List<SuggestionItem> suggestionList;
+    private final Context context;
+    private OnItemClickListener mOnItemClickListener;
 
-    ListAdapter(List<SuggestionItem> list) {
-        suggestionList = new Food[list.size()];
-        suggestionList = list.toArray(suggestionList);
+    ListAdapter(List<SuggestionItem> list, Context context) {
+        suggestionList = list;
+        this.context = context;
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mOnItemClickListener = mItemClickListener;
     }
 
     @NonNull
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        ViewHolder vh;
+
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.food_list_item, parent, false);
-        return new ViewHolder(view);
+        vh = new ViewHolder(view);
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        //set view here
-        holder.foodPic.setImageBitmap(suggestionList[position].getThumbImage());
-        holder.foodName.setText(suggestionList[position].getFood_name());
-        holder.cals.setText(Float.toString(suggestionList[position].getCalories()));
+
+        SuggestionItem item = suggestionList.get(position);
+
+        Bitmap image = item.getImage();
+        if (image != null)
+            holder.foodPic.setImageBitmap(image);
+
+        holder.foodName.setText(item.getFoodName());
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(view, suggestionList.get(position), position);
+                }
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return suggestionList.length;
+        return suggestionList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnItemClickListener {
+        void onItemClick(View view, SuggestionItem obj, int position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final CircularImageView foodPic;
         private final TextView foodName;
-        private final TextView cals;
+        private final View parentLayout;
 
         public ViewHolder(View view) {
             super(view);
             foodPic = view.findViewById(R.id.circularImageView_foodPic);
             foodName = view.findViewById(R.id.textView_FoodName);
-            cals = view.findViewById(R.id.textView_Cal);
+            parentLayout = view.findViewById(R.id.parentLayout);
         }
-
     }
-
 }

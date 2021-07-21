@@ -1,58 +1,85 @@
 package com.project.healthcompanion;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.healthcompanion.Service.Food;
 import com.project.healthcompanion.Service.NutritionixOverlay;
+import com.project.healthcompanion.Service.SuggestionItem;
 import com.project.healthcompanion.databinding.ActivitySearchFoodBinding;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
 
 public class SearchFoodActivity extends AppCompatActivity {
     ActivitySearchFoodBinding binding;
-    private Food selectedFood;
+    ActivityResultLauncher<Intent> foodResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent intent = result.getData();
+                assert intent != null;
+                Food food = intent.getParcelableExtra(getPackageName() + "selectedFood");
+                intent.putExtra(getPackageName() + "selectedFood", food);
+                setResult(RESULT_OK, intent);
+            }
+        }
+    });
+    final ListAdapter.OnItemClickListener onItemClickListener = new ListAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, SuggestionItem obj, int position) {
+            Intent intent = new Intent(getApplicationContext(), FoodDetailsActivity.class);
+            intent.putExtra(getPackageName() + "foodName", obj.getFoodName());
+            foodResultLauncher.launch(intent);
+        }
+    };
+    private List<SuggestionItem> suggestionItemList;
+    private RecyclerView recyclerView;
+    private ListAdapter listAdapter;
 
-    private RecyclerView.LayoutManager layoutManager;
-
-    // ListAdapter listAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySearchFoodBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        //setRecycleViewLayoutManager();
+        setContentView(view);
+        getWindow().setSoftInputMode(SOFT_INPUT_STATE_VISIBLE);
+
+        recyclerView = binding.recyclerViewSearchResult;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+        binding.searchViewFood.requestFocus();
         NutritionixOverlay nutritionixOverlay = new NutritionixOverlay(this);
 
         binding.searchViewFood.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                /*nutritionixOverlay.getSearchResult(binding.searchViewFood.getQuery().toString(), new NutritionixOverlay.SearchSuggestionResponse() {
+
+                nutritionixOverlay.getResults(query, new NutritionixOverlay.SearchSuggestionResponse() {
                     @Override
-                    public void onSuccess(List<SuggestionItem> suggestions) {
-                        showSuggestion(suggestions);
+                    public void onSuccess(ArrayList<SuggestionItem> suggestions) {
+                        suggestionItemList = suggestions;
+                        showSuggestion(suggestionItemList);
                     }
 
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(getApplicationContext(),"error occurred",Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-                nutritionixOverlay.getFood(query, new NutritionixOverlay.NutrientResponse() {
-                    @Override
-                    public void onSuccess(List<Food> Foods) {
-                        showItem(Foods);
-                    }
-
-                    @Override
-                    public void onError(String message) {
-
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
                 return false;
@@ -63,39 +90,18 @@ public class SearchFoodActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        binding.buttonSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("SearchResult", selectedFood);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-        setContentView(view);
     }
 
-    private void showItem(List<Food> foods) {
-        Food[] foodsArray = new Food[foods.size()];
-        foodsArray = foods.toArray(foodsArray);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(SearchFoodActivity.this, android.R.layout.simple_list_item_1, foodsArray);
-        binding.listViewFoodDetails.setAdapter(arrayAdapter);
-        selectedFood = foodsArray[0];
-    }
-/*
-    private void setRecycleViewLayoutManager() {
-        int scrollPosition=0;
-        if(binding.recyclerViewSearchResult.getLayoutManager()!=null){
-            scrollPosition=((LinearLayoutManager)binding.recyclerViewSearchResult.getLayoutManager()).findFirstVisibleItemPosition();
-            layoutManager=new LinearLayoutManager(this);
-            binding.recyclerViewSearchResult.setLayoutManager(layoutManager);
-            binding.recyclerViewSearchResult.scrollToPosition(scrollPosition);
-        }
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        //super.onBackPressed();
+        finish();
     }
 
     private void showSuggestion(List<SuggestionItem> suggestions) {
-        ListAdapter listAdapter=new ListAdapter(suggestions);
-        binding.recyclerViewSearchResult.setAdapter(listAdapter);
-    }*/
+        listAdapter = new ListAdapter(suggestionItemList, this);
+        listAdapter.setOnItemClickListener(onItemClickListener);
+        recyclerView.setAdapter(listAdapter);
+    }
 }

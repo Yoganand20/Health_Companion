@@ -1,9 +1,6 @@
 package com.project.healthcompanion;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +13,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
 import com.project.healthcompanion.Service.Food;
@@ -54,16 +49,19 @@ public class DashboardActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_Layout);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
         binding.textViewMacroBreakdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DashboardActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                loadDialog();
+                //loadDialog();
             }
         });
         dietPlan = getDietPlan();
         displayDietPlan(dietPlan);
         setContentView(view);
+        Intent intent = new Intent(this, SearchFoodActivity.class);
+        searchResultLauncher.launch(intent);
     }
 
     private void displayDietPlan(DietPlan dietPlan) {
@@ -89,12 +87,7 @@ public class DashboardActivity extends AppCompatActivity {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-        binding.btClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+
     }
 
     //navigation drawer
@@ -123,7 +116,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        HomePage.closeDrawer(drawerLayout);
+        //HomePage.closeDrawer(drawerLayout);
     }
     //end of navigation drawer
 }
