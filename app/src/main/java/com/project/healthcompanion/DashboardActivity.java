@@ -60,8 +60,8 @@ public class DashboardActivity extends AppCompatActivity {
         dietPlan = getDietPlan();
         displayDietPlan(dietPlan);
         setContentView(view);
-        Intent intent = new Intent(this, SearchFoodActivity.class);
-        searchResultLauncher.launch(intent);
+        //Intent intent = new Intent(this, SearchFoodActivity.class);
+        //searchResultLauncher.launch(intent);
     }
 
     private void displayDietPlan(DietPlan dietPlan) {
