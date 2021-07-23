@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.narify.netdetect.NetDetect;
+import com.project.healthcompanion.LogInAndSignUp.LoginNSignUpActivity;
 import com.project.healthcompanion.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

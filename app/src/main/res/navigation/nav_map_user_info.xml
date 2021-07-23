@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/personal_Info"
-        android:name="com.project.healthcompanion.Personal_Info"
+        android:name="com.project.healthcompanion.LogInAndSignUp.Personal_Info"
         android:label="fragment_personal_info"
         tools:layout="@layout/fragment_personal_info">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/physiqueInfoFragment"
-        android:name="com.project.healthcompanion.PhysiqueInfoFragment"
+        android:name="com.project.healthcompanion.LogInAndSignUp.PhysiqueInfoFragment"
         android:label="fragment_physique_info"
         tools:layout="@layout/fragment_physique_info">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/setGoalFragment"
-        android:name="com.project.healthcompanion.SetGoalFragment"
+        android:name="com.project.healthcompanion.LogInAndSignUp.SetGoalFragment"
         android:label="fragment_set_goal"
         tools:layout="@layout/fragment_set_goal">
         <argument

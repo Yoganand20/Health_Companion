@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.project.healthcompanion.Service.SuggestionItem;
+import com.project.healthcompanion.Model.SuggestionItem;
 
 import org.jetbrains.annotations.NotNull;
 

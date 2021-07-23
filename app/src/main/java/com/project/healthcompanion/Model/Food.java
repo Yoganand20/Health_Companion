@@ -1,8 +1,10 @@
-package com.project.healthcompanion.Service;
+package com.project.healthcompanion.Model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.project.healthcompanion.Service.DownloadImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

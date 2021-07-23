@@ -16,8 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
+import com.project.healthcompanion.Model.DietPlan;
+import com.project.healthcompanion.Model.Food;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
-import com.project.healthcompanion.Service.Food;
 import com.project.healthcompanion.databinding.ActivityDashboardBinding;
 import com.project.healthcompanion.databinding.DialogDashboardBinding;
 
@@ -42,6 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ActivityDashboardBinding binding;
     private Date today;
     private double totalCaloriesConsumed, totalCaloriesPlanned;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

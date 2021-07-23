@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
+import com.project.healthcompanion.LogInAndSignUp.LoginNSignUpActivity;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
 
 public class HomePage extends AppCompatActivity {

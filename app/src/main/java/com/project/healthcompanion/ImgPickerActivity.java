@@ -21,6 +21,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.project.healthcompanion.LogInAndSignUp.Personal_Info;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.project.healthcompanion;
+package com.project.healthcompanion.LogInAndSignUp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.project.healthcompanion.R;
+import com.project.healthcompanion.Service.Validate;
 import com.project.healthcompanion.databinding.FragmentSignUpBinding;
 
 
@@ -87,7 +89,7 @@ public class SignUp_Fragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getContext(), "Registration Successful", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(getActivity(), GetUserInfo.class);
+                                    Intent intent = new Intent(getActivity(), GetUserInfoActivity.class);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(getContext(), "Registration Unsuccessful. Email address already registered.", Toast.LENGTH_LONG).show();

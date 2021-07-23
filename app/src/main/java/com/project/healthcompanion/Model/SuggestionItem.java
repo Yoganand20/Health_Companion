@@ -1,7 +1,9 @@
-package com.project.healthcompanion.Service;
+package com.project.healthcompanion.Model;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.project.healthcompanion.Service.DownloadImage;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;

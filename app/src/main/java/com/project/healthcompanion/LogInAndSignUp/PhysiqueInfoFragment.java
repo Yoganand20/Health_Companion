@@ -1,4 +1,4 @@
-package com.project.healthcompanion;
+package com.project.healthcompanion.LogInAndSignUp;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,10 +20,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.healthcompanion.R;
 import com.project.healthcompanion.databinding.FragmentPhysiqueInfoBinding;
 
 import org.jetbrains.annotations.NotNull;

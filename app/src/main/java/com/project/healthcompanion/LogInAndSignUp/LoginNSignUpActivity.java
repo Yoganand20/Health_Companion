@@ -1,4 +1,4 @@
-package com.project.healthcompanion;
+package com.project.healthcompanion.LogInAndSignUp;
 
 import android.graphics.Rect;
 import android.os.Bundle;

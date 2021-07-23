@@ -1,4 +1,4 @@
-package com.project.healthcompanion;
+package com.project.healthcompanion.Service;
 
 import android.widget.EditText;
 
@@ -99,10 +99,7 @@ public class Validate {
     public static boolean ValidatePassword(EditText password, EditText c_password) {
         switch (ValidateAll(password, passwordPattern)) {
             case 0:
-                if (password.getText().toString().contentEquals(c_password.getText().toString()))
-                    return true;
-                else
-                    return false;
+                return password.getText().toString().contentEquals(c_password.getText().toString());
             case 1:
                 password.setError("Password not entered.");
                 return false;

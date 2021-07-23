@@ -10,6 +10,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.project.healthcompanion.Model.Food;
+import com.project.healthcompanion.Model.SuggestionItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NutritionixOverlay {
@@ -142,9 +145,79 @@ public class NutritionixOverlay {
         queue.add(jsonObjectRequest);
     }
 
+    public void getFoods(String query, final NutrientArrayResponse nutrientArrayResponse) {
+        String URL = NUTRITIONIX_URL;
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("query", query);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        List<Food> foods = new ArrayList<>();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray foodsJSON = response.getJSONArray("foods");
+
+                    for (int i = 0; i < foodsJSON.length(); i++) {
+                        JSONObject food = foodsJSON.getJSONObject(i);
+
+                        Food foodItem = new Food();
+
+                        foodItem.setThumbImage(food.getJSONObject("photo").getString("thumb"));
+                        foodItem.setFood_name(food.getString("food_name"));
+                        foodItem.setHiResImage(food.getJSONObject("photo").getString("highres"));
+                        foodItem.setServingQty(food.getInt("serving_qty"));
+                        foodItem.setServingUnit(food.getString("serving_unit"));
+                        foodItem.setCalories(food.getDouble("nf_calories"));
+                        foodItem.setTotalFat(food.getDouble("nf_total_fat"));
+                        foodItem.setCholesterol(food.getDouble("nf_cholesterol"));
+                        foodItem.setSugars(food.getDouble("nf_sugars"));
+                        foodItem.setTotalCarbohydrate(food.getDouble("nf_total_carbohydrate"));
+                        foodItem.setProtein(food.getDouble("nf_protein"));
+                        foodItem.setServingWeight(food.getDouble("serving_weight_grams"));
+
+                        foods.add(foodItem);
+                    }
+                    nutrientArrayResponse.onSuccess(foods);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                nutrientArrayResponse.onError(error.getMessage());
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("x-app-id", "1440d43b");
+                params.put("x-app-key", "b44fbd24ce80dffd91f4ada61316f4c3");
+                params.put("x-remote-user-id", "0");
+                return params;
+            }
+        };
+        queue.add(jsonObjectRequest);
+    }
 
     public interface NutrientResponse {
         void onSuccess(Food food);
+
+        void onError(String message);
+    }
+
+    public interface NutrientArrayResponse {
+        void onSuccess(List<Food> foods);
 
         void onError(String message);
     }

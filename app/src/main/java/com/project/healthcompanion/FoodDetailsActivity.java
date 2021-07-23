@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.project.healthcompanion.Service.Food;
+import com.project.healthcompanion.Model.Food;
 import com.project.healthcompanion.Service.NutritionixOverlay;
 import com.project.healthcompanion.databinding.ActivityFoodDetailsBinding;
 
@@ -17,11 +17,13 @@ import org.jetbrains.annotations.NotNull;
 public class FoodDetailsActivity extends AppCompatActivity {
     ActivityFoodDetailsBinding binding;
     Food food;
+    Integer qty = 1;
     View.OnClickListener selectButton_onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
             intent.putExtra("selectedFood", FoodDetailsActivity.this.food);
+            intent.putExtra("quantity", FoodDetailsActivity.this.qty);
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -34,6 +36,26 @@ public class FoodDetailsActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener plusButton_onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            FoodDetailsActivity.this.qty++;
+            binding.editTextQty.setText(FoodDetailsActivity.this.qty.toString());
+        }
+    };
+    View.OnClickListener minusButton_onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (FoodDetailsActivity.this.qty <= 1) {
+                return;
+            }
+            FoodDetailsActivity.this.qty--;
+            binding.editTextQty.setText(FoodDetailsActivity.this.qty.toString());
+
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +63,11 @@ public class FoodDetailsActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        binding.editTextQty.setText(qty.toString());
         binding.buttonSelect.setOnClickListener(selectButton_onClickListener);
+        binding.buttonBack.setOnClickListener(backButton_onClickListener);
+        binding.imageButtonPlus.setOnClickListener(plusButton_onClickListener);
+        binding.imageButtonMinus.setOnClickListener(minusButton_onClickListener);
 
         //check if there is any saved instance and restore activity
         if (savedInstanceState != null) {
@@ -92,8 +118,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
     }
 
     private void displayFoodInfo(Food food) {
-
-        binding.imageViewFoodPic.setBackgroundColor(111111);
         binding.imageViewFoodPic.setImageBitmap(food.getHiResImage());
         binding.textViewFoodNameDialog.setText(food.getFood_name());
 
