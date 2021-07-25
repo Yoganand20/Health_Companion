@@ -48,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        drawerLayout = findViewById(R.id.drawer_Layout);
+
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
@@ -62,6 +62,9 @@ public class DashboardActivity extends AppCompatActivity {
         dietPlan = getDietPlan();
         displayDietPlan(dietPlan);
         setContentView(view);
+
+        drawerLayout = findViewById(R.id.drawer_Layout);
+
         //Intent intent = new Intent(this, SearchFoodActivity.class);
         //searchResultLauncher.launch(intent);
     }
@@ -112,6 +115,8 @@ public class DashboardActivity extends AppCompatActivity {
     public void ClickDietPlans(View view) { HomePage.redirectActivity(this, DietPlans.class); }
 
     public void ClickReminders(View view) { HomePage.redirectActivity(this, Reminder_main.class); }
+
+    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
 
     public void ClickLogout(View view) { HomePage.logout(this); }
 

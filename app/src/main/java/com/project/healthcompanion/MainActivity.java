@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             FirebaseUser currentUser = mAuth.getCurrentUser();
 
             if (currentUser != null) { //if user is logged in continue to home screen
-                Intent intent = new Intent(this, HomePage.class);
+                Intent intent = new Intent(this, Profile.class);
                 startActivity(intent);
             } else {//else open login/sign up activity
                 Intent LoginNSignUp = new Intent(this, LoginNSignUpActivity.class);

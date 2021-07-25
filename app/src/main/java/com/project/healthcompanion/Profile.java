@@ -72,9 +72,9 @@ public class Profile extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
 
-    TextView username, actlvl, weight, SC, Pace, PaceVal, TDEE;
+    TextView username, actlvl, weight, SC, Pace, PaceVal, TDEE, BMI;
 
-    EditText height, BMI, PAL, Goal;
+    EditText height, Goal;
 
     String fn, ln, wt, ht, bmi, tdee, goal, pace;
 
@@ -199,6 +199,8 @@ public class Profile extends AppCompatActivity {
     public void ClickReminders(View view) {
         HomePage.redirectActivity(this, Reminder_main.class);
     }
+
+    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
 
     public void ClickLogout(View view) {
         HomePage.logout(this);

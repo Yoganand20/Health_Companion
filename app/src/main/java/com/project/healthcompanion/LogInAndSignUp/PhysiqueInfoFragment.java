@@ -73,7 +73,7 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
         binding.activityLevelSpinner.setOnItemSelectedListener(this);
 
         //reset textViews
-        binding.textViewResetBMI.setOnClickListener(new View.OnClickListener() {
+        /*binding.textViewResetBMI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.editTextNumberBMI.setText(calculated_BMI.toString());
@@ -92,7 +92,7 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
             public void onClick(View v) {
                 binding.editTextNumberTDEE.setText(calculated_TDEE.toString());
             }
-        });
+        });*/
 
 
         binding.editTextHeight.addTextChangedListener(new TextWatcher() {

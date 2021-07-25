@@ -76,6 +76,8 @@ public class HomePage extends AppCompatActivity {
 
     public void ClickReminders(View view) { redirectActivity(this, Reminder_main.class); }
 
+    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
+
     public void ClickLogout(View view) { logout(this); }
 
     public static void logout(Activity activity) {

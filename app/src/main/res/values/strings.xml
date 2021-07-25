@@ -39,6 +39,7 @@
     <string name="dinner_header"><b><u>DINNER</u></b></string>
     <string name="snacks_header"><b><u>SNACKS</u></b></string>
     <string name="profile_header">PROFILE</string>
+    <string name="help_header">HELP</string>
 
     <string name="healthcompanion_drawertitle">Health Companion</string>
 
@@ -63,6 +64,7 @@
     <string name="reminders_navdrawer">Reminders</string>
     <string name="social_navdrawer">Social</string>
     <string name="logout_navdrawer">Logout</string>
+    <string name="help_navdrawer">Help</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -183,5 +185,43 @@
     <string name="cancel">cancel</string>
     <string name="select">Select</string>
 
+
+    <string name="helpheader"> <b>Message from Team Health Companion: </b> \n\n
+    <i>Dear user, \n\nWe the team at Health Companion, understand that all users might not be familiar with the concept of the app nor its functioning. \n\nIn our endeavour to publish this app; we would like to try our best to ensure that it is utilized for its intended functionality and that its features may provide you with the utility it was designed for. \n\nThis section of the app, which answers frequently asked questions; is for you. May it provide you the understanding and tools, to make your journey to a healthier lifestyle, a much easier one! </i></string>
+
+    <string name="text1"><b>What does Profile entail:</b></string>
+    <string-array name="text1">
+        <item><i>The profile feature is used to edit the physique stature of the user. This page mostly includes biological information, such as: weight, height, activity level, BMI, TDEE, goal and pace. Users can edit their aforementioned physique details, except their weight and TDEE, as and when it changes. </i></item>
+    </string-array>
+
+    <string name="text2"><b>Activity level: what does it mean? </b></string>
+    <string-array name="text2">
+        <item><i>Activity level is the amount of activities the user performs on a daily basis. “Light activity lifestyle” would resemble a standard office worker; that might walk to work every day. “Moderate activity lifestyle” would resemble a student who plays outdoors. “Vigorous activity lifestyle” would resemble that of an athlete. </i></item>
+    </string-array>
+
+    <string name="text3"><b>BMI: what does it mean?</b></string>
+    <string-array name="text3">
+        <item><i>BMI or body mass index, is an indicator of one’s weight in correspondence to one’s height. It is an indicator of being healthy in terms of body weight.</i></item>
+    </string-array>
+
+    <string name="text4"><b>TDEE: what does it mean?</b></string>
+    <string-array name="text4">
+        <item><i>TDEE or total daily energy expenditure is the number of calories one would need to consume to maintain their current weight.</i></item>
+    </string-array>
+
+    <string name="text5"><b>Pace: what does it mean?</b></string>
+    <string-array name="text5">
+        <item><i>Pace is the rate at which one would wish to reach their goal weight. Be it slow, moderate or fast. Depending on the pace selected, the user is suggested the number of days it would take to reach their goal weight.</i></item>
+    </string-array>
+
+    <string name="text6"><b>What does Reminders entail:</b></string>
+    <string-array name="text6">
+        <item><i>Reminders is where the user can set reminder for daily activities such as supplement intake, water consumption, etc. the user sets the time and the reminder message. Steps include: press the “+” button, select date and time, set reminder message, press the “add” button.</i></item>
+    </string-array>
+
+    <string name="text7"><b>What does Records entail:</b></string>
+    <string-array name="text7">
+        <item><i>Records is where the user can record their weight and view their weight change progression over time, in graph format. Steps include: enter record in “Current weight” and press the “add entry” button.</i></item>
+    </string-array>
 
 </resources>

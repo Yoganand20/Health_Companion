@@ -13,11 +13,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.HelpActivity;
 import com.project.healthcompanion.HomePage;
+import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Records;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
@@ -41,6 +44,8 @@ public class DisplayDietPlan extends AppCompatActivity {
     TextView protein, carbs, fats, avg_cal;
 
     PieChart pieChart;
+
+    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +86,7 @@ public class DisplayDietPlan extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         //Retrieve breakfast data
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Breakfast")
+        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(incomingName).collection("Meals").document("Breakfast")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -130,7 +135,7 @@ public class DisplayDietPlan extends AppCompatActivity {
                 });
 
         //Retrieve lunch data
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Lunch")
+        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(incomingName).collection("Meals").document("Lunch")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -177,7 +182,7 @@ public class DisplayDietPlan extends AppCompatActivity {
                 });
 
         //Retrieve dinner data
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Dinner")
+        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(incomingName).collection("Meals").document("Dinner")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -224,7 +229,7 @@ public class DisplayDietPlan extends AppCompatActivity {
                 });
 
         //Retrieve snacks data
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(incomingName).collection("Meals").document("Snacks")
+        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(incomingName).collection("Meals").document("Snacks")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -280,7 +285,7 @@ public class DisplayDietPlan extends AppCompatActivity {
         HomePage.closeDrawer(drawerLayout);
     }
 
-    public void ClickProfile(View view) { /*HomePage.redirectActivity(this, Profile.class);*/ }
+    public void ClickProfile(View view) { HomePage.redirectActivity(this, Profile.class); }
 
     public void ClickDashboard(View view) { HomePage.redirectActivity(this, DashboardActivity.class); }
 
@@ -295,6 +300,8 @@ public class DisplayDietPlan extends AppCompatActivity {
     public void ClickReminders(View view) {
         HomePage.redirectActivity(this, Reminder_main.class);
     }
+
+    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
 
     public void ClickLogout(View view) {
         HomePage.logout(this);

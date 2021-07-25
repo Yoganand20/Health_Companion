@@ -40,12 +40,13 @@ public class BreakfastDisplayAdapter extends ArrayAdapter<String> {
 
             TextView name = convertView.findViewById(R.id.name);
             name.setText(list.get(position));
+            String BFoodNam = name.getText().toString();
 
             ImageView remove = convertView.findViewById(R.id.remove);
             remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DietPlanner.removeBreakfast(position);
+                    DietPlanner.removeBreakfast(position, BFoodNam);
                 }
             });
         }

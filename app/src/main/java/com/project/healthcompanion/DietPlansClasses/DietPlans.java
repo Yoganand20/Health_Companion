@@ -1,6 +1,7 @@
 package com.project.healthcompanion.DietPlansClasses;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.HelpActivity;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.R;
@@ -48,6 +50,7 @@ import org.w3c.dom.Text;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +61,9 @@ public class DietPlans extends AppCompatActivity {
     private TextView empty;     //Text that appear when the page is empty
     private ImageView add;  //plus button at top right
     EditText new_diet_plan_name;
+
+    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    static String currentUserStatic = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     static ListView listView;
     static ArrayList<String> listViewItems;
@@ -91,8 +97,6 @@ public class DietPlans extends AppCompatActivity {
                 addDietPlans();
             }
         });
-
-        //String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         firebaseFirestoreDel = FirebaseFirestore.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -146,6 +150,8 @@ public class DietPlans extends AppCompatActivity {
         HomePage.redirectActivity(this, Reminder_main.class);
     }
 
+    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
+
     public void ClickLogout(View view) {
         HomePage.logout(this);
     }
@@ -160,7 +166,7 @@ public class DietPlans extends AppCompatActivity {
     //adds diet plans
     public void addDietPlans() {
 
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("Diet Plans").document(currentUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 int flag=0;
@@ -171,34 +177,47 @@ public class DietPlans extends AppCompatActivity {
                     if (document.exists()) {
                         Log.d("IfExists", "Check if doc exists");
                         List<Object> check_diet_plans_names = (List<Object>) document.get("Diet Plan Names");
-                        for (Object o : check_diet_plans_names) {
-                            //flag = 0;
-                            Log.d("CheckDPName", "List element " + o.toString() + "|Entered name:" + new_diet_plan_name.getText().toString());
-                            if(o.toString().equals(new_diet_plan_name.getText().toString())) {
-                                Log.d("CheckDPName", "This diet plan already exists");
-                                Toast.makeText(DietPlans.this, "Diet Plan already exists!", Toast.LENGTH_SHORT).show();
-                                break;
+                        if(check_diet_plans_names.size() > 0) {
+                            for (Object o : check_diet_plans_names) {
+                                //flag = 0;
+                                Log.d("CheckDPName", "List element " + o.toString() + "|Entered name:" + new_diet_plan_name.getText().toString());
+                                if(o.toString().equals(new_diet_plan_name.getText().toString())) {
+                                    Log.d("CheckDPName", "This diet plan already exists");
+                                    Toast.makeText(DietPlans.this, "Diet Plan already exists!", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                                else {
+                                    Log.d("CheckDPName", "This is a new diet plan!");
+                                    //firebaseFirestore.collection("Diet Plans").document("UID Generated Test").update("Diet Plan Names", FieldValue.arrayUnion(new_diet_plan_name.getText().toString()));
+                                    ++flag;
+                                }
+                                ++i;
                             }
-                            else {
-                                Log.d("CheckDPName", "This is a new diet plan!");
-                                //firebaseFirestore.collection("Diet Plans").document("UID Generated Test").update("Diet Plan Names", FieldValue.arrayUnion(new_diet_plan_name.getText().toString()));
-                                ++flag;
+                            Log.d("CheckEntry", "Before external if statement");
+                            if(i == check_diet_plans_names.size()) {
+                                Log.d("CheckEntry", "Entered external if statement");
+                                if(flag>0) {
+                                    Log.d("CheckEntry", "Entered external if statement's internal if statement");
+                                    Intent intent = new Intent(DietPlans.this, DietPlanner.class);
+                                    intent.putExtra("diet plan name", new_diet_plan_name.getText().toString());
+                                    startActivity(intent);
+                                }
                             }
-                            ++i;
                         }
-                        Log.d("CheckEntry", "Before external if statement");
-                        if(i == check_diet_plans_names.size()) {
-                            Log.d("CheckEntry", "Entered external if statement");
-                            if(flag>0) {
-                                Log.d("CheckEntry", "Entered external if statement's internal if statement");
-                                Intent intent = new Intent(DietPlans.this, DietPlanner.class);
-                                intent.putExtra("diet plan name", new_diet_plan_name.getText().toString());
-                                startActivity(intent);
-                            }
+                        else {
+                            setItemsInDietPlans();
+                            addDietPlans();
                         }
                     }
                     else {
                         Log.d("CheckDPName", "***No such document");
+                        //create current user doc into DB by adding the diet plan's name into the "Diet Plan Names" array list because the user's document doesn't exist, so adding a diet plan name will create the user's document with a unique diet plan
+                        Map<String, Object> newDP = new HashMap<>();
+                        newDP.put("Diet Plan Names", Arrays.asList(new_diet_plan_name.getText().toString()));
+                        firebaseFirestore.collection("Diet Plans").document(currentUser).set(newDP);
+                        Intent intent = new Intent(DietPlans.this, DietPlanner.class);
+                        intent.putExtra("diet plan name", new_diet_plan_name.getText().toString());
+                        startActivity(intent);
                     }
                 }
                 else {
@@ -255,39 +274,47 @@ public class DietPlans extends AppCompatActivity {
 
         //ArrayList<String> DietPlanNames1=new ArrayList<>();
 
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test")
+        firebaseFirestore.collection("Diet Plans").document(currentUser)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()) {
-                            empty.setVisibility(View.INVISIBLE);
                             DocumentSnapshot documentSnapshot = task.getResult();
-                            ArrayList<String> DietPlanNames = (ArrayList<String>) documentSnapshot.get("Diet Plan Names");
-                            Log.d("ReadName", documentSnapshot.getId() + " => " + documentSnapshot.getData() /*+ "arraylist:" + DietPlanNames + "Array Size:" + DietPlanNames.size()*/);
+                            if(documentSnapshot.exists()) {
+                                ArrayList<String> DietPlanNames = (ArrayList<String>) documentSnapshot.get("Diet Plan Names");
+                                Log.d("ReadName", documentSnapshot.getId() + " => " + documentSnapshot.getData() /*+ "arraylist:" + DietPlanNames + "Array Size:" + DietPlanNames.size()*/);
 
-                            Log.d("ReadName", "Number of diet plans:" + DietPlanNames.size());
-                            Log.d("ReadName", "Diet Plan names:");
-                            for(int i=0; i<DietPlanNames.size(); ++i) {
-                                Log.d("ReadName", DietPlanNames.get(i));
-                                //DietPlanNames1.add(DietPlanNames.get(i));
+                                if(DietPlanNames.size() != 0) {
+                                    empty.setVisibility(View.INVISIBLE);
+                                }
+                                else {
+                                    empty.setVisibility(View.VISIBLE);
+                                    firebaseFirestore.collection("Diet Plans").document(currentUser).delete();
+                                }
 
-                                //start of list view code
-                                listViewItems.add(DietPlanNames.get(i));
-                                listView.setAdapter(listViewAdapter);
+                                Log.d("ReadName", "Number of diet plans:" + DietPlanNames.size());
+                                Log.d("ReadName", "Diet Plan names:");
+                                for(int i=0; i<DietPlanNames.size(); ++i) {
+                                    Log.d("ReadName", DietPlanNames.get(i));
+                                    //DietPlanNames1.add(DietPlanNames.get(i));
+
+                                    //start of list view code
+                                    listViewItems.add(DietPlanNames.get(i));
+                                    listView.setAdapter(listViewAdapter);
 
 
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        //Toast.makeText(DietPlans.this, "Dietplan name: \n" + listViewAdapter.getItem(position), Toast.LENGTH_SHORT).show();
+                                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            //Toast.makeText(DietPlans.this, "Dietplan name: \n" + listViewAdapter.getItem(position), Toast.LENGTH_SHORT).show();
 
-                                        Intent dispDP = new Intent(DietPlans.this, DisplayDietPlan.class);
-                                        String dpnam = listViewAdapter.getItem(position);
-                                        dispDP.putExtra("display diet plan name", dpnam);
-                                        startActivity(dispDP);
+                                            Intent dispDP = new Intent(DietPlans.this, DisplayDietPlan.class);
+                                            String dpnam = listViewAdapter.getItem(position);
+                                            dispDP.putExtra("display diet plan name", dpnam);
+                                            startActivity(dispDP);
 
-                                        //DocumentReference CheckMeals = firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(listViewAdapter.getItem(position));
+                                            //DocumentReference CheckMeals = firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(listViewAdapter.getItem(position));
 
 
                                         /*firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(listViewAdapter.getItem(position)).collection("Meals").document("Breakfast")
@@ -348,9 +375,9 @@ public class DietPlans extends AppCompatActivity {
                                         //breakfastitems.append(BreakfastItems);
 
                                         dp_dialog.show();*/
-                                    }
-                                });
-                                //end of list view code
+                                        }
+                                    });
+                                    //end of list view code
 
                                 /*firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(DietPlanNames.get(i)).collection("Meals").document("Breakfast")
                                         .get()
@@ -377,7 +404,7 @@ public class DietPlans extends AppCompatActivity {
                                             }
                                         });*/
 
-                                //To retrieve breakfast Old edition
+                                    //To retrieve breakfast Old edition
                                 /*firebaseFirestore.collection("Diet Plans").document("UID Generated").collection("Diet Planner").document(DietPlanNames.get(i)).collection("Meals").document("Breakfast")
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -440,18 +467,18 @@ public class DietPlans extends AppCompatActivity {
                                                         dpheader = findViewById(R.id.dp_item_header);
                                                         breakfastitems = findViewById(R.id.breakfast_items);*/
 
-                                //dpheader.setText(/*listViewAdapter.getItem(position)*/"hello");
+                                    //dpheader.setText(/*listViewAdapter.getItem(position)*/"hello");
 
-                                //dpheader = DietPlanNames.get(i);
-                                //breakfastitems =  BreakfastItems;
-                                //breakfastitems.append(BreakfastItems);
+                                    //dpheader = DietPlanNames.get(i);
+                                    //breakfastitems =  BreakfastItems;
+                                    //breakfastitems.append(BreakfastItems);
 
                                                         /*dp_dialog.show();
                                                     }
                                                 });
                                             }
                                         });*/
-                            }
+                                }
 
 
 
@@ -459,11 +486,14 @@ public class DietPlans extends AppCompatActivity {
                             Log.d("ReadName-Copy", DietPlanNames1.get(i));
                         }
                         Log.d("ReadName-Copy", "DietPlanNames1 Size:" + DietPlanNames1.size());*/
+                            }
+                            else {
+                                empty.setVisibility(View.VISIBLE);
+                                Log.d("Error finding file", "Exception:" + task.getException());
+                            }
                         }
                         else {
                             Log.d("ReadName", "No diet plans :/", task.getException());
-
-                            empty.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -478,9 +508,9 @@ public class DietPlans extends AppCompatActivity {
     public static void removeItem(int remove, String name) {
         listViewItems.remove(remove);
         listView.setAdapter(listViewAdapter);
-        firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").update("Diet Plan Names", FieldValue.arrayRemove(name));
+        firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).update("Diet Plan Names", FieldValue.arrayRemove(name));
         //delete breakfast
-        firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Breakfast")
+        firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Breakfast")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -488,7 +518,7 @@ public class DietPlans extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot BSnapshot = task.getResult();
                             if(BSnapshot.exists()) {
-                                firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Breakfast").delete();
+                                firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Breakfast").delete();
                             }
                             else {
                                 Log.d("BreakfastDel", "Breakfast Doesn't Exist");
@@ -500,7 +530,7 @@ public class DietPlans extends AppCompatActivity {
                     }
                 });
         //delete lunch
-        firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Lunch")
+        firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Lunch")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -508,7 +538,7 @@ public class DietPlans extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot LSnapshot = task.getResult();
                             if(LSnapshot.exists()) {
-                                firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Lunch").delete();
+                                firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Lunch").delete();
                             }
                             else {
                                 Log.d("LunchDel", "Lunch Doesn't Exist");
@@ -520,7 +550,7 @@ public class DietPlans extends AppCompatActivity {
                     }
                 });
         //delete dinner
-        firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Dinner")
+        firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Dinner")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -528,7 +558,7 @@ public class DietPlans extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot DSnapshot = task.getResult();
                             if(DSnapshot.exists()) {
-                                firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Dinner").delete();
+                                firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Dinner").delete();
                             }
                             else {
                                 Log.d("SnacksDel", "Dinner Doesn't Exist");
@@ -540,7 +570,7 @@ public class DietPlans extends AppCompatActivity {
                     }
                 });
         //delete snacks
-        firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Snacks")
+        firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Snacks")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -548,7 +578,7 @@ public class DietPlans extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot SSnapshot = task.getResult();
                             if(SSnapshot.exists()) {
-                                firebaseFirestoreDel.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner").document(name).collection("Meals").document("Snacks").delete();
+                                firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Snacks").delete();
                             }
                             else {
                                 Log.d("SnacksDel", "Snacks Doesn't Exist");
@@ -608,21 +638,21 @@ public class DietPlans extends AppCompatActivity {
                     }
                 });*/
 
-        firebaseFirestore.collection("Diet Plans").document("UID Generated Test").collection("Diet Planner")
+        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    ArrayList<String> list = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        list.add(document.getId());
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<String> list = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                list.add(document.getId());
+                            }
+                            Log.d("checkExistingDietPlans", list.toString());
+                        } else {
+                            Log.d("checkExistingDietPlans", "Error getting documents: ", task.getException());
+                        }
                     }
-                    Log.d("checkExistingDietPlans", list.toString());
-                } else {
-                    Log.d("checkExistingDietPlans", "Error getting documents: ", task.getException());
-                }
-            }
-        });
+                });
     }
 }

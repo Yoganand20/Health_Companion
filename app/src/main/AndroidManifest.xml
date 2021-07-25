@@ -15,28 +15,46 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthCompanion">
-        <activity android:name=".NoNetworkActivity"></activity>
+        <activity android:name=".HelpActivity">
+
+        </activity>
+        <activity android:name=".NoNetworkActivity" />
         <activity android:name=".Profile" />
         <activity android:name=".FoodDetailsActivity" /> <!-- <activity android:name=".ProfileImage" /> -->
-        <activity android:name=".DietPlansClasses.DietPlanner" />
-        <activity android:name=".DietPlansClasses.DisplayDietPlan" />
+        <activity android:name=".DietPlansClasses.DietPlanner">
+            android:label = "DietPlanner"
+            android:parentActivityName = "DietPlans"
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
+        </activity>
+        <activity android:name=".DietPlansClasses.DisplayDietPlan">
+            android:label = "DisplayDietPlans"
+            android:parentActivityName = "DietPlans"
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
+        </activity>
         <activity android:name=".DietPlansClasses.DietPlans" />
+
         <activity
             android:name=".SearchFoodActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
-        </activity>
-        <activity android:name=".DashboardActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
+        <activity android:name=".DashboardActivity"></activity>
+        <activity android:name=".Records"></activity>
         <activity android:name=".ImgPickerActivity" />
         <activity android:name=".LogInAndSignUp.GetUserInfoActivity" />
         <activity

@@ -120,4 +120,7 @@ dependencies {
 
     //NetDetect
     implementation 'com.github.SalahoAmro:NetDetect:1.0.0'
+
+    //Expanding text
+    implementation 'com.ms-square:expandableTextView:0.1.4'
 }

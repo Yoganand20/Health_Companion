@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.healthcompanion.HomePage;
+import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Service.Validate;
 import com.project.healthcompanion.databinding.FragmentLoginBinding;
@@ -69,7 +70,7 @@ public class Login_Fragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(getActivity(), HomePage.class);
+                                    Intent intent = new Intent(getActivity(), Profile.class);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(getContext(), "Login Unsuccessful. Wrong Credentials", Toast.LENGTH_LONG).show();

@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.healthcompanion.HomePage;
+import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.databinding.FragmentSetGoalBinding;
 
 import java.math.BigDecimal;
@@ -89,7 +90,7 @@ public class SetGoalFragment extends Fragment {
 
         binding.buttonDone.setOnClickListener(v -> {
             storeToDB();
-            Intent intent = new Intent(requireActivity(), HomePage.class);
+            Intent intent = new Intent(requireActivity(), Profile.class);
             startActivity(intent);
         });
 

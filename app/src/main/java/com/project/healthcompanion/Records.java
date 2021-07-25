@@ -157,6 +157,8 @@ public class Records extends AppCompatActivity {
 
     public void ClickReminders(View view) { HomePage.redirectActivity(this, Reminder_main.class);}
 
+    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
+
     public void ClickLogout(View view) { HomePage.logout(this); }
 
     @Override
