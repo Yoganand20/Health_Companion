@@ -54,12 +54,35 @@ public class Meal {
     }
 
 
+    public int foodExists(String foodName) {
+        for (int i = 0; i < foods.size(); i++) {
+            if (foods.get(i).getFood_name().equals(foodName))
+                return i;
+        }
+        return -1;
+    }
+
     public void addFood(Food food) {
-        totalCalories += food.getCalories();
-        totalCarbs += food.getTotalCarbohydrate();
-        totalFats += food.getTotalFat();
-        totalProts += food.getProtein();
-        foods.add(food);
+        totalCalories += food.getCalories() * food.getServingQty();
+        totalCarbs += food.getTotalCarbohydrate() * food.getServingQty();
+        totalFats += food.getTotalFat() * food.getServingQty();
+        totalProts += food.getProtein() * food.getServingQty();
+        //food doesnt exists in list
+        int index = foodExists(food.getFood_name());
+        if (index == -1) {
+            foods.add(food);
+        } else {//food is there in list
+            foods.get(index).setServingQty(foods.get(index).getServingQty() + food.getServingQty());
+        }
+    }
+
+    public void removeFood(int position) {
+        Food food = foods.get(position);
+        totalCalories -= food.getCalories() * food.getServingQty();
+        totalCarbs += food.getTotalCarbohydrate() * food.getServingQty();
+        totalFats += food.getTotalFat() * food.getServingQty();
+        totalProts += food.getProtein() * food.getServingQty();
+        foods.remove(position);
     }
 
     public List<Food> getFoods() {
