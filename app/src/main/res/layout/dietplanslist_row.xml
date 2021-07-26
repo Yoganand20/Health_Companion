@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/name"
         android:layout_marginBottom="2dp"
-        android:textStyle="bold"/>
+        android:textColor="#FFC000"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/name"
@@ -18,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="28dp"
-        android:textSize="20dp"/>
+        android:textColor="#FFC000"
+        android:textSize="20dp" />
 
     <ImageView
         android:id="@+id/remove"

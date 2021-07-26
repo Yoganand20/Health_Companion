@@ -78,10 +78,10 @@
                 android:text="Calories:"/>
 
             <TextView
-                android:id="@+id/avg_cal"
+                android:id="@+id/tot_cal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="280dp"
+                android:layout_marginEnd="10dp"
                 android:textSize="15dp"
                 android:text="0"/>
 
@@ -113,14 +113,15 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <View
                         android:layout_width="15dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/Pro"/>
+                        android:layout_height="15dp"
+                        android:background="@color/Pro"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -142,15 +143,16 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <View
                         android:layout_width="15dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/Carb"/>
+                        android:layout_height="15dp"
+                        android:background="@color/Carb"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -172,15 +174,16 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="15dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <View
                         android:layout_width="15dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/Fat"/>
+                        android:layout_height="15dp"
+                        android:background="@color/Fat"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:layout_width="wrap_content"

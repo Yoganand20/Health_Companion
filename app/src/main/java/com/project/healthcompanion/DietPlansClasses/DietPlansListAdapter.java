@@ -25,7 +25,6 @@ public class DietPlansListAdapter extends ArrayAdapter<String > {
 
     public DietPlansListAdapter(Context context, ArrayList<String>items) {
         super(context, R.layout.dietplanslist_row, items);
-
         this.context = context;
         list = items;
     }

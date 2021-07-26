@@ -31,8 +31,8 @@ public class BreakfastDisplayAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null){
-            LayoutInflater layoutInflater =  (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        if(convertView == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.dietplanslist_row, null);
 
             TextView number = convertView.findViewById(R.id.number);
@@ -44,9 +44,10 @@ public class BreakfastDisplayAdapter extends ArrayAdapter<String> {
 
             ImageView remove = convertView.findViewById(R.id.remove);
             remove.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    DietPlanner.removeBreakfast(position, BFoodNam);
+                   BreakfastFragment.removeBreakfast(position, BFoodNam);
                 }
             });
         }

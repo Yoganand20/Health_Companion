@@ -27,6 +27,7 @@ import com.project.healthcompanion.ReminderClasses.Reminder_main;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class DisplayDietPlan extends AppCompatActivity {
     TextView breakfast_id_disp, lunch_id_disp, dinner_id_disp, snacks_id_disp;
     TextView breakfast_qty_disp,lunch_qty_disp, dinner_qty_disp, snacks_qty_disp;
 
-    TextView protein, carbs, fats, avg_cal;
+    TextView protein, carbs, fats, tot_cal;
 
     PieChart pieChart;
 
@@ -57,10 +58,8 @@ public class DisplayDietPlan extends AppCompatActivity {
         protein = findViewById(R.id.Protein);
         carbs = findViewById(R.id.Carbs);
         fats = findViewById(R.id.Fats);
-        avg_cal = findViewById(R.id.avg_cal);
+        tot_cal = findViewById(R.id.tot_cal);
         pieChart = findViewById(R.id.piechart);
-
-        avg_cal.setText("2000");
 
         Intent incomingIntent = getIntent();
         String incomingName = incomingIntent.getStringExtra("display diet plan name");
@@ -85,6 +84,24 @@ public class DisplayDietPlan extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 
+        //Retrieve macros
+        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(incomingName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot MacroSnapshot = task.getResult();
+                            if(MacroSnapshot.exists()) {
+                                tot_cal.setText(MacroSnapshot.getDouble("Calories").toString());
+                                protein.setText(MacroSnapshot.getDouble("Proteins").toString());
+                                carbs.setText(MacroSnapshot.getDouble("Carbs").toString());
+                                fats.setText(MacroSnapshot.getDouble("Fats").toString());
+                            }
+                        }
+                    }
+                });
+
         //Retrieve breakfast data
         firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(incomingName).collection("Meals").document("Breakfast")
                 .get()
@@ -101,35 +118,18 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 {
                                     Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
-                                    String foodID;
-
-                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
-                                        foodID = FoodIDsQuantitiesMapField.getKey();
-                                        Log.d("foodID", foodID);
-                                        //ArrayList<String> MapField = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
-                                        //Log.d("Test", MapField.toString());
-
-                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
-
-                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
-                                        {
-                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
-                                                //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
-                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
-
-                                                breakfast_id_disp.append(foodID + "\n");
-                                                breakfast_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
-                                            }
-                                        }
-                                    }
+                                    //if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
+                                        breakfast_id_disp.append(FoodIDsQuantitiesMapField.getKey() + "\n");
+                                        breakfast_qty_disp.append("Quantity:" + FoodIDsQuantitiesMapField.getValue() + "\n");
+                                    //}
                                 }
                             }
                             else {
-                                Log.d("ReadName", "No Breakfast :/ |", task.getException());
+                                Log.d("ReadBreakfast", "No Breakfast :/ |", task.getException());
                             }
                         }
                         else {
-                            Log.d("ReadName", "No Breakfast :/ |", task.getException());
+                            Log.d("ReadBreakfast", "No Breakfast :/ |", task.getException());
                         }
                     }
                 });
@@ -146,7 +146,7 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 Map<String, Object> map = LunchSnapshot.getData();
                                 Log.d("Lunch", "Lunch:" + map);
 
-                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                /*for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
                                 {
                                     Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
@@ -169,14 +169,14 @@ public class DisplayDietPlan extends AppCompatActivity {
                                         }
                                     }
 
-                                }
+                                }*/
                             }
                             else {
-                                Log.d("ReadName", "No Lunch :/ |", task.getException());
+                                Log.d("ReadLunch", "No Lunch :/ |", task.getException());
                             }
                         }
                         else {
-                            Log.d("ReadName", "No Lunch :/ |", task.getException());
+                            Log.d("ReadLunch", "No Lunch :/ |", task.getException());
                         }
                     }
                 });
@@ -193,7 +193,7 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 Map<String, Object> map = DinnerSnapshot.getData();
                                 Log.d("Dinner", "Dinner:" + map);
 
-                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                /*for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
                                 {
                                     Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
@@ -216,14 +216,14 @@ public class DisplayDietPlan extends AppCompatActivity {
                                         }
                                     }
 
-                                }
+                                }*/
                             }
                             else {
-                                Log.d("ReadName", "No Dinner :/ |", task.getException());
+                                Log.d("ReadDinner", "No Dinner :/ |", task.getException());
                             }
                         }
                         else {
-                            Log.d("ReadName", "No Dinner :/ |", task.getException());
+                            Log.d("ReadDinner", "No Dinner :/ |", task.getException());
                         }
                     }
                 });
@@ -240,7 +240,7 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 Map<String, Object> map = SnacksSnapshot.getData();
                                 Log.d("Snacks", "Snacks:" + map);
 
-                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                /*for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
                                 {
                                     Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
@@ -263,14 +263,14 @@ public class DisplayDietPlan extends AppCompatActivity {
                                         }
                                     }
 
-                                }
+                                }*/
                             }
                             else {
-                                Log.d("ReadName", "No Snacks :/ |", task.getException());
+                                Log.d("ReadSnacks", "No Snacks :/ |", task.getException());
                             }
                         }
                         else {
-                            Log.d("ReadName", "No Snacks :/ |", task.getException());
+                            Log.d("ReadSnacks", "No Snacks :/ |", task.getException());
                         }
                     }
                 });

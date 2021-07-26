@@ -519,6 +519,7 @@ public class DietPlans extends AppCompatActivity {
                             DocumentSnapshot BSnapshot = task.getResult();
                             if(BSnapshot.exists()) {
                                 firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).collection("Meals").document("Breakfast").delete();
+
                             }
                             else {
                                 Log.d("BreakfastDel", "Breakfast Doesn't Exist");
@@ -589,6 +590,7 @@ public class DietPlans extends AppCompatActivity {
                         }
                     }
                 });
+        firebaseFirestoreDel.collection("Diet Plans").document(currentUserStatic).collection("Diet Planner").document(name).delete();
     }
 
     public void checkExistingDietPlans() {
