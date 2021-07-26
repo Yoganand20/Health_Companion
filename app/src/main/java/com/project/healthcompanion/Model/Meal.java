@@ -2,7 +2,9 @@ package com.project.healthcompanion.Model;
 
 
 import java.sql.Time;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Meal {
     String mealName;
@@ -12,6 +14,10 @@ public class Meal {
     private Double totalCarbs;
     private Double totalProts;
     private List<Food> foods;
+
+    Meal(String mealName) {
+        this.mealName = mealName;
+    }
 
     public String getMealName() {
         return mealName;
@@ -34,35 +40,25 @@ public class Meal {
         return totalCalories;
     }
 
-    public void setTotalCalories(Double totalCalories) {
-        this.totalCalories = totalCalories;
-    }
-
     public Double getTotalCarbs() {
         return totalCarbs;
-    }
-
-    public void setTotalCarbs(Double totalCarbs) {
-        this.totalCarbs = totalCarbs;
     }
 
     public Double getTotalFats() {
         return totalFats;
     }
 
-    public void setTotalFats(Double totalFats) {
-        this.totalFats = totalFats;
-    }
 
     public Double getTotalProts() {
         return totalProts;
     }
 
-    public void setTotalProts(Double totalProts) {
-        this.totalProts = totalProts;
-    }
 
-    public void addToFoods(Food food) {
+    public void addFood(Food food) {
+        totalCalories += food.getCalories();
+        totalCarbs += food.getTotalCarbohydrate();
+        totalFats += food.getTotalFat();
+        totalProts += food.getProtein();
         foods.add(food);
     }
 
@@ -74,4 +70,14 @@ public class Meal {
         this.foods = foods;
     }
 
+    public Map<String, Integer> generateFoodMap() {
+        Map<String, Integer> foodMap = new HashMap<>();
+        for (int i = 0; i < foods.size(); i++) {
+            foodMap.put(foods.get(i).getFood_name(), foods.get(i).getServingQty());
+        }
+        return foodMap;
+    }
+
 }
+
+

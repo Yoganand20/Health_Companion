@@ -40,10 +40,9 @@ import com.google.firebase.storage.StorageReference;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.project.healthcompanion.ImgPickerActivity;
-import com.project.healthcompanion.MainActivity;
+import com.project.healthcompanion.MainActivity1;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Service.Validate;
 import com.project.healthcompanion.databinding.FragmentPersonalInfoBinding;
@@ -64,6 +63,7 @@ public class Personal_Info extends Fragment {
     private Date dateOfBirth;
     final Calendar DOB_Calendar = Calendar.getInstance();
     private String gender;
+    private static final String TAG = MainActivity1.class.getSimpleName();
 
     //jonny's variable
     FirebaseFirestore db;
@@ -71,8 +71,31 @@ public class Personal_Info extends Fragment {
     StorageReference storageReference;
 
     String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    View.OnClickListener onClick_setProfilePic = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Dexter.withContext(getContext())
+                    .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .withListener(new MultiplePermissionsListener() {
+                        @Override
+                        public void onPermissionsChecked(MultiplePermissionsReport report) {
+                            if (report.areAllPermissionsGranted()) {
+                                showImagePickerOptions();
+                            }
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+                            if (report.isAnyPermissionPermanentlyDenied()) {
+                                showSettingsDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(List<com.karumi.dexter.listener.PermissionRequest> list, PermissionToken permissionToken) {
+                            permissionToken.continuePermissionRequest();
+                        }
+                    }).check();
+
+        }
+    };
 
     public Personal_Info() {
         // Required empty public constructor
@@ -106,7 +129,6 @@ public class Personal_Info extends Fragment {
                                 bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
                             }
                             //TODO: store profile pic to DB from here
-
                             StorageReference ref = storageReference.child(currentUser);
                             ref.putFile(uri);
 
@@ -174,31 +196,7 @@ public class Personal_Info extends Fragment {
                     }
                 }
             });
-    View.OnClickListener onClick_setProfilePic = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Dexter.withContext(getContext())
-                    .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                showImagePickerOptions();
-                            }
-
-                            if (report.isAnyPermissionPermanentlyDenied()) {
-                                showSettingsDialog();
-                            }
-                        }
-
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                            token.continuePermissionRequest();
-                        }
-                    }).check();
-
-        }
-    };
+    private Bitmap profilePic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -252,8 +250,16 @@ public class Personal_Info extends Fragment {
                 Log.d("Test", "saveToDB start");
                 //do the thing here
 
+
                 saveToDB();
-                NavDirections action = Personal_InfoDirections.actionPersonalInfoToPhysiqueInfoFragment();
+                NavDirections action = Personal_InfoDirections.actionPersonalInfoToPhysiqueInfoFragment(
+                        binding.editTextFirstName.getText().toString(),
+                        binding.editTextLastName.getText().toString(),
+                        dateOfBirth,
+                        gender,
+                        profilePic
+
+                );
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -299,7 +305,6 @@ public class Personal_Info extends Fragment {
         }
         return flag;
     }
-
 
     private void showImagePickerOptions() {
         ImgPickerActivity.showImagePickerOptions(this, new ImgPickerActivity.PickerOptionListener() {
@@ -375,8 +380,6 @@ public class Personal_Info extends Fragment {
         //synatx to get values:   Data_type value = binding.editText___{1}___.getText().toString();
         // {1}->Name of the edit field
         //store DoB directly from dateOfBirth variable
-
-
 
         //create user's profile doc:
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.project.healthcompanion">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,19 +16,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthCompanion">
-        <activity android:name=".HelpActivity">
+        <activity android:name=".HelpActivity" />
 
-        </activity>
         <activity android:name=".NoNetworkActivity" />
+
         <activity android:name=".Profile" />
+
         <activity android:name=".FoodDetailsActivity" /> <!-- <activity android:name=".ProfileImage" /> -->
-        <activity android:name=".DietPlansClasses.DietPlanner">
+
+        <activity
+            android:name=".DietPlansClasses.DietPlanner"
+            tools:ignore="ExtraText">
             android:label = "DietPlanner"
             android:parentActivityName = "DietPlans"
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
         <activity android:name=".DietPlansClasses.DisplayDietPlan">
             android:label = "DisplayDietPlans"
             android:parentActivityName = "DietPlans"
@@ -35,39 +45,42 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
         </activity>
+
         <activity android:name=".DietPlansClasses.DietPlans" />
 
         <activity
             android:name=".SearchFoodActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
 
-        </activity>
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+            android:name=".MainActivity1"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".DashboardActivity" />
+
+        <activity android:name=".ImgPickerActivity" />
+
+        <activity android:name=".LogInAndSignUp.GetUserInfoActivity">
 
         </activity>
-        <activity android:name=".DashboardActivity"></activity>
-        <activity android:name=".Records"></activity>
-        <activity android:name=".ImgPickerActivity" />
-        <activity android:name=".LogInAndSignUp.GetUserInfoActivity" />
+
+        <activity android:name=".Records" />
+
         <activity
             android:name=".LogInAndSignUp.LoginNSignUpActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysVisible" />
+            android:windowSoftInputMode="stateAlwaysVisible"></activity>
+
         <activity
             android:name=".HomePage"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity android:name=".ReminderClasses.Reminder_main" />
 
         <provider

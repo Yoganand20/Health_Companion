@@ -25,4 +25,9 @@
     <style name="NewTabTextSize" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">100sp</item>
     </style>
+
+    <style name="Widget.Theme.HealthCompanion.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
 </resources>

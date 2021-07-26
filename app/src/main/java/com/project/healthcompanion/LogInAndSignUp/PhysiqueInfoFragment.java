@@ -15,13 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.databinding.FragmentPhysiqueInfoBinding;
@@ -38,15 +35,37 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+    String gender;
+    Date datOfBirth;
 
     private FragmentPhysiqueInfoBinding binding;
-    private String activityLevel;
-    private Float weight, height, calculated_PAL, calculated_TDEE, calculated_BMI;
+    boolean isCustom = false;
+    private Float weight, height, BMI, PAL, TDEE;
 
     //jonny's variable
     FirebaseFirestore db;
 
-    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    TextWatcher heightWeightWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (binding.editTextWeight.getText().toString().isEmpty() ||
+                    binding.editTextHeight.getText().toString().isEmpty()) return;
+
+            weight = Float.parseFloat(binding.editTextWeight.getText().toString());
+            height = Float.parseFloat(binding.editTextHeight.getText().toString());
+
+            calculateBMI();
+        }
+    };
+
 
     public PhysiqueInfoFragment() {
         // Required empty public constructor
@@ -55,6 +74,9 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        gender = PhysiqueInfoFragmentArgs.fromBundle(getArguments()).getGender();
+        datOfBirth = PhysiqueInfoFragmentArgs.fromBundle(getArguments()).getDOB();
 
         db = FirebaseFirestore.getInstance();
     }
@@ -66,36 +88,18 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
         binding = FragmentPhysiqueInfoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.activityLevels, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.activityLevelsWithCustom,
+                android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         binding.activityLevelSpinner.setAdapter(adapter);
         binding.activityLevelSpinner.setOnItemSelectedListener(this);
 
-        //reset textViews
-        /*binding.textViewResetBMI.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.editTextNumberBMI.setText(calculated_BMI.toString());
-            }
-        });
+        binding.editTextHeight.addTextChangedListener(heightWeightWatcher);
+        binding.editTextWeight.addTextChangedListener(heightWeightWatcher);
 
-        binding.textViewResetPAL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.editTextNumberPAL.setText(calculated_PAL.toString());
-            }
-        });
-
-        binding.textViewResetTDEE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.editTextNumberTDEE.setText(calculated_TDEE.toString());
-            }
-        });*/
-
-
-        binding.editTextHeight.addTextChangedListener(new TextWatcher() {
+        binding.editTextNumberPAL.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -106,36 +110,22 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (binding.editTextHeight.getText().toString().isEmpty()) return;
-
-                height = Float.parseFloat(binding.editTextHeight.getText().toString());
-                updateValues();
+                if (s.toString().isEmpty() || !isCustom) return;
+                PAL = Float.valueOf(s.toString());
+                calculateTDEE();
+                showTDEE();
             }
         });
-
-        binding.editTextWeight.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (binding.editTextWeight.getText().toString().isEmpty()) return;
-                weight = Float.parseFloat(binding.editTextWeight.getText().toString());
-                updateValues();
-            }
-        });
-
 
         binding.buttonNext2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 storeToDB();
-                NavDirections action = PhysiqueInfoFragmentDirections.actionPhysiqueInfoFragmentToSetGoalFragment(weight, height / 100);
+                NavDirections action = PhysiqueInfoFragmentDirections.actionPhysiqueInfoFragmentToSetGoalFragment(
+                        weight,
+                        height / 100,
+                        gender
+                );
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -144,28 +134,18 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void storeToDB() {
-        //TODO: Store physical info in DB
-        //synatx to get values:   Data_type value = binding.editText___{1}___.getText().toString();
-        // {1}->Name of the edit field
 
         //create user's profile doc:
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.d("myTag",currentUser);
+        Log.d("myTag", currentUser);
 
-
-        //Float weight, height, calculated_PAL, calculated_TDEE, calculated_BMI;
 
         Float userWeight = weight;
         Float userHeight = height;
-        //String usersHeight = binding.editTextHeight.getText().toString(); is he storing string values or float?
-        Float userCalculated_TDEE = calculated_TDEE;
-        Float userCalculated_BMI = calculated_BMI;
-        Float userCalculated_PAL = calculated_PAL;
+        Float userCalculated_TDEE = TDEE;
+        Float userCalculated_BMI = BMI;
+        Float userCalculated_PAL = PAL;
 
-            /*String firstName = binding.editTextFirstName.getText().toString();
-            String lastName = binding.editTextLastName.getText().toString();
-            String userGender = gender;
-            Date userDOB = dateOfBirth;*/
 
         Map<String, Object> profileDataPhysique = new HashMap<>();
         profileDataPhysique.put("Weight", userWeight);
@@ -204,265 +184,105 @@ public class PhysiqueInfoFragment extends Fragment implements AdapterView.OnItem
 
             }
         }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull @NotNull Exception e) {
-                        Log.w("WriteRec", "Error adding docuemnt", e);
-                    }
-                });
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("WriteRec", "Error adding docuemnt", e);
+            }
+        });
     }
 
-    private void setCalculatedValues() {
-        binding.editTextNumberPAL.setText(calculated_PAL.toString());
-        Log.d("PAL", String.valueOf(calculated_PAL));
-        binding.editTextNumberTDEE.setText(calculated_TDEE.toString());
-        Log.d("TDEE", String.valueOf(calculated_TDEE));
-        binding.editTextNumberBMI.setText(calculated_BMI.toString());
-        Log.d("BMI", String.valueOf(calculated_BMI));
+    private void calculateBMI() {
+        //BMI Calculation
+        float height_inMeters = new BigDecimal(Float.toString(height / 100)).setScale(2, RoundingMode.HALF_UP).floatValue();
+        BMI = weight / (height_inMeters * height_inMeters);
+        BMI = new BigDecimal(Float.toString(BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
+        showBMI();
     }
 
-    private void updateValues() {
-        float BMR, TEF, EEE, NEAT;
+    private void showBMI() {
+        binding.editTextBMI.setText(BMI.toString());
+        Log.d("BMI", String.valueOf(BMI));
+    }
+
+    private void calculateTDEE() {
         //BMR Calculation
-        if (weight == null || height == null) {
-            calculated_BMI = (float) 0;
-            calculated_PAL = (float) 0;
-            calculated_TDEE = (float) 0;
-            setCalculatedValues();
+        float BMR;
+        int age = getAge(datOfBirth);
+        if (gender.equals("Male")) {
+            BMR = (weight * 10.0f) + (height * 6.25f) - (age * 5.0f) + 5.0f;
+            Log.d("BMR", String.valueOf(BMR));
+        } else if (gender.equals("Female")) {
+            BMR = (weight * 10.0f) + (height * 6.25f) - (age * 5.0f) - 161.0f;
+            Log.d("BMR", String.valueOf(BMR));
+        } else {
+            Log.d(getTag(), "some problem occurred: gender:" + gender);
             return;
         }
 
-        float height_inMeters = new BigDecimal(Float.toString(height / 100)).setScale(2, RoundingMode.HALF_UP).floatValue();
-        calculated_BMI = weight / (height_inMeters * height_inMeters);
+        TDEE = BMR * PAL;
+        Log.d("Calculated TDEE", String.valueOf(TDEE));
 
-        //Yoganand's code
-        /*if (activityLevel.equals(getResources().getString(R.string.light_activity_lifestyle))) {
-            //TDEE Calculation
-            BMR = weight * 20;
-            TEF = BMR * (float) 0.1;
-            EEE = 250;//estimate
-            NEAT = 250;//estimate
-            calculated_TDEE = BMR + TEF + EEE + NEAT;
 
-            //PAL Calculation
-            calculated_PAL = (float) 1.53;//estimate
-        } else if (activityLevel.equals(getResources().getString(R.string.moderate_activity_lifestyle))) {
-            //TDEE Calculation
-            BMR = weight * 20;
-            TEF = BMR * (float) 0.1;
-            EEE = 37;//estimate
-            NEAT = 375;//estimate
-            calculated_TDEE = BMR + TEF + EEE + NEAT;
+        TDEE = new BigDecimal(Float.toString(TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
+        PAL = new BigDecimal(Float.toString(PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
+    }
 
-            //PAL Calculation
-            calculated_PAL = (float) 1.76;//estimate
-        } else if (activityLevel.equals(getResources().getString(R.string.vigorous_activity_lifestyle))) {
-            //TDEE Calculation
-            BMR = weight * 20;
-            TEF = BMR * (float) 0.1;
-            EEE = 37;//estimate
-            NEAT = 375;//estimate
-            calculated_TDEE = BMR + TEF + EEE + NEAT;
+    private void showPAL() {
 
-            //PAL Calculation
-            calculated_PAL = (float) 2.25;//estimate
-        } else {
-            calculated_BMI = (float) 0;
-            calculated_TDEE = (float) 0;
-            calculated_PAL = (float) 0;
-        }*/
+        binding.editTextNumberPAL.setText(PAL.toString());
+        Log.d("PAL", String.valueOf(PAL));
+    }
 
-        //Joshua's code
-        /*db.collection("profiles").document(currentUser)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if(documentSnapshot.exists()) {
-                                float BMR;
-                                String gender;
-                                Date dob, thisyear;
-                                gender = documentSnapshot.getString("gender");
-                                dob = documentSnapshot.getDate("DOB");
+    private void showTDEE() {
+        binding.editTextNumberTDEE.setText(TDEE.toString());
+        Log.d("TDEE", String.valueOf(TDEE));
+    }
 
-                                thisyear = Calendar.getInstance().getTime();
 
-                                SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-                                String year = yearFormat.format(thisyear);
-                                String dobyear = yearFormat.format(dob);
+    private int getAge(Date date) {
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
 
-                                Log.d("DateStuff", "This year:" + year + "\nDoB:" + dobyear);
+        String CurrentYear = yearFormat.format(Calendar.getInstance().getTime());
+        String dobYear = yearFormat.format(date);
 
-                                Float age = Float.parseFloat(year) - Float.parseFloat(dobyear);
-
-                                if(gender.equals("Male")) {
-
-                                    BMR = (weight * 10.0f) + (height * 6.25f) - (age * 5.0f) + 5.0f;
-
-                                    Log.d("BMR", String.valueOf(BMR));
-
-                                    if (activityLevel.equals(getResources().getString(R.string.light_activity_lifestyle))) {
-                                        calculated_PAL = (float) 1.53;
-
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                    }
-                                    else if (activityLevel.equals(getResources().getString(R.string.moderate_activity_lifestyle))) {
-                                        calculated_PAL = (float) 1.76;
-
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                    }
-                                    else if (activityLevel.equals(getResources().getString(R.string.vigorous_activity_lifestyle))) {
-                                        calculated_PAL = (float) 2.25;
-
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                    }
-                                    else {
-                                        calculated_BMI = (float) 0;
-                                        calculated_TDEE = (float) 0;
-                                        calculated_PAL = (float) 0;
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                });*/
-
-        //Joshua's other code
-        db.collection("profiles").document(currentUser)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if(documentSnapshot.exists()) {
-                                float BMR;
-                                String gender = documentSnapshot.getString("gender");
-                                Date dob = documentSnapshot.getDate("DOB");
-                                Date thisyear = Calendar.getInstance().getTime();
-
-                                SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-
-                                String year = yearFormat.format(thisyear);
-                                String dobyear = yearFormat.format(dob);
-
-                                Log.d("DateStuff", "This year:" + year + "\nDoB:" + dobyear);
-
-                                Float age = Float.parseFloat(year) - Float.parseFloat(dobyear);
-
-                                Log.d("Gender", gender);
-
-                                if(gender.equals("Male")) {
-                                    BMR = (weight * 10.0f) + (height * 6.25f) - (age * 5.0f) + 5.0f;
-                                    Log.d("BMR", String.valueOf(BMR));
-                                    if (activityLevel.equals(getResources().getString(R.string.light_activity_lifestyle))) {
-                                        calculated_PAL = (float) 1.53;
-                                        Log.d("1", String.valueOf(calculated_PAL));
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                        Log.d("1", String.valueOf(calculated_TDEE));
-
-                                        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
-                                        setCalculatedValues();
-                                    }
-                                    else if (activityLevel.equals(getResources().getString(R.string.moderate_activity_lifestyle))) {
-                                        calculated_PAL = (float) 1.76;
-                                        Log.d("2", String.valueOf(calculated_PAL));
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                        Log.d("2", String.valueOf(calculated_TDEE));
-
-                                        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
-                                        setCalculatedValues();
-                                    }
-                                    else if (activityLevel.equals(getResources().getString(R.string.vigorous_activity_lifestyle))) {
-                                        calculated_PAL = (float) 2.25;
-                                        Log.d("3", String.valueOf(calculated_PAL));
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                        Log.d("3", String.valueOf(calculated_TDEE));
-
-                                        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
-                                        setCalculatedValues();
-                                    }
-                                    else {
-                                        calculated_BMI = (float) 0;
-                                        calculated_TDEE = (float) 0;
-                                        calculated_PAL = (float) 0;
-                                    }
-                                }
-                                else if(gender.equals("Female")) {
-                                    BMR = (weight * 10.0f) + (height * 6.25f) - (age * 5.0f) - 161.0f;
-                                    Log.d("BMR", String.valueOf(BMR));
-                                    if (activityLevel.equals(getResources().getString(R.string.light_activity_lifestyle))) {
-                                        calculated_PAL = (float) 1.53;
-                                        Log.d("1", String.valueOf(calculated_PAL));
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                        Log.d("1", String.valueOf(calculated_TDEE));
-
-                                        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
-                                        setCalculatedValues();
-                                    }
-                                    else if (activityLevel.equals(getResources().getString(R.string.moderate_activity_lifestyle))) {
-                                        calculated_PAL = (float) 1.76;
-                                        Log.d("2", String.valueOf(calculated_PAL));
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                        Log.d("2", String.valueOf(calculated_TDEE));
-
-                                        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
-                                        setCalculatedValues();
-                                    }
-                                    else if (activityLevel.equals(getResources().getString(R.string.vigorous_activity_lifestyle))) {
-                                        calculated_PAL = (float) 2.25;
-                                        Log.d("3", String.valueOf(calculated_PAL));
-                                        calculated_TDEE = BMR * calculated_PAL;
-                                        Log.d("3", String.valueOf(calculated_TDEE));
-
-                                        calculated_BMI = new BigDecimal(Float.toString(calculated_BMI)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_TDEE = new BigDecimal(Float.toString(calculated_TDEE)).setScale(2, RoundingMode.HALF_UP).floatValue();
-
-                                        calculated_PAL = new BigDecimal(Float.toString(calculated_PAL)).setScale(2, RoundingMode.HALF_UP).floatValue();
-                                        setCalculatedValues();
-                                    }
-                                    else {
-                                        calculated_BMI = (float) 0;
-                                        calculated_TDEE = (float) 0;
-                                        calculated_PAL = (float) 0;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+        return Integer.parseInt(CurrentYear) - Integer.parseInt(dobYear);
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        activityLevel = parent.getItemAtPosition(position).toString();
-        updateValues();
+        switch (position) {
+            case 0:
+                binding.editTextNumberPAL.setText("");
+                return;
+            case 1:
+                isCustom = false;
+                binding.editTextNumberPAL.setFocusableInTouchMode(false);
+                binding.editTextNumberPAL.setFocusable(false);
+                PAL = 1.53f;
+                break;
+            case 2:
+                isCustom = false;
+                binding.editTextNumberPAL.setFocusableInTouchMode(false);
+                binding.editTextNumberPAL.setFocusable(false);
+                PAL = 1.76f;
+                break;
+            case 3:
+                isCustom = false;
+                binding.editTextNumberPAL.setFocusableInTouchMode(false);
+                binding.editTextNumberPAL.setFocusable(false);
+                PAL = 2.25f;
+                break;
+            case 4:
+                isCustom = true;
+                binding.editTextNumberPAL.setFocusableInTouchMode(true);
+                binding.editTextNumberPAL.setFocusable(true);
+                return;
+        }
+        calculateTDEE();
+        showPAL();
+        showTDEE();
     }
-
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

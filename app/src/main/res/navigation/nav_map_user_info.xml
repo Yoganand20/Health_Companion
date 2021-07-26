@@ -22,6 +22,22 @@
         <action
             android:id="@+id/action_physiqueInfoFragment_to_setGoalFragment"
             app:destination="@id/setGoalFragment" />
+        <argument
+            android:name="firstName"
+            app:argType="string" />
+        <argument
+            android:name="lastName"
+            app:argType="string" />
+        <argument
+            android:name="DOB"
+            app:argType="java.util.Date" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
+        <argument
+            android:name="profilePic"
+            app:argType="android.graphics.Bitmap"
+            app:nullable="true" />
 
 
     </fragment>
@@ -36,6 +52,9 @@
         <argument
             android:name="height"
             app:argType="float" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
     </fragment>
 
 

@@ -3,6 +3,7 @@ package com.project.healthcompanion;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,9 +38,13 @@ public class DashboardActivity extends AppCompatActivity {
                         Toast.makeText(DashboardActivity.this, "Error getting search result", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Food selectedFood = intent.getParcelableExtra("SearchResult");
+                    Food selectedFood = (Food) intent.getSerializableExtra("selectedFood");
+                    int qty = intent.getIntExtra("quantity", 1);
+
+                    Log.d("dash", selectedFood.getServingUnit());
                 }
             });
+
     private ActivityDashboardBinding binding;
     private Date today;
     private double totalCaloriesConsumed, totalCaloriesPlanned;
@@ -65,8 +70,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_Layout);
 
-        //Intent intent = new Intent(this, SearchFoodActivity.class);
-        //searchResultLauncher.launch(intent);
+        Intent intent = new Intent(this, SearchFoodActivity.class);
+        searchResultLauncher.launch(intent);
+
+
     }
 
     private void displayDietPlan(DietPlan dietPlan) {

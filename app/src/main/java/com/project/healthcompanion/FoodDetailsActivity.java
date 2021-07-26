@@ -21,6 +21,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
     View.OnClickListener selectButton_onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            food.setServingQty(qty);
             Intent intent = new Intent();
             intent.putExtra("selectedFood", FoodDetailsActivity.this.food);
             intent.putExtra("quantity", FoodDetailsActivity.this.qty);

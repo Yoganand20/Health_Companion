@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.databinding.FragmentSetGoalBinding;
 
@@ -58,6 +57,7 @@ public class SetGoalFragment extends Fragment {
         suggcalDocref = firebaseFirestore.collection("profiles").document(currentUser).collection("profile categories").document("suggested calories");
 
         weight = SetGoalFragmentArgs.fromBundle(getArguments()).getWeight();
+        height = SetGoalFragmentArgs.fromBundle(getArguments()).getHeight();
         height = SetGoalFragmentArgs.fromBundle(getArguments()).getHeight();
     }
 

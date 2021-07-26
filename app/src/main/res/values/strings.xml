@@ -6,11 +6,20 @@
     <string name="light_activity_lifestyle">Light Activity Lifestyle</string>
     <string name="moderate_activity_lifestyle">Moderate Activity Lifestyle</string>
     <string name="vigorous_activity_lifestyle">Vigorous Activity Lifestyle</string>
+    <string name="custom_activity_level">Custom Activity Lifestyle</string>
     <string-array name="activityLevels">
         <item></item>
         <item>@string/light_activity_lifestyle</item>
         <item>@string/moderate_activity_lifestyle</item>
         <item>@string/vigorous_activity_lifestyle</item>
+        <item></item>
+    </string-array>
+    <string-array name="activityLevelsWithCustom">
+        <item />
+        <item>@string/light_activity_lifestyle</item>
+        <item>@string/moderate_activity_lifestyle</item>
+        <item>@string/vigorous_activity_lifestyle</item>
+        <item>@string/custom_activity_level</item>
     </string-array>
     <string-array name="defeceitOptions">
         <item></item>
@@ -164,7 +173,7 @@
     <string name="save">Save</string>
     <string name="previous">Previous</string>
     <string name="done">Done</string>
-    <string name="activityLevelQ">What is your daily activity level?</string>
+    <string name="activityLevelQ">What is your physical activity level?</string>
     <string name="in_cm">in cm</string>
     <string name="height">Height</string>
     <string name="in_kg">in Kg</string>
@@ -184,6 +193,8 @@
     <string name="serving_to_grams">1 Serving(??? grams)</string>
     <string name="cancel">cancel</string>
     <string name="select">Select</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 
     <string name="helpheader"> <b>Message from Team Health Companion: </b> \n\n

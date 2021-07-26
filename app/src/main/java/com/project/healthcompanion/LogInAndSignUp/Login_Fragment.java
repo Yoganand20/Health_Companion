@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.Profile;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Service.Validate;
@@ -70,6 +69,7 @@ public class Login_Fragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.GONE);
                                     Intent intent = new Intent(getActivity(), Profile.class);
                                     startActivity(intent);
                                 } else {

@@ -40,7 +40,6 @@ public class LoginNSignUpActivity extends AppCompatActivity {
         //set tabLayoutMediator to viewPager and tabLayout view
         new TabLayoutMediator(binding.tabLayoutLs, binding.viewPagerLs, ((tab, position) -> tab.setText(Titles[position]))).attach();
 
-
         /*Hide and show google sign in option when keyboard is opened or closed*/
         //set global layout listener on outer-most constraint layout
         binding.constraintlayoutLs.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -63,7 +62,6 @@ public class LoginNSignUpActivity extends AppCompatActivity {
     //press back twice to exit
     private boolean backPressedOnce = false;
     private Toast t;
-
     @Override
     public void onBackPressed() {
         if (binding.viewPagerLs.getCurrentItem() == 0) {
