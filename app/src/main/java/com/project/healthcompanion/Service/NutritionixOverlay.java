@@ -28,6 +28,13 @@ public class NutritionixOverlay {
     public static final String INSTANT_URL = "https://trackapi.nutritionix.com/v2/search/instant";
     private final RequestQueue queue;
 
+    // private static final String x_app_id="1440d43b";
+    //private static final String x_app_key="b44fbd24ce80dffd91f4ada61316f4c3";
+    // private static final String x_remote_user_id="0";
+
+    private static final String x_app_id = "761545d2";
+    private static final String x_app_key = "9c446a74a908b605a2767a15e244cca3";
+    private static final String x_remote_user_id = "0";
 
     public NutritionixOverlay(Context context) {
         this.context = context;
@@ -73,9 +80,9 @@ public class NutritionixOverlay {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("x-app-id", "1440d43b");
-                params.put("x-app-key", "b44fbd24ce80dffd91f4ada61316f4c3");
-                params.put("x-remote-user-id", "0");
+                params.put("x-app-id", x_app_id);
+                params.put("x-app-key", x_app_key);
+                params.put("x-remote-user-id", x_remote_user_id);
                 return params;
             }
         };
@@ -133,12 +140,13 @@ public class NutritionixOverlay {
             }
         }) {
 
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("x-app-id", "1440d43b");
-                params.put("x-app-key", "b44fbd24ce80dffd91f4ada61316f4c3");
-                params.put("x-remote-user-id", "0");
+                params.put("x-app-id", x_app_id);
+                params.put("x-app-key", x_app_key);
+                params.put("x-remote-user-id", x_remote_user_id);
                 return params;
             }
         };
@@ -201,9 +209,9 @@ public class NutritionixOverlay {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("x-app-id", "1440d43b");
-                params.put("x-app-key", "b44fbd24ce80dffd91f4ada61316f4c3");
-                params.put("x-remote-user-id", "0");
+                params.put("x-app-id", x_app_id);
+                params.put("x-app-key", x_app_key);
+                params.put("x-remote-user-id", x_remote_user_id);
                 return params;
             }
         };
@@ -227,143 +235,5 @@ public class NutritionixOverlay {
 
         void onError(String message);
     }
-
-/*
-    public void getFood(final String foodName, final NutrientResponse nutrientResponse) {
-        JSONObject postData = new JSONObject();
-        try {
-            postData.put("query", foodName);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-       final List<Food> NutrientReportModel = new ArrayList<>();
-
-        //get json object
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NUTRITIONIX_URL, postData, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    Log.d("tag","inside method");
-                    JSONArray foods = response.getJSONArray("foods");
-                    for (int i = 0; i < foods.length(); i++) {
-                        Food Food = new Food();
-                        int sum = 0;
-
-                        JSONObject firstFood = (JSONObject) foods.get(i);
-                        sum += firstFood.getInt("nf_calories");
-
-                        Food.setThumbImage(firstFood.getJSONObject("photo").getString("thumb"));
-                        Food.setFood_name(firstFood.getString("food_name"));
-                        Food.setServing_qty(firstFood.getInt("serving_qty"));
-                        Food.setServing_unit(firstFood.getString("serving_unit"));
-                        Food.setCalories(firstFood.getLong("nf_calories"));
-                        Food.setTotal_fat(firstFood.getLong("nf_total_fat"));
-                        Food.setSaturated_fat(firstFood.getLong("nf_saturated_fat"));
-                        Food.setCholesterol(firstFood.getLong("nf_cholesterol"));
-                        Food.setSodium(firstFood.getLong("nf_sodium"));
-                        Food.setTotal_carbohydrate(firstFood.getLong("nf_total_carbohydrate"));
-                        Food.setSugars(firstFood.getString("nf_sugars"));
-                        Food.setProtein(firstFood.getLong("nf_protein"));
-                        Food.setPotassium(firstFood.getLong("nf_potassium"));
-
-                        NutrientReportModel.add(Food);
-                    }
-                    nutrientResponse.onSuccess(NutrientReportModel);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                nutrientResponse.onError("Error");
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("x-app-id", "1440d43b");
-                params.put("x-app-key", "b44fbd24ce80dffd91f4ada61316f4c3");
-                params.put("x-remote-user-id", "0");
-                return params;
-            }
-        };
-
-        MySingleton.getInstance(context).addToRequestQueue(request);
-
-    }
-
-    public void getResults(String query,final SearchSuggestionResponse searchSuggestionResponse){
-        String URL=INSTANT_URL+"?query="+query;
-
-        ArrayList<SuggestionItem> SearchSuggestion = new ArrayList<>();
-
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject=new JSONObject(response);
-
-                    JSONArray commonFoods = jsonObject.getJSONArray("common");
-                    for (int i = 0; i < commonFoods.length(); i++) {
-                        SuggestionItem Food = new SuggestionItem();
-
-                        JSONObject food = (JSONObject) commonFoods.get(i);
-
-                        Food.setImage(food.getJSONObject("photo").getString("thumb"));
-                        Food.setFoodName(food.getString("food_name"));
-                        SearchSuggestion.add(Food);
-                    }
-                    //Branded food
-                    /*
-                    JSONArray brandedFoods = jsonObject.getJSONArray("branded");
-                    for (int i = 0; i < brandedFoods.length(); i++) {
-                        SuggestionItem Food = new SuggestionItem();
-
-                        JSONObject food = (JSONObject) brandedFoods.get(i);
-
-                       // Food.setImage(food.getJSONObject("photo").getString("thumb"));
-                        Food.setFoodName(food.getString("food_name"));
-                        Food.setBrandName(food.getString("brand_name"));
-                        Food.setServingUnit(food.getString("serving_unit"));
-                        Food.setFoodID(food.getString("nix_item_id"));
-                        Food.setTotalCal((int) food.getLong("nf_calories"));
-                        Food.setServingQty(food.getInt("serving_qty"));
-
-                        SearchSuggestion.add(Food);
-                    }//*/
-            /*
-                    searchSuggestionResponse.onSuccess(SearchSuggestion);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                searchSuggestionResponse.onError(error.getMessage());
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("x-app-id", "1440d43b");
-                params.put("x-app-key", "b44fbd24ce80dffd91f4ada61316f4c3");
-                params.put("x-remote-user-id", "0");
-                return params;
-            }
-        };
-
-        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
-    }*/
-
 
 }

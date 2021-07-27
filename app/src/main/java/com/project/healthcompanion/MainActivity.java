@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.narify.netdetect.NetDetect;
+import com.project.healthcompanion.LogInAndSignUp.GetUserInfoActivity;
 import com.project.healthcompanion.LogInAndSignUp.LoginNSignUpActivity;
 import com.project.healthcompanion.databinding.ActivityMainBinding;
 
@@ -39,8 +40,16 @@ public class MainActivity extends AppCompatActivity {
             FirebaseUser currentUser = mAuth.getCurrentUser();
 
             if (currentUser != null) { //if user is logged in continue to home screen
-                Intent intent = new Intent(this, Profile.class);
-                startActivity(intent);
+
+                if (isProfileEntered()) {
+                    Intent intent = new Intent(this, Profile.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, GetUserInfoActivity.class);
+                    startActivity(intent);
+                }
+
+
             } else {//else open login/sign up activity
                 Intent LoginNSignUp = new Intent(this, LoginNSignUpActivity.class);
                 startActivity(LoginNSignUp);
@@ -48,5 +57,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private boolean isProfileEntered() {
+        //return false if profile details are not entered
+        //return true if profile details are entered
+        return true;
     }
 }

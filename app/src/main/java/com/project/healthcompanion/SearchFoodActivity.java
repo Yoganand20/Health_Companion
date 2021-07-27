@@ -44,7 +44,7 @@ public class SearchFoodActivity extends AppCompatActivity {
             }
         }
     });
-    final ListAdapter.OnItemClickListener onItemClickListener = new ListAdapter.OnItemClickListener() {
+    final SearchSuggestionListAdapter.OnItemClickListener onItemClickListener = new SearchSuggestionListAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, SuggestionItem obj, int position) {
             Intent intent = new Intent(getApplicationContext(), FoodDetailsActivity.class);
@@ -54,7 +54,7 @@ public class SearchFoodActivity extends AppCompatActivity {
     };
     private List<SuggestionItem> suggestionItemList;
     private RecyclerView recyclerView;
-    private ListAdapter listAdapter;
+    private SearchSuggestionListAdapter searchSuggestionListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +105,8 @@ public class SearchFoodActivity extends AppCompatActivity {
     }
 
     private void showSuggestion(List<SuggestionItem> suggestions) {
-        listAdapter = new ListAdapter(suggestionItemList, this);
-        listAdapter.setOnItemClickListener(onItemClickListener);
-        recyclerView.setAdapter(listAdapter);
+        searchSuggestionListAdapter = new SearchSuggestionListAdapter(suggestionItemList, this);
+        searchSuggestionListAdapter.setOnItemClickListener(onItemClickListener);
+        recyclerView.setAdapter(searchSuggestionListAdapter);
     }
 }

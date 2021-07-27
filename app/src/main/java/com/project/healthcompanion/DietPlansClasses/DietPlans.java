@@ -75,7 +75,7 @@ public class DietPlans extends AppCompatActivity {
 
         listView = findViewById(R.id.diet_plan_list);
         listViewItems = new ArrayList<>();
-        listViewAdapter = new DietPlansListAdapter(getApplication(), listViewItems);
+        listViewAdapter = new DietPlansListAdapter(this, listViewItems);
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +161,7 @@ public class DietPlans extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.d("IfSuccessful", "Check if doc access is successful");
                     DocumentSnapshot document = task.getResult();
+
                     if (document.exists()) {
                         Log.d("IfExists", "Check if doc exists");
                         List<Object> check_diet_plans_names = (List<Object>) document.get("Diet Plan Names");

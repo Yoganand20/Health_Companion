@@ -204,14 +204,19 @@
             android:ems="2"
             android:inputType="number"
             android:text="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textAllCaps="true" />
 
         <ImageButton
             android:id="@+id/imageButton_plus"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_plus_icon" />
+            android:adjustViewBounds="false"
+            android:background="@color/white"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_plus_icon_t" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

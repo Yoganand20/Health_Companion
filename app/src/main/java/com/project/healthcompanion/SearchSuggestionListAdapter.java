@@ -17,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class SearchSuggestionListAdapter extends RecyclerView.Adapter<SearchSuggestionListAdapter.ViewHolder> {
 
     private final List<SuggestionItem> suggestionList;
     private final Context context;
     private OnItemClickListener mOnItemClickListener;
 
-    ListAdapter(List<SuggestionItem> list, Context context) {
+    SearchSuggestionListAdapter(List<SuggestionItem> list, Context context) {
         suggestionList = list;
         this.context = context;
     }
