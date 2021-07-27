@@ -13,7 +13,7 @@ import com.narify.netdetect.NetDetect;
 import com.project.healthcompanion.LogInAndSignUp.LoginNSignUpActivity;
 import com.project.healthcompanion.databinding.ActivityMainBinding;
 
-public class MainActivity1 extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
 
@@ -29,7 +29,7 @@ public class MainActivity1 extends AppCompatActivity {
 
         NetDetect.check(isConnected -> {
             if (!isConnected) {
-                Intent intent = new Intent(MainActivity1.this, NoNetworkActivity.class);
+                Intent intent = new Intent(MainActivity.this, NoNetworkActivity.class);
                 startActivity(intent);
             }
             // get instance of firebaseAuth

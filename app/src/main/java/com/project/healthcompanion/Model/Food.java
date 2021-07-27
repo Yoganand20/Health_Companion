@@ -172,7 +172,7 @@ public class Food implements Serializable {
         this.id = id;
     }
 
-    public int getServingQty() {
+    public Integer getServingQty() {
         return servingQty;
     }
 

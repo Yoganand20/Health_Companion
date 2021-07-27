@@ -25,7 +25,7 @@
         <activity android:name=".FoodDetailsActivity" /> <!-- <activity android:name=".ProfileImage" /> -->
 
         <activity
-            android:name=".DietPlansClasses.DietPlanner"
+            android:name=".DietPlansClasses.DietPlannerActivity"
             tools:ignore="ExtraText">
             android:label = "DietPlanner"
             android:parentActivityName = "DietPlans"
@@ -53,7 +53,7 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
 
         <activity
-            android:name=".MainActivity1"
+            android:name=".MainActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
 

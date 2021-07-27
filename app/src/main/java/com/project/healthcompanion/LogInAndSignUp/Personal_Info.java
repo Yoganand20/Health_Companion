@@ -42,7 +42,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.project.healthcompanion.ImgPickerActivity;
-import com.project.healthcompanion.MainActivity1;
+import com.project.healthcompanion.MainActivity;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.Service.Validate;
 import com.project.healthcompanion.databinding.FragmentPersonalInfoBinding;
@@ -63,7 +63,7 @@ public class Personal_Info extends Fragment {
     private Date dateOfBirth;
     final Calendar DOB_Calendar = Calendar.getInstance();
     private String gender;
-    private static final String TAG = MainActivity1.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     //jonny's variable
     FirebaseFirestore db;

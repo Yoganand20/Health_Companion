@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -25,7 +26,7 @@ import com.project.healthcompanion.databinding.DialogDashboardBinding;
 
 import java.sql.Date;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DrawerLayout drawerLayout;
 
     DietPlan dietPlan;
@@ -74,6 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
         searchResultLauncher.launch(intent);
 
 
+
     }
 
     private void displayDietPlan(DietPlan dietPlan) {
@@ -103,34 +105,64 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     //navigation drawer
-    public void ClickMenu(View view) { HomePage.openDrawer(drawerLayout); }
+    public void ClickMenu(View view) {
+        HomePage.openDrawer(drawerLayout);
+    }
 
     public void ClickLogo(View view) {
         HomePage.closeDrawer(drawerLayout);
     }
 
-    public void ClickProfile(View view) { HomePage.redirectActivity(this, Profile.class); }
+    public void ClickProfile(View view) {
+        HomePage.redirectActivity(this, Profile.class);
+    }
 
     public void ClickHome(View view) {
         HomePage.redirectActivity(this, HomePage.class);
     }
 
-    public void ClickDashboard(View view) { HomePage.closeDrawer(drawerLayout); }
+    public void ClickDashboard(View view) {
+        HomePage.closeDrawer(drawerLayout);
+    }
 
-    public void ClickRecords(View view) { HomePage.redirectActivity(this, Records.class); }
+    public void ClickRecords(View view) {
+        HomePage.redirectActivity(this, Records.class);
+    }
 
-    public void ClickDietPlans(View view) { HomePage.redirectActivity(this, DietPlans.class); }
+    public void ClickDietPlans(View view) {
+        HomePage.redirectActivity(this, DietPlans.class);
+    }
 
-    public void ClickReminders(View view) { HomePage.redirectActivity(this, Reminder_main.class); }
+    public void ClickReminders(View view) {
+        HomePage.redirectActivity(this, Reminder_main.class);
+    }
 
-    public void ClickHelp(View view) {HomePage.redirectActivity(this, HelpActivity.class);}
+    public void ClickHelp(View view) {
+        HomePage.redirectActivity(this, HelpActivity.class);
+    }
 
-    public void ClickLogout(View view) { HomePage.logout(this); }
+    public void ClickLogout(View view) {
+        HomePage.logout(this);
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         //HomePage.closeDrawer(drawerLayout);
     }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("DashPos", String.valueOf(position));
+        Object item = parent.getItemAtPosition(position);
+        //Log.d()
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+
     //end of navigation drawer
 }

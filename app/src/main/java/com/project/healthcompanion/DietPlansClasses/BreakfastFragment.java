@@ -2,38 +2,25 @@ package com.project.healthcompanion.DietPlansClasses;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.project.healthcompanion.Model.DietPlan;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+
 import com.project.healthcompanion.Model.Food;
 import com.project.healthcompanion.R;
 import com.project.healthcompanion.SearchFoodActivity;
-import com.project.healthcompanion.databinding.FragmentBreakfastBinding;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,15 +187,15 @@ public class BreakfastFragment extends Fragment {
 
     public void BUploadData() {
 
-        DietPlanner DP = (DietPlanner) getActivity();
+        DietPlannerActivity DP = (DietPlannerActivity) getActivity();
 
         for(int i=0; i<BreakfastFood.size(); ++i) {
             Log.d("BreakfastListPostDel", "#" + i + ": " + BreakfastFood.get(i)[0] + "|" + BreakfastFood.get(i)[1]);
 
-            DP.ReceiveBreakfast(BreakfastFood.get(i)[0], BreakfastFood.get(i)[1]); //BreakfastFood.get(i)[2], BreakfastFood.get(i)[3], BreakfastFood.get(i)[4], BreakfastFood.get(i)[5]);
+            // DP.ReceiveBreakfast(BreakfastFood.get(i)[0], BreakfastFood.get(i)[1]); //BreakfastFood.get(i)[2], BreakfastFood.get(i)[3], BreakfastFood.get(i)[4], BreakfastFood.get(i)[5]);
         }
 
-        DP.RecieveBMacros(CalVal, proteinVal, carbsVal, fatsVal);
+        // DP.RecieveBMacros(CalVal, proteinVal, carbsVal, fatsVal);
     }
 
     public static void removeBreakfast(int remove, String Name) {

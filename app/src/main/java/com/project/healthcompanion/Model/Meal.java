@@ -1,7 +1,10 @@
 package com.project.healthcompanion.Model;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +18,13 @@ public class Meal {
     private Double totalProts;
     private List<Food> foods;
 
-    Meal(String mealName) {
+    public Meal(String mealName) {
         this.mealName = mealName;
+        totalCalories = 0.0;
+        totalFats = 0.0;
+        totalCarbs = 0.0;
+        totalProts = 0.0;
+        foods = new ArrayList<>();
     }
 
     public String getMealName() {
@@ -36,21 +44,21 @@ public class Meal {
         return new Time[]{startTime, endTime};
     }
 
-    public Double getTotalCalories() {
-        return totalCalories;
+    public Float getTotalCalories() {
+        return roundTo2Decs(totalCalories);
     }
 
-    public Double getTotalCarbs() {
-        return totalCarbs;
+    public Float getTotalCarbs() {
+        return roundTo2Decs(totalCarbs);
     }
 
-    public Double getTotalFats() {
-        return totalFats;
+    public Float getTotalFats() {
+        return roundTo2Decs(totalFats);
     }
 
 
-    public Double getTotalProts() {
-        return totalProts;
+    public Float getTotalProts() {
+        return roundTo2Decs(totalProts);
     }
 
 
@@ -67,6 +75,7 @@ public class Meal {
         totalCarbs += food.getTotalCarbohydrate() * food.getServingQty();
         totalFats += food.getTotalFat() * food.getServingQty();
         totalProts += food.getProtein() * food.getServingQty();
+
         //food doesnt exists in list
         int index = foodExists(food.getFood_name());
         if (index == -1) {
@@ -79,9 +88,9 @@ public class Meal {
     public void removeFood(int position) {
         Food food = foods.get(position);
         totalCalories -= food.getCalories() * food.getServingQty();
-        totalCarbs += food.getTotalCarbohydrate() * food.getServingQty();
-        totalFats += food.getTotalFat() * food.getServingQty();
-        totalProts += food.getProtein() * food.getServingQty();
+        totalCarbs -= food.getTotalCarbohydrate() * food.getServingQty();
+        totalFats -= food.getTotalFat() * food.getServingQty();
+        totalProts -= food.getProtein() * food.getServingQty();
         foods.remove(position);
     }
 
@@ -99,6 +108,12 @@ public class Meal {
             foodMap.put(foods.get(i).getFood_name(), foods.get(i).getServingQty());
         }
         return foodMap;
+    }
+
+    private float roundTo2Decs(double value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.floatValue();
     }
 
 }
