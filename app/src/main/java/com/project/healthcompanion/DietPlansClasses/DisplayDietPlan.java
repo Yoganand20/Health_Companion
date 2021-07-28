@@ -28,6 +28,7 @@ import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class DisplayDietPlan extends AppCompatActivity {
@@ -116,8 +117,8 @@ public class DisplayDietPlan extends AppCompatActivity {
                                     Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
                                     //if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
-                                        breakfast_id_disp.append(FoodIDsQuantitiesMapField.getKey() + "\n");
-                                        breakfast_qty_disp.append("Quantity:" + FoodIDsQuantitiesMapField.getValue() + "\n");
+                                    breakfast_id_disp.append(FoodIDsQuantitiesMapField.getKey() + "\n");
+                                    breakfast_qty_disp.append("Quantity:" + FoodIDsQuantitiesMapField.getValue() + "\n");
                                     //}
                                 }
                             }
@@ -143,30 +144,21 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 Map<String, Object> map = LunchSnapshot.getData();
                                 Log.d("Lunch", "Lunch:" + map);
 
-                                /*for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
                                 {
-                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
-                                    String foodID;
 
-                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
-                                        foodID = FoodIDsQuantitiesMapField.getKey();
-                                        Log.d("foodID", foodID);
 
-                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
-                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
-                                        {
-                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
                                                 //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
-                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDsQuantitiesMapField.getKey());
 
-                                                lunch_id_disp.append(foodID + "\n");
-                                                lunch_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
-                                            }
-                                        }
-                                    }
+                                                lunch_id_disp.append(FoodIDsQuantitiesMapField.getKey() + "\n");
+                                                lunch_qty_disp.append("Quantity:" + FoodIDsQuantitiesMapField.getValue() + "\n");
 
-                                }*/
+
+
+
+                                }
                             }
                             else {
                                 Log.d("ReadLunch", "No Lunch :/ |", task.getException());
@@ -190,30 +182,21 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 Map<String, Object> map = DinnerSnapshot.getData();
                                 Log.d("Dinner", "Dinner:" + map);
 
-                                /*for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
                                 {
-                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
-                                    String foodID;
 
-                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
-                                        foodID = FoodIDsQuantitiesMapField.getKey();
-                                        Log.d("foodID", foodID);
 
-                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
-                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
-                                        {
-                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
                                                 //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
-                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDsQuantitiesMapField.getKey());
 
-                                                dinner_id_disp.append(foodID + "\n");
-                                                dinner_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
-                                            }
-                                        }
-                                    }
+                                                dinner_id_disp.append(FoodIDsQuantitiesMapField.getKey() + "\n");
+                                                dinner_qty_disp.append("Quantity:" + FoodIDsQuantitiesMapField.getValue() + "\n");
 
-                                }*/
+
+
+
+                                }
                             }
                             else {
                                 Log.d("ReadDinner", "No Dinner :/ |", task.getException());
@@ -237,30 +220,21 @@ public class DisplayDietPlan extends AppCompatActivity {
                                 Map<String, Object> map = SnacksSnapshot.getData();
                                 Log.d("Snacks", "Snacks:" + map);
 
-                                /*for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
+                                for (Map.Entry<String, Object> FoodIDsQuantitiesMapField : map.entrySet())
                                 {
-                                    Log.d("FoodIDsQtyMapField", "\n FoodIDsQuantitiesMapField.getKey():" + FoodIDsQuantitiesMapField.getKey() + "\n FoodIDsQuantitiesMapField.getValue():" + FoodIDsQuantitiesMapField.getValue());
 
-                                    String foodID;
 
-                                    if(!FoodIDsQuantitiesMapField.getKey().equals("Food IDs")) {
-                                        foodID = FoodIDsQuantitiesMapField.getKey();
-                                        Log.d("foodID", foodID);
 
-                                        ArrayList<String> FoodIDArrayQtyValue = (ArrayList<String>) FoodIDsQuantitiesMapField.getValue();
-                                        for(int i=0; i<FoodIDArrayQtyValue.size(); ++i)
-                                        {
-                                            if(!FoodIDsQuantitiesMapField.getKey().equals("Food Items")) {
                                                 //Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i) + "| Size:" + FoodIDArrayQtyValue.size());
-                                                Log.d("FoodIDArrayQtyValue", FoodIDArrayQtyValue.get(i));
+                                                //Log.d("FoodIDArrayQtyValue", FoodIDsQuantitiesMapField.getKey());
 
-                                                snacks_id_disp.append(foodID + "\n");
-                                                snacks_qty_disp.append("Quantity:" + FoodIDArrayQtyValue.get(i) + "\n");
-                                            }
-                                        }
-                                    }
+                                                snacks_id_disp.append(FoodIDsQuantitiesMapField.getKey() + "\n");
+                                                snacks_qty_disp.append("Quantity:" + FoodIDsQuantitiesMapField.getValue() + "\n");
 
-                                }*/
+
+
+
+                                }
                             }
                             else {
                                 Log.d("ReadSnacks", "No Snacks :/ |", task.getException());
@@ -321,5 +295,7 @@ public class DisplayDietPlan extends AppCompatActivity {
         pieChart.addPieSlice(new PieModel("Protein", Integer.parseInt(protein.getText().toString()), Color.parseColor("#ff0000")));
         pieChart.addPieSlice(new PieModel("Carbohydrates", Integer.parseInt(carbs.getText().toString()), Color.parseColor("#87ceeb")));
         pieChart.addPieSlice(new PieModel("Fats", Integer.parseInt(fats.getText().toString()), Color.parseColor("#fff700")));
+
+        pieChart.startAnimation();
     }
 }

@@ -6,7 +6,6 @@
     <string name="light_activity_lifestyle">Light Activity Lifestyle</string>
     <string name="moderate_activity_lifestyle">Moderate Activity Lifestyle</string>
     <string name="vigorous_activity_lifestyle">Vigorous Activity Lifestyle</string>
-    <string name="custom_activity_level">Custom Activity Lifestyle</string>
     <string-array name="activityLevels">
         <item></item>
         <item>@string/light_activity_lifestyle</item>
@@ -19,7 +18,6 @@
         <item>@string/light_activity_lifestyle</item>
         <item>@string/moderate_activity_lifestyle</item>
         <item>@string/vigorous_activity_lifestyle</item>
-        <item>@string/custom_activity_level</item>
     </string-array>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

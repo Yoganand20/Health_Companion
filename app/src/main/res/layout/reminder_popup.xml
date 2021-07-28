@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="Date And Time"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
         <Button
             android:id="@+id/selectDate"
@@ -43,7 +43,7 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:hint="Reminder Message"
-        android:textColor="#FFFFFF" />
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/addButton"
