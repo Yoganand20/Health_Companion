@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF9C27B0"
+    android:background="#A2A6A8"
     android:orientation="vertical">
 
     <ImageView
@@ -10,7 +10,7 @@
         android:layout_height="120sp"
         android:layout_margin="16sp"
         android:onClick="ClickLogo"
-        android:src="@drawable/hcsymbol" />
+        android:src="@drawable/ic_app_icon" />
 
     <TextView
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/profile_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/dashboard_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/records_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/dietplans_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/reminders_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -173,7 +173,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/help_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -199,7 +199,7 @@
             android:layout_weight="1"
             android:padding="12sp"
             android:text="@string/logout_navdrawer"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:layout_width="wrap_content"

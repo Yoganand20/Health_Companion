@@ -1,8 +1,6 @@
 package com.project.healthcompanion;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -10,10 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
+import com.project.healthcompanion.DashboardClasses.DashboardActivity;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
 
@@ -72,6 +70,8 @@ public class HelpActivity extends AppCompatActivity {
         listGroup.add(getString(R.string.text5));
         listGroup.add(getString(R.string.text6));
         listGroup.add(getString(R.string.text7));
+        listGroup.add(getString(R.string.text8));
+        listGroup.add(getString(R.string.text9));
 
         String[] array;
 
@@ -83,45 +83,59 @@ public class HelpActivity extends AppCompatActivity {
         }
 
         ArrayList<String> list2 = new ArrayList<>();
-        array = getResources().getStringArray(R.array.text1);
+        array = getResources().getStringArray(R.array.text2);
 
         for(String item : array) {
             list2.add(item);
         }
 
         ArrayList<String> list3 = new ArrayList<>();
-        array = getResources().getStringArray(R.array.text1);
+        array = getResources().getStringArray(R.array.text3);
 
         for(String item : array) {
             list3.add(item);
         }
 
         ArrayList<String> list4 = new ArrayList<>();
-        array = getResources().getStringArray(R.array.text1);
+        array = getResources().getStringArray(R.array.text4);
 
         for(String item : array) {
             list4.add(item);
         }
 
         ArrayList<String> list5 = new ArrayList<>();
-        array = getResources().getStringArray(R.array.text1);
+        array = getResources().getStringArray(R.array.text5);
 
         for(String item : array) {
             list5.add(item);
         }
 
         ArrayList<String> list6 = new ArrayList<>();
-        array = getResources().getStringArray(R.array.text1);
+        array = getResources().getStringArray(R.array.text6);
 
         for(String item : array) {
             list6.add(item);
         }
 
         ArrayList<String> list7 = new ArrayList<>();
-        array = getResources().getStringArray(R.array.text1);
+        array = getResources().getStringArray(R.array.text7);
 
         for(String item : array) {
             list7.add(item);
+        }
+
+        ArrayList<String> list8 = new ArrayList<>();
+        array = getResources().getStringArray(R.array.text8);
+
+        for(String item : array) {
+            list8.add(item);
+        }
+
+        ArrayList<String> list9 = new ArrayList<>();
+        array = getResources().getStringArray(R.array.text9);
+
+        for(String item : array) {
+            list9.add(item);
         }
 
         listChild.put(listGroup.get(0), list1);
@@ -131,6 +145,8 @@ public class HelpActivity extends AppCompatActivity {
         listChild.put(listGroup.get(4), list5);
         listChild.put(listGroup.get(5), list6);
         listChild.put(listGroup.get(6), list7);
+        listChild.put(listGroup.get(7), list8);
+        listChild.put(listGroup.get(8), list9);
         adapter.notifyDataSetChanged();
     }
 
@@ -177,23 +193,5 @@ public class HelpActivity extends AppCompatActivity {
 
         //expTv2 = (ExpandableTextView) findViewById(R.id.expand_text_view2).findViewById(R.id.expand_text_view2);
         //expTv2.setText(getString(R.string.expandable_text2));
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (backPressedOnce) {
-            t.cancel();
-            ActivityCompat.finishAffinity(HomePage.this);
-            finish();
-        }
-        backPressedOnce = true;
-        t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
-        t.show();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                backPressedOnce = false;
-            }
-        }, 2000);
     }
 }

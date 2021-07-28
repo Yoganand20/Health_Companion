@@ -24,8 +24,7 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <activity
-            android:name=".Profile"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:name=".Profile"/>
 
         <activity android:name=".FoodDetailsActivity" /> <!-- <activity android:name=".ProfileImage" /> -->
 
@@ -64,7 +63,7 @@
         </activity>
 
 
-        <activity android:name=".DashboardActivity" />
+        <activity android:name=".DashboardClasses.DashboardActivity" />
 
         <activity android:name=".ImgPickerActivity" />
 

@@ -27,7 +27,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.DashboardClasses.DashboardActivity;
 import com.project.healthcompanion.HelpActivity;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.Profile;
@@ -232,6 +232,7 @@ public class DietPlans extends AppCompatActivity {
                 else {
                     Log.d("CheckDPName", "***Get failed with ", task.getException());
                 }
+                new_diet_plan_name.setText("");
             }
         });
 

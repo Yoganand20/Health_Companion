@@ -58,12 +58,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
+            <TextView
                 android:id="@+id/editText_dietName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="8"
                 android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView11"
                 app:layout_constraintTop_toTopOf="parent" />

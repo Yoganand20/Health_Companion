@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.DashboardClasses.DashboardActivity;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.HelpActivity;
 import com.project.healthcompanion.HomePage;

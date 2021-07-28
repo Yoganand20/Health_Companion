@@ -200,6 +200,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="add_food">Add Food</string>
+
 
     <string name="helpheader"> <b>Message from Team Health Companion: </b> \n\n
     <i>Dear user, \n\nWe the team at Health Companion, understand that all users might not be familiar with the concept of the app nor its functioning. \n\nIn our endeavour to publish this app; we would like to try our best to ensure that it is utilized for its intended functionality and that its features may provide you with the utility it was designed for. \n\nThis section of the app, which answers frequently asked questions; is for you. May it provide you the understanding and tools, to make your journey to a healthier lifestyle, a much easier one! </i></string>
@@ -229,15 +231,24 @@
         <item><i>Pace is the rate at which one would wish to reach their goal weight. Be it slow, moderate or fast. Depending on the pace selected, the user is suggested the number of days it would take to reach their goal weight.</i></item>
     </string-array>
 
-    <string name="text6"><b>What does Reminders entail:</b></string>
+    <string name="text6"><b>What do Reminders entail:</b></string>
     <string-array name="text6">
         <item><i>Reminders is where the user can set reminder for daily activities such as supplement intake, water consumption, etc. the user sets the time and the reminder message. Steps include: press the “+” button, select date and time, set reminder message, press the “add” button.</i></item>
     </string-array>
 
-    <string name="text7"><b>What does Records entail:</b></string>
-    <string name="add_food">Add Food</string>
+    <string name="text7"><b>What do Records entail:</b></string>
     <string-array name="text7">
         <item><i>Records is where the user can record their weight and view their weight change progression over time, in graph format. Steps include: enter record in “Current weight” and press the “add entry” button.</i></item>
+    </string-array>
+
+    <string name="text8"><b>What do diet plans entail:</b></string>
+    <string-array name="text8">
+        <item><i>This feature is for users to plan and create their own custom diet plans. Users can add a new diet plan by entering its name in the textbox and clicking the ”+” button. A diet plan has four meals; which includes: breakfast, lunch, dinner and snacks. For each meal; users can select food items, from the search feature. The way it works, is that the user clicks the ”ADD FOOD” Button, after which the user selects the preferred food item and sets it\'s quantity. The food item can be added to the meal on click of the ”SELECT” button. The user can also delete items after they have been added, by clicking the ”X” Button adjacent to each food item in the diet planner page. After the user is satisfied with a meal plan, the ”CONFIRM” button can be clicked. All the diet plans can be viewed in the diet plans page.</i></item>
+    </string-array>
+
+    <string name="text9"><b>What does Dashboard entail:</b></string>
+    <string-array name="text9">
+        <item><i>Dashboard is for users to create temporary diet plans on-the-go. Its functionality is similar to the diet plans feature.</i></item>
     </string-array>
 
 </resources>

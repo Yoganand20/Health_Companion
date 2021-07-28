@@ -13,8 +13,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.DashboardClasses.DashboardActivity;
 import com.project.healthcompanion.HelpActivity;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.Model.Meal;
@@ -27,7 +28,11 @@ import com.project.healthcompanion.databinding.ActivityDietPlannerBinding;
 import org.eazegraph.lib.models.PieModel;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DietPlannerActivity extends AppCompatActivity implements
         IMealUpdater {
@@ -111,14 +116,53 @@ public class DietPlannerActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 dietPlanName = binding.editTextDietName.getText().toString();
+                firebaseFirestore.collection("Diet Plans").document(currentUser).update("Diet Plan Names", FieldValue.arrayUnion(dietPlanName));
+                Double TotCal = 0.0;
+                Double TotProt = 0.0;
+                Double TotCarb = 0.0;
+                Double TotFat = 0.0;
                 for (Meal meal :
                         dietPlan) {
                     //use this for loop to access each meal
                     meal.generateFoodMap(); //this will generate and return a Map<String,Object> object where string is food name and object is quantity
-                }
 
+                    Map<String,Integer> foodMap=meal.generateFoodMap();
+
+                    if(meal.getMealName().equals("Breakfast")) {
+                        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(dietPlanName).collection("Meals").document("Breakfast")
+                                .set(foodMap);
+                    }
+                    else if(meal.getMealName().equals("Lunch")) {
+                        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(dietPlanName).collection("Meals").document("Lunch")
+                                .set(foodMap);
+                    }
+                    else if(meal.getMealName().equals("Dinner")) {
+                        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(dietPlanName).collection("Meals").document("Dinner")
+                                .set(foodMap);
+                    }
+                    else if(meal.getMealName().equals("Snacks")) {
+                        firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(dietPlanName).collection("Meals").document("Snacks")
+                                .set(foodMap);
+                    }
+
+                    TotCal = TotCal + meal.getTotalCalories();
+                    TotProt = TotProt + meal.getTotalProts();
+                    TotCarb = TotCarb + meal.getTotalCarbs();
+                    TotFat = TotFat + meal.getTotalFats();
+                }
                 //save to db
+
+                Map<String, Object> TotalMacros = new HashMap<>();
+                TotalMacros.put("Calories", roundTo2Decs(TotCal));
+                TotalMacros.put("Proteins",roundTo2Decs(TotProt));
+                TotalMacros.put("Carbs", roundTo2Decs(TotCarb));
+                TotalMacros.put("Fats", roundTo2Decs(TotFat));
+                firebaseFirestore.collection("Diet Plans").document(currentUser).collection("Diet Planner").document(dietPlanName)
+                        .set(TotalMacros);
+
+                finish();
             }
+
         });
 
     }
@@ -241,6 +285,12 @@ public class DietPlannerActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+
+    private double roundTo2Decs(double value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
 

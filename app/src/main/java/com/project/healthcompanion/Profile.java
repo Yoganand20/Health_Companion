@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.project.healthcompanion.DashboardClasses.DashboardActivity;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
 import com.project.healthcompanion.ReminderClasses.Reminder_main;
 

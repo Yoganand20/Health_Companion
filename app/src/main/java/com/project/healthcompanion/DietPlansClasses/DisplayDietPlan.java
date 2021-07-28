@@ -15,9 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.project.healthcompanion.DashboardActivity;
+import com.project.healthcompanion.DashboardClasses.DashboardActivity;
 import com.project.healthcompanion.HelpActivity;
 import com.project.healthcompanion.HomePage;
 import com.project.healthcompanion.Profile;
@@ -28,9 +27,7 @@ import com.project.healthcompanion.ReminderClasses.Reminder_main;
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class DisplayDietPlan extends AppCompatActivity {
