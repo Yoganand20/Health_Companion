@@ -3,6 +3,8 @@ package com.project.healthcompanion;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
@@ -165,4 +168,27 @@ public class DashboardActivity extends AppCompatActivity implements AdapterView.
 
 
     //end of navigation drawer
+
+
+    //press back twice to exit
+    private boolean backPressedOnce = false;
+    private Toast t;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedOnce) {
+            t.cancel();
+            ActivityCompat.finishAffinity(DashboardActivity.this);
+            finish();
+        }
+        backPressedOnce = true;
+        t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+        t.show();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, 2000);
+    }
 }

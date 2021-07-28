@@ -16,11 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthCompanion">
+
         <activity android:name=".HelpActivity" />
 
-        <activity android:name=".NoNetworkActivity" />
+        <activity
+            android:name=".NoNetworkActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
-        <activity android:name=".Profile" />
+        <activity
+            android:name=".Profile"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <activity android:name=".FoodDetailsActivity" /> <!-- <activity android:name=".ProfileImage" /> -->
 
@@ -32,10 +37,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity android:name=".DietPlansClasses.DisplayDietPlan">
@@ -50,11 +52,16 @@
 
         <activity
             android:name=".SearchFoodActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
         <activity android:name=".DashboardActivity" />
@@ -70,11 +77,9 @@
         <activity
             android:name=".LogInAndSignUp.LoginNSignUpActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysVisible"></activity>
+            android:windowSoftInputMode="stateAlwaysVisible" />
 
-        <activity
-            android:name=".HomePage"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".HomePage" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

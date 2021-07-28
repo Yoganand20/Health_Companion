@@ -4,8 +4,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -22,6 +25,7 @@ import com.project.healthcompanion.ReminderClasses.Reminder_main;
 import com.project.healthcompanion.databinding.ActivityDietPlannerBinding;
 
 import org.eazegraph.lib.models.PieModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -42,6 +46,7 @@ public class DietPlannerActivity extends AppCompatActivity implements
     String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     FirebaseFirestore firebaseFirestore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +241,31 @@ public class DietPlannerActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+}
+
+
+class DietPlannerViewPagerAdapter extends FragmentStateAdapter {
+
+    private static int tabCount = 4;
+    private final String[] mealNames;
+
+    public DietPlannerViewPagerAdapter(FragmentActivity fragmentActivity, String[] mealNames) {
+        super(fragmentActivity);
+        this.mealNames = mealNames;
+        tabCount = mealNames.length;
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    public Fragment createFragment(int position) {
+        return new LunchFragment(mealNames[position]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return tabCount;
     }
 }
 ///original code is in file x

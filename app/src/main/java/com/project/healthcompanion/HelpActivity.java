@@ -1,12 +1,17 @@
 package com.project.healthcompanion;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.project.healthcompanion.DietPlansClasses.DietPlans;
@@ -19,7 +24,9 @@ import java.util.List;
 public class HelpActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-
+    ActionBarDrawerToggle toggle;
+    //press back twice to exit
+    private boolean backPressedOnce = false;
     ExpandableListView expandableListView;
 
     List<String> listGroup = new ArrayList<>();
@@ -29,34 +36,7 @@ public class HelpActivity extends AppCompatActivity {
     HelpAdapter adapter;
 
     ExpandableTextView expTv1, expTv2, expTv3, expTv4, expTv5, expTv6, expTv7;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
-
-        drawerLayout = findViewById(R.id.drawer_Layout);
-
-        expandableListView = findViewById(R.id.ExpLW);
-
-
-
-        adapter = new HelpAdapter(this, listGroup, listChild);
-
-        expandableListView.setAdapter(adapter);
-
-        initListData();
-
-        // getting reference of  ExpandableTextView
-        //expTv1 = (ExpandableTextView) findViewById(R.id.expand_text_view1).findViewById(R.id.expand_text_view1);
-
-        // calling setText on the ExpandableTextView so that
-        // text content will be  displayed to the user
-        //expTv1.setText(getString(R.string.expandable_text1));
-
-        //expTv2 = (ExpandableTextView) findViewById(R.id.expand_text_view2).findViewById(R.id.expand_text_view2);
-        //expTv2.setText(getString(R.string.expandable_text2));
-    }
+    private Toast t;
 
     //navigation drawer
     public void ClickMenu(View view) { HomePage.openDrawer(drawerLayout); }
@@ -152,5 +132,68 @@ public class HelpActivity extends AppCompatActivity {
         listChild.put(listGroup.get(5), list6);
         listChild.put(listGroup.get(6), list7);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_help);
+
+        drawerLayout = findViewById(R.id.drawer_Layout);
+        drawerLayout = findViewById(R.id.drawer_Layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
+        };
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        expandableListView = findViewById(R.id.ExpLW);
+
+
+        adapter = new HelpAdapter(this, listGroup, listChild);
+
+        expandableListView.setAdapter(adapter);
+
+        initListData();
+
+        // getting reference of  ExpandableTextView
+        //expTv1 = (ExpandableTextView) findViewById(R.id.expand_text_view1).findViewById(R.id.expand_text_view1);
+
+        // calling setText on the ExpandableTextView so that
+        // text content will be  displayed to the user
+        //expTv1.setText(getString(R.string.expandable_text1));
+
+        //expTv2 = (ExpandableTextView) findViewById(R.id.expand_text_view2).findViewById(R.id.expand_text_view2);
+        //expTv2.setText(getString(R.string.expandable_text2));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedOnce) {
+            t.cancel();
+            ActivityCompat.finishAffinity(HomePage.this);
+            finish();
+        }
+        backPressedOnce = true;
+        t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+        t.show();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, 2000);
     }
 }

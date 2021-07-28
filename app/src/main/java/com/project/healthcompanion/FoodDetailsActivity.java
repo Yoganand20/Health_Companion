@@ -62,6 +62,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFoodDetailsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
         setContentView(view);
 
         binding.editTextQty.setText(qty.toString());
@@ -130,6 +131,5 @@ public class FoodDetailsActivity extends AppCompatActivity {
         binding.textViewServingInfo.setText(food.getServingQty() + " " + food.getServingUnit() + " (" + food.getServingWeight() + " grams)");
 
     }
-
 
 }

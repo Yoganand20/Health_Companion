@@ -192,7 +192,11 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:adjustViewBounds="false"
+            android:background="@color/white"
+            android:cropToPadding="true"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_minus_icon" />
 
         <EditText
@@ -214,8 +218,9 @@
             android:layout_weight="1"
             android:adjustViewBounds="false"
             android:background="@color/white"
-            android:cropToPadding="false"
-            android:scaleType="fitCenter"
+            android:cropToPadding="true"
+            android:padding="5dp"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_plus_icon_t" />
     </LinearLayout>
 

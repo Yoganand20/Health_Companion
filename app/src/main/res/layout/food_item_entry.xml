@@ -35,13 +35,15 @@
 
     <ImageButton
         android:id="@+id/imageButton_removeEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_cross_icon_t"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/textView_foodQty"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView_foodQty"
-        app:srcCompat="@drawable/ic_dplist_remove" />
+        app:layout_constraintTop_toTopOf="@+id/textView_foodQty" />
 
     <TextView
         android:id="@+id/textView_x"

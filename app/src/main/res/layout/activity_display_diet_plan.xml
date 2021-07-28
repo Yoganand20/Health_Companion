@@ -12,26 +12,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/main_toolbar"/>
-
         <TextView
             android:id="@+id/dp_list_item_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="0sp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
             android:text=""
+            android:textColor="@color/black"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.023"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:background="#FF9C27B0"
-            android:layout_marginTop="0sp"/>
+            app:layout_constraintVertical_bias="0.023" />
 
         <!-- <LinearLayout
             android:layout_width="wrap_content"
@@ -225,12 +222,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FF9C27B0"
-                    android:orientation="vertical"
-                    android:padding="15dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp">
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <TextView
                         android:id="@+id/breakfast"
@@ -238,15 +235,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textColor="#FFFFFF"
                         android:text="@string/breakfast_header"
-                        android:textSize="15dp"/>
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
                         android:layout_marginTop="5dp"
-                        android:background="#FFFFFF" />
+                        android:background="@color/black" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -257,25 +254,25 @@
                             android:id="@+id/breakfast_id_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
+                            android:layout_weight="2"
                             android:paddingLeft="15dp"
-                            android:textSize="15dp"
-                            android:layout_weight="2"/>
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                         <View
                             android:layout_width="1sp"
                             android:layout_height="match_parent"
-                            android:background="#FFFFFF" />
+                            android:background="@color/black" />
 
                         <TextView
                             android:id="@+id/breakfast_qty_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:paddingLeft="15dp"
-                            android:textSize="15dp"
+                            android:layout_gravity="end"
                             android:layout_weight="3"
-                            android:layout_gravity="end"/>
+                            android:paddingLeft="15dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                     </LinearLayout>
 
@@ -332,12 +329,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FF9C27B0"
-                    android:orientation="vertical"
-                    android:padding="15dp"
+                    android:layout_margin="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_margin="10dp">
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <TextView
                         android:id="@+id/lunch"
@@ -345,15 +342,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textColor="#FFFFFF"
                         android:text="@string/lunch_header"
-                        android:textSize="15dp"/>
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
                         android:layout_marginTop="5dp"
-                        android:background="#FFFFFF" />
+                        android:background="@color/black" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -364,25 +361,25 @@
                             android:id="@+id/lunch_id_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
+                            android:layout_weight="2"
                             android:paddingLeft="15dp"
-                            android:textSize="15dp"
-                            android:layout_weight="2"/>
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                         <View
                             android:layout_width="1sp"
                             android:layout_height="match_parent"
-                            android:background="#FFFFFF" />
+                            android:background="@color/black" />
 
                         <TextView
                             android:id="@+id/lunch_qty_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:paddingLeft="15dp"
-                            android:textSize="15dp"
+                            android:layout_gravity="end"
                             android:layout_weight="3"
-                            android:layout_gravity="end"/>
+                            android:paddingLeft="15dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                     </LinearLayout>
 
@@ -440,12 +437,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FF9C27B0"
-                    android:orientation="vertical"
-                    android:padding="15dp"
+                    android:layout_margin="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_margin="10dp">
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <TextView
                         android:id="@+id/dinner"
@@ -453,15 +450,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textColor="#FFFFFF"
                         android:text="@string/dinner_header"
-                        android:textSize="15dp"/>
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
                         android:layout_marginTop="5dp"
-                        android:background="#FFFFFF" />
+                        android:background="@color/black" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -472,25 +469,25 @@
                             android:id="@+id/dinner_id_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
+                            android:layout_weight="2"
                             android:paddingLeft="15dp"
-                            android:textSize="15dp"
-                            android:layout_weight="2"/>
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                         <View
                             android:layout_width="1sp"
                             android:layout_height="match_parent"
-                            android:background="#FFFFFF" />
+                            android:background="@color/black" />
 
                         <TextView
                             android:id="@+id/dinner_qty_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:paddingLeft="15dp"
-                            android:textSize="15dp"
+                            android:layout_gravity="end"
                             android:layout_weight="3"
-                            android:layout_gravity="end"/>
+                            android:paddingLeft="15dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                     </LinearLayout>
 
@@ -548,12 +545,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FF9C27B0"
-                    android:orientation="vertical"
-                    android:padding="15dp"
+                    android:layout_margin="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_margin="10dp">
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <TextView
                         android:id="@+id/snacks"
@@ -561,15 +558,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textColor="#FFFFFF"
                         android:text="@string/snacks_header"
-                        android:textSize="15dp"/>
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
                         android:layout_marginTop="5dp"
-                        android:background="#FFFFFF" />
+                        android:background="@color/black" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -580,28 +577,27 @@
                             android:id="@+id/snacks_id_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
+                            android:layout_weight="2"
                             android:paddingLeft="15dp"
-                            android:textSize="15dp"
-                            android:layout_weight="2"/>
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                         <View
                             android:layout_width="1sp"
                             android:layout_height="match_parent"
-                            android:background="#FFFFFF" />
+                            android:background="@color/black" />
 
                         <TextView
                             android:id="@+id/snacks_qty_disp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:paddingLeft="15dp"
-                            android:textSize="15dp"
+                            android:layout_gravity="end"
                             android:layout_weight="3"
-                            android:layout_gravity="end"/>
+                            android:paddingLeft="15dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15dp" />
 
                     </LinearLayout>
-
 
 
                     <!-- <LinearLayout

@@ -9,7 +9,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,7 +21,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,32 +54,10 @@ public class Reminder_main extends AppCompatActivity {
     private List<Reminders> temp;
     private TextView empty;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.reminder_main);
-
-        drawerLayout = findViewById(R.id.drawer_Layout);
-
-        reminder_database = Reminder_database.getAppDatabase(Reminder_main.this);
-
-        add = findViewById(R.id.AddButton);
-        empty = findViewById(R.id.empty_text);
-
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addReminder();
-            }
-        });
-
-        recyclerView = findViewById(R.id.RecyclerView);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Reminder_main.this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        setItemsInRecyclerView();
-    }
+    ActionBarDrawerToggle toggle;
+    //press back twice to exit
+    private boolean backPressedOnce = false;
+    private Toast t;
 
     public void ClickMenu(View view) {
         HomePage.openDrawer(drawerLayout);
@@ -84,7 +67,9 @@ public class Reminder_main extends AppCompatActivity {
         HomePage.closeDrawer(drawerLayout);
     }
 
-    public void ClickProfile(View view) { HomePage.redirectActivity(this, Profile.class); }
+    public void ClickProfile(View view) {
+        HomePage.redirectActivity(this, Profile.class);
+    }
 
     public void ClickHome(View view) {
         HomePage.redirectActivity(this, HomePage.class);
@@ -193,14 +178,76 @@ public class Reminder_main extends AppCompatActivity {
         dialog.show();
     }
 
-    public void setItemsInRecyclerView(){
+    public void setItemsInRecyclerView() {
         RoomDAO dao = reminder_database.getRoomDAO();
         temp = dao.orderThetable();
-        if(temp.size()>0){
+        if (temp.size() > 0) {
             empty.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
         }
         adapter = new AdapterReminders(temp);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.reminder_main);
+
+        drawerLayout = findViewById(R.id.drawer_Layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
+        };
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        reminder_database = Reminder_database.getAppDatabase(Reminder_main.this);
+
+        add = findViewById(R.id.AddButton);
+        empty = findViewById(R.id.empty_text);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addReminder();
+            }
+        });
+
+        recyclerView = findViewById(R.id.RecyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Reminder_main.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        setItemsInRecyclerView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedOnce) {
+            t.cancel();
+            ActivityCompat.finishAffinity(Reminder_main.this);
+            finish();
+        }
+        backPressedOnce = true;
+        t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+        t.show();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, 2000);
     }
 }

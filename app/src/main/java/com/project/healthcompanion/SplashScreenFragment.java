@@ -11,11 +11,7 @@ import com.project.healthcompanion.databinding.FragmentSplashScreenBinding;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SplashScreenFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class SplashScreenFragment extends Fragment {
 
     private FragmentSplashScreenBinding binding;

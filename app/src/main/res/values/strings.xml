@@ -21,6 +21,10 @@
         <item>@string/vigorous_activity_lifestyle</item>
         <item>@string/custom_activity_level</item>
     </string-array>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
     <string-array name="defeceitOptions">
         <item></item>
         <item>Lose weight slowly</item>
@@ -231,6 +235,7 @@
     </string-array>
 
     <string name="text7"><b>What does Records entail:</b></string>
+    <string name="add_food">Add Food</string>
     <string-array name="text7">
         <item><i>Records is where the user can record their weight and view their weight change progression over time, in graph format. Steps include: enter record in “Current weight” and press the “add entry” button.</i></item>
     </string-array>

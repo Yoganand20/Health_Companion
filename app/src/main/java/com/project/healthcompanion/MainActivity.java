@@ -32,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
             if (!isConnected) {
                 Intent intent = new Intent(MainActivity.this, NoNetworkActivity.class);
                 startActivity(intent);
+
             }
+
             // get instance of firebaseAuth
             mAuth = FirebaseAuth.getInstance();
 
@@ -64,4 +66,6 @@ public class MainActivity extends AppCompatActivity {
         //return true if profile details are entered
         return true;
     }
+
+
 }
