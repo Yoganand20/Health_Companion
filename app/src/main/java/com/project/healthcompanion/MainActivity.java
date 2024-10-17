@@ -15,14 +15,13 @@ import com.project.healthcompanion.LogInAndSignUp.LoginNSignUpActivity;
 import com.project.healthcompanion.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        com.project.healthcompanion.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(view);
@@ -43,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (currentUser != null) { //if user is logged in continue to home screen
 
+                Intent intent;
                 if (isProfileEntered()) {
-                    Intent intent = new Intent(this, Profile.class);
-                    startActivity(intent);
+                    intent = new Intent(this, Profile.class);
                 } else {
-                    Intent intent = new Intent(this, GetUserInfoActivity.class);
-                    startActivity(intent);
+                    intent = new Intent(this, GetUserInfoActivity.class);
                 }
+                startActivity(intent);
 
 
             } else {//else open login/sign up activity

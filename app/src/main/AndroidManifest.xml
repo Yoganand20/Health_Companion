@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.project.healthcompanion">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -17,29 +22,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthCompanion">
 
-        <activity android:name=".HelpActivity" />
+        <activity android:name=".HelpActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+            />
 
         <activity
             android:name=".NoNetworkActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <activity
-            android:name=".Profile"/>
+            android:name=".Profile" />
 
-        <activity android:name=".FoodDetailsActivity" /> <!-- <activity android:name=".ProfileImage" /> -->
+        <activity android:name=".FoodDetailsActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" /> <!-- <activity android:name=".ProfileImage" /> -->
 
         <activity
             android:name=".DietPlansClasses.DietPlannerActivity"
             tools:ignore="ExtraText">
             android:label = "DietPlanner"
-            android:parentActivityName = "DietPlans"
+            android:parentActivityName = "DietPlans">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
 
         </activity>
 
-        <activity android:name=".DietPlansClasses.DisplayDietPlan">
+        <activity android:name=".DietPlansClasses.DisplayDietPlan"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
             android:label = "DisplayDietPlans"
             android:parentActivityName = "DietPlans"
             <meta-data
@@ -47,7 +56,8 @@
                 android:value="com.project.healthcompanion.DietPlansClasses.DietPlans" />
         </activity>
 
-        <activity android:name=".DietPlansClasses.DietPlans" />
+        <activity android:name=".DietPlansClasses.DietPlans"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <activity
             android:name=".SearchFoodActivity"
@@ -55,7 +65,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,15 +74,19 @@
         </activity>
 
 
-        <activity android:name=".DashboardClasses.DashboardActivity" />
+        <activity android:name=".DashboardClasses.DashboardActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
-        <activity android:name=".ImgPickerActivity" />
+        <activity android:name=".ImgPickerActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
-        <activity android:name=".LogInAndSignUp.GetUserInfoActivity">
+        <activity android:name=".LogInAndSignUp.GetUserInfoActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
 
         </activity>
 
-        <activity android:name=".Records" />
+        <activity android:name=".Records"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <activity
             android:name=".LogInAndSignUp.LoginNSignUpActivity"
@@ -83,9 +98,11 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:ignore="DiscouragedApi" />
 
-        <activity android:name=".ReminderClasses.Reminder_main" />
+        <activity android:name=".ReminderClasses.Reminder_main"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

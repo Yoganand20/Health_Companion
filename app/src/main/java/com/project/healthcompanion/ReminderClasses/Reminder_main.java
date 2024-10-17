@@ -1,5 +1,6 @@
 package com.project.healthcompanion.ReminderClasses;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -15,12 +16,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -40,18 +40,16 @@ import com.project.healthcompanion.Records;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class Reminder_main extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
 
-    private FloatingActionButton add;
     private Dialog dialog;
     private Reminder_database reminder_database;
     private RecyclerView recyclerView;
-    private AdapterReminders adapter;
-    private List<Reminders> temp;
     private TextView empty;
 
     ActionBarDrawerToggle toggle;
@@ -71,9 +69,6 @@ public class Reminder_main extends AppCompatActivity {
         HomePage.redirectActivity(this, Profile.class);
     }
 
-    public void ClickHome(View view) {
-        HomePage.redirectActivity(this, HomePage.class);
-    }
 
     public void ClickDashboard(View view) { HomePage.redirectActivity(this, DashboardActivity.class); }
 
@@ -101,6 +96,7 @@ public class Reminder_main extends AppCompatActivity {
     }
 
 
+    @SuppressLint("ScheduleExactAlarm")
     public void addReminder() {
         dialog = new Dialog(Reminder_main.this);
         dialog.setContentView(R.layout.reminder_popup);
@@ -112,85 +108,72 @@ public class Reminder_main extends AppCompatActivity {
         final EditText message = dialog.findViewById(R.id.message);
 
         final Calendar newCalendar = Calendar.getInstance();
-        select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog dialog = new DatePickerDialog(Reminder_main.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, final int year, final int month, final int dayOfMonth) {
-                        final Calendar newDate = Calendar.getInstance();
-                        Calendar newTime = Calendar.getInstance();
-                        TimePickerDialog time = new TimePickerDialog(Reminder_main.this, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                newDate.set(year, month, dayOfMonth, hourOfDay, minute, 0);
-                                Calendar tem = Calendar.getInstance();
-                                Log.w("TIME", System.currentTimeMillis()+"");
-                                if(newDate.getTimeInMillis()-tem.getTimeInMillis()>0)
-                                    textView.setText(newDate.getTime().toString());
-                                else
-                                    Toast.makeText(Reminder_main.this, "Invalid time", Toast.LENGTH_SHORT).show();
-                            }
+        select.setOnClickListener(v -> {
+            DatePickerDialog dialog = new DatePickerDialog(Reminder_main.this, (view, year, month, dayOfMonth) -> {
+                final Calendar newDate = Calendar.getInstance();
+                Calendar newTime = Calendar.getInstance();
+                TimePickerDialog time = new TimePickerDialog(Reminder_main.this, (view1, hourOfDay, minute) -> {
+                    newDate.set(year, month, dayOfMonth, hourOfDay, minute, 0);
+                    Calendar tem = Calendar.getInstance();
+                    Log.w("TIME", System.currentTimeMillis()+"");
+                    if(newDate.getTimeInMillis()-tem.getTimeInMillis()>0)
+                        textView.setText(newDate.getTime().toString());
+                    else
+                        Toast.makeText(Reminder_main.this, "Invalid time", Toast.LENGTH_SHORT).show();
+                }, newTime.get(Calendar.HOUR_OF_DAY), newTime.get(Calendar.MINUTE),true);
+                time.show();
 
-                        }, newTime.get(Calendar.HOUR_OF_DAY), newTime.get(Calendar.MINUTE),true);
-                        time.show();
+            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-                    }
-                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-                dialog.getDatePicker().setMinDate(System.currentTimeMillis());
-                dialog.show();
-            }
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+            dialog.show();
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RoomDAO roomDAO = reminder_database.getRoomDAO();
-                Reminders reminders = new Reminders();
-                reminders.setMessage(message.getText().toString().trim());
-                Date remind = new Date(textView.getText().toString().trim());
-                reminders.setRemindDate(remind);
-                roomDAO.Insert(reminders);
-                List<Reminders> l = roomDAO.getAll();
-                reminders = l.get(l.size()-1);
-                Log.e("ID needed", reminders.getId()+"");
+        add.setOnClickListener(v -> {
+            RoomDAO roomDAO = reminder_database.getRoomDAO();
+            Reminders reminders = new Reminders();
+            reminders.setMessage(message.getText().toString().trim());
+            Date remind = new Date(textView.getText().toString().trim());
+            reminders.setRemindDate(remind);
+            roomDAO.Insert(reminders);
+            List<Reminders> l = roomDAO.getAll();
+            reminders = l.get(l.size()-1);
+            Log.e("ID needed", reminders.getId()+"");
 
-                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
-                calendar.setTime(remind);
-                calendar.set(Calendar.SECOND, 0);
-                Intent intent = new Intent(Reminder_main.this, NotifierAlarm.class);
-                intent.putExtra("Message", reminders.getMessage());
-                intent.putExtra("RemindDate", reminders.getRemindDate().toString());
-                intent.putExtra("id", reminders.getId());
-                PendingIntent intent1 = PendingIntent.getBroadcast(Reminder_main.this, reminders.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent1);
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
+            calendar.setTime(remind);
+            calendar.set(Calendar.SECOND, 0);
+            Intent intent = new Intent(Reminder_main.this, NotifierAlarm.class);
+            intent.putExtra("Message", reminders.getMessage());
+            intent.putExtra("RemindDate", reminders.getRemindDate().toString());
+            intent.putExtra("id", reminders.getId());
+            PendingIntent intent1 = PendingIntent.getBroadcast(Reminder_main.this, reminders.getId(), intent,PendingIntent.FLAG_IMMUTABLE);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent1);
 
-                Toast.makeText(Reminder_main.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();
-                setItemsInRecyclerView();
-                Reminder_database.destroyInstance();
-                dialog.dismiss();
-            }
+            Toast.makeText(Reminder_main.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();
+            setItemsInRecyclerView();
+            Reminder_database.destroyInstance();
+            dialog.dismiss();
         });
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
     public void setItemsInRecyclerView() {
         RoomDAO dao = reminder_database.getRoomDAO();
-        temp = dao.orderThetable();
-        if (temp.size() > 0) {
+        List<Reminders> temp = dao.orderThetable();
+        if (!temp.isEmpty()) {
             empty.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
         }
-        adapter = new AdapterReminders(temp);
+        AdapterReminders adapter = new AdapterReminders(temp);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -203,7 +186,7 @@ public class Reminder_main extends AppCompatActivity {
         setContentView(R.layout.reminder_main);
 
         drawerLayout = findViewById(R.id.drawer_Layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         toggle = new ActionBarDrawerToggle(
                 this,
@@ -216,15 +199,10 @@ public class Reminder_main extends AppCompatActivity {
 
         reminder_database = Reminder_database.getAppDatabase(Reminder_main.this);
 
-        add = findViewById(R.id.AddButton);
+        FloatingActionButton add = findViewById(R.id.AddButton);
         empty = findViewById(R.id.empty_text);
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addReminder();
-            }
-        });
+        add.setOnClickListener(v -> addReminder());
 
         recyclerView = findViewById(R.id.RecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -233,6 +211,7 @@ public class Reminder_main extends AppCompatActivity {
         setItemsInRecyclerView();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         if (backPressedOnce) {
@@ -243,11 +222,6 @@ public class Reminder_main extends AppCompatActivity {
         backPressedOnce = true;
         t = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
         t.show();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                backPressedOnce = false;
-            }
-        }, 2000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> backPressedOnce = false, 2000);
     }
 }
